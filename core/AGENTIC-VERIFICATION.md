@@ -4,6 +4,14 @@
 
 Agent'ın belge ürettikten sonra, teslim etmeden önce uygulaması ZORUNLU olan post-generation doğrulama protokolü.
 
+## Kapsam
+
+Bu protokol, `core/RISK-FRAMEWORK.md`'de tanımlanan risk seviyelerine göre kademeli uygulanır:
+
+- **🟢 Low Risk:** Yalnızca **Adım 1 (Fact-Check Protocol)** zorunludur. Adım 2–4 atlanabilir.
+- **🟡 Medium Risk:** **Tüm adımlar (1–4) zorunludur.**
+- **🔴 High Risk:** **Tüm adımlar (1–4) zorunludur;** ayrıca üretim öncesi `<HARD-GATE>` kontrolü gerekir (bkz. `core/RISK-FRAMEWORK.md`).
+
 ## Neden Gerekli
 
 - Agent halüsinasyonlarını son adımda yakalamak
@@ -27,7 +35,7 @@ Agent, çıktıyı teslim etmeden ÖNCE bu kontrolleri tamamlamalıdır:
 </SELF-TEST>
 ```
 
-Herhangi bir kontrol başarısız olursa: **DURMA, düzelt, tekrar kontrol et.**
+Herhangi bir kontrol başarısız olursa: **DUR, düzelt, tekrar kontrol et.**
 
 ### Adım 2: Risk Taraması Yap
 
