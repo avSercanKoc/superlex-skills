@@ -29,5 +29,5 @@ takip edilmelidir.
 1. Belge üretimini tamamla
 2. Agentic Verification Gate'i geç
 3. Kullanıcı onayını al
-4. Bu feragatmeyi belgenin EN SONUNA ekle
+4. Bu feragatnameyi belgenin EN SONUNA ekle
 5. `[Tarih]` placeholder'ını üretim tarihiyle değiştir
