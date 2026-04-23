@@ -1,23 +1,23 @@
-# Katkıda Bulunma Rehberi
+# Contributing Guide
 
-## Yeni Jurisdiction Ekleme
+## Adding a New Jurisdiction
 
-1. İlgili skill dizininde `jurisdictions/[ülke-kodu].md` dosyası oluşturun
-2. Mevcut `tr.md` dosyasını referans alın
-3. Ülke hukukuna özgü kanun maddeleri, yönetmelikler ve referanslar ekleyin
-4. PR açarken hangi skill'e, hangi ülke hukuku eklendiğini belirtin
+1. Create a `jurisdictions/[country-code].md` file in the relevant skill directory.
+2. Use the existing `tr.md` file as a reference.
+3. Add country-specific laws, regulations, and references.
+4. When opening a PR, specify which skill and which jurisdiction were added.
 
-## Yeni Skill Ekleme
+## Adding a New Skill
 
-1. `core/SKILL-ANATOMY.md` şablonunu okuyun
-2. `skills/[skill-adı]/SKILL.md` dosyası oluşturun
-3. Tüm zorunlu bölümleri doldurun (Overview, When to Use, Process Flow, vb.)
-4. YAML frontmatter'da `jurisdiction`, `output_type`, `risk_level` belirtin
-5. İlgili `jurisdictions/tr.md` dosyasını oluşturun
+1. Read the `core/SKILL-ANATOMY.md` template.
+2. Create `skills/[skill-name]/SKILL.md`.
+3. Fill in all required sections (Overview, When to Use, Process Flow, etc.).
+4. In the YAML frontmatter, specify `jurisdiction`, `output_type`, and `risk_level`.
+5. Create the related `jurisdictions/tr.md` file.
 
-## Kalite Standartları
+## Quality Standards
 
-- ❌ Uydurma kanun maddesi yasağı — tüm referanslar doğrulanabilir olmalı
-- ✅ Anti-Patterns bölümü zorunlu
-- ✅ Fact-Check Protocol (`<SELF-TEST>` bloğu) zorunlu
-- ✅ Agentic Verification Gate (`<HARD-GATE>` bloğu) zorunlu (🔴 High risk skill'ler için)
+- ❌ No fabricated legal references — all references must be verifiable.
+- ✅ Anti-Patterns section is mandatory.
+- ✅ Fact-Check Protocol (`<SELF-TEST>` block) is mandatory.
+- ✅ Agentic Verification Gate (`<HARD-GATE>` block) is mandatory (for 🔴 high-risk skills).

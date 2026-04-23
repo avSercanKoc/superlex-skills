@@ -1,32 +1,32 @@
 # ⚖️ Lex-Skill
 
-AI kodlama asistanlarının hukuki belge üretme kalitesini
-profesyonel standartlara taşıyan beceri kütüphanesi.
+A skill library that brings AI coding assistants' legal document output
+up to professional standards.
 
-## Felsefe
-- 🏛️ Önce Türk Hukuku, genişletilebilir mimari
-- 🛡️ Üç katmanlı güvenlik: Disclaimer → Risk → Agentic Verification
-- 🧠 Context Manager ile kişiselleştirilmiş çıktı
-- ⚠️ Agent sadece teşhis değil, tedavi de sunar
+## Philosophy
+- 🏛️ Turkish law first, with an extensible architecture
+- 🛡️ Three-layer safety model: Disclaimer → Risk → Agentic Verification
+- 🧠 Personalized output with Context Manager
+- ⚠️ The agent provides not only diagnosis, but also actionable guidance
 
-## Kurulum
+## Installation
 
 ```
-npx skills add https://github.com/[kullanıcı]/lex-skill
+npx skills add https://github.com/[username]/lex-skill
 ```
 
-## Beceriler
+## Skills
 
-| Skill | Çıktı Tipi | Risk | Açıklama |
+| Skill | Output Type | Risk | Description |
 |-------|-----------|------|----------|
-| lawyer-context-manager | context | 🟢 | Meta-skill: Bağlam yönetimi |
-| privacy-policy | document | 🟡 | KVKK/GDPR uyumlu gizlilik politikası |
-| contract-review | analysis | 🔴 | Sözleşme risk analizi |
-| terms-of-use | document | 🟡 | Kullanım koşulları |
-| nda-generator | draft+checklist | 🟡 | Gizlilik sözleşmesi |
-| legal-letter | document | 🔴 | İhtarname / bildirim |
+| lawyer-context-manager | context | 🟢 | Meta-skill: Context management |
+| privacy-policy | document | 🟡 | KVKK/GDPR-compliant privacy policy |
+| contract-review | analysis | 🔴 | Contract risk analysis |
+| terms-of-use | document | 🟡 | Terms of use |
+| nda-generator | draft+checklist | 🟡 | Non-disclosure agreement |
+| legal-letter | document | 🔴 | Legal notice / formal notification |
 
-## Mimari
+## Architecture
 
 ```
 lawyer-skills/
@@ -35,22 +35,22 @@ lawyer-skills/
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 ├── GEMINI.md
-├── .gitignore                             # .superpowers/ ve .taste-skill/ hariç tutar
+├── .gitignore                             # excludes .superpowers/ and .taste-skill/
 │
-├── core/                                  # Paylaşılan çekirdek bileşenler
-│   ├── DISCLAIMER.md                      # Standart feragatname şablonu
-│   ├── RISK-FRAMEWORK.md                  # 🟢🟡🔴 risk sistemi tanımı
-│   ├── AGENTIC-VERIFICATION.md            # Post-generation doğrulama protokolü
-│   └── SKILL-ANATOMY.md                   # Skill yapı standardı (şablon)
+├── core/                                  # Shared core components
+│   ├── DISCLAIMER.md                      # Standard disclaimer template
+│   ├── RISK-FRAMEWORK.md                  # 🟢🟡🔴 risk system definition
+│   ├── AGENTIC-VERIFICATION.md            # Post-generation verification protocol
+│   └── SKILL-ANATOMY.md                   # Skill structure standard (template)
 │
-├── skills/                                # Hukuki beceriler
+├── skills/                                # Legal skills
 │   ├── lawyer-context-manager/
 │   │   └── SKILL.md
 │   ├── privacy-policy/
 │   │   ├── SKILL.md
 │   │   └── jurisdictions/
-│   │       ├── tr.md                      # KVKK referansları
-│   │       └── eu.md                      # GDPR referansları
+│   │       ├── tr.md                      # KVKK references
+│   │       └── eu.md                      # GDPR references
 │   ├── contract-review/
 │   │   ├── SKILL.md
 │   │   └── jurisdictions/
@@ -68,20 +68,20 @@ lawyer-skills/
 │       └── jurisdictions/
 │           └── tr.md
 │
-├── .superpowers/                          # (gitignore — yayınlanmaz)
-└── .taste-skill/                          # (gitignore — yayınlanmaz)
+├── .superpowers/                          # (gitignore — not published)
+└── .taste-skill/                          # (gitignore — not published)
 ```
 
-## Güvenlik Katmanları
+## Safety Layers
 
-1. **Disclaimer** — Her çıktıya otomatik eklenen feragatname
-2. **Risk Framework** — 🟢🟡🔴 seviye sistemi ile agent davranışı kontrolü
-3. **Agentic Verification** — Post-generation doğrulama ve kullanıcı onayı
+1. **Disclaimer** — A disclaimer automatically added to every output
+2. **Risk Framework** — Controls agent behavior with a 🟢🟡🔴 level system
+3. **Agentic Verification** — Post-generation validation and user approval
 
-## Katkıda Bulunma
+## Contributing
 
-Detaylar için [CONTRIBUTING.md](CONTRIBUTING.md) dosyasına bakın.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## Lisans
+## License
 
-MIT — Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+MIT — See [LICENSE](LICENSE) for details.

@@ -1,33 +1,33 @@
-# Standart Feragatname (Disclaimer)
+# Standard Disclaimer
 
-## Amaç
+## Purpose
 
-Bu dosya, Lex-Skill ile üretilen her hukuki çıktının sonuna otomatik olarak eklenmesi ZORUNLU olan standart feragatname şablonunu tanımlar.
+This file defines the standard disclaimer template that MUST be automatically appended to the end of every legal output generated with Lex-Skill.
 
-## Kullanım Kuralı
+## Usage Rule
 
-Her skill, çıktısının en sonuna bu feragatname metnini ekler. Agent bu adımı atlayamaz.
+Each skill appends this disclaimer text at the very end of its output. The agent cannot skip this step.
 
-## Feragatname Metni
+## Disclaimer Text
 
 ```
-⚖️ YASAL UYARI: Bu belge yapay zeka destekli olarak üretilmiştir.
-Hukuki bağlayıcılığı bulunmamaktadır. Kullanılmadan önce mutlaka
-yetkili bir avukat tarafından gözden geçirilmelidir. [Tarih] itibarıyla
-yürürlükteki mevzuata göre hazırlanmış olup, mevzuat değişiklikleri
-takip edilmelidir.
+⚖️ LEGAL NOTICE: This document was generated with AI assistance.
+It is not legally binding. Before use, it must be reviewed by
+an authorized attorney. It was prepared according to the
+legislation in force as of [Date], and legislative changes
+should be monitored.
 ```
 
-## Placeholder Kuralları
+## Placeholder Rules
 
-| Placeholder | Açıklama | Nasıl Doldurulur |
-|-------------|----------|------------------|
-| `[Tarih]` | Belgenin üretim tarihi | Agent, belge üretim tarihini otomatik ekler (GG.AA.YYYY formatında) |
+| Placeholder | Description | How to Fill |
+|-------------|-------------|-------------|
+| `[Date]` | Document generation date | The agent automatically inserts the generation date (DD.MM.YYYY format). |
 
-## Agent Talimatı
+## Agent Instructions
 
-1. Belge üretimini tamamla
-2. Agentic Verification Gate'i geç
-3. Kullanıcı onayını al
-4. Bu feragatnameyi belgenin EN SONUNA ekle
-5. `[Tarih]` placeholder'ını üretim tarihiyle değiştir
+1. Complete document generation.
+2. Pass the Agentic Verification Gate.
+3. Obtain user approval.
+4. Append this disclaimer to the VERY END of the document.
+5. Replace the `[Date]` placeholder with the generation date.

@@ -1,70 +1,70 @@
-# Agentic Verification Protokolü
+# Agentic Verification Protocol
 
-## Amaç
+## Purpose
 
-Agent'ın belge ürettikten sonra, teslim etmeden önce uygulaması ZORUNLU olan post-generation doğrulama protokolü.
+A mandatory post-generation validation protocol that the agent MUST apply after producing a document and before delivering it.
 
-## Kapsam
+## Scope
 
-Bu protokol, `core/RISK-FRAMEWORK.md`'de tanımlanan risk seviyelerine göre kademeli uygulanır:
+This protocol is applied progressively based on the risk levels defined in `core/RISK-FRAMEWORK.md`:
 
-- **🟢 Low Risk:** Yalnızca **Adım 1 (Fact-Check Protocol)** zorunludur. Adım 2–4 atlanabilir.
-- **🟡 Medium Risk:** **Tüm adımlar (1–4) zorunludur.**
-- **🔴 High Risk:** **Tüm adımlar (1–4) zorunludur;** ayrıca üretim öncesi `<HARD-GATE>` kontrolü gerekir (bkz. `core/RISK-FRAMEWORK.md`).
+- **🟢 Low Risk:** Only **Step 1 (Fact-Check Protocol)** is mandatory. Steps 2-4 may be skipped.
+- **🟡 Medium Risk:** **All steps (1-4) are mandatory.**
+- **🔴 High Risk:** **All steps (1-4) are mandatory;** additionally, a pre-generation `<HARD-GATE>` check is required (see `core/RISK-FRAMEWORK.md`).
 
-## Neden Gerekli
+## Why It Is Required
 
-- Agent halüsinasyonlarını son adımda yakalamak
-- Hukuki hataların kullanıcıya ulaşmasını engellemek
-- Kullanıcıyı riskli maddeler hakkında proaktif bilgilendirmek
-- "Körü körüne güvenme" yerine "aktif doğrulama" kültürü
+- To catch agent hallucinations at the final stage
+- To prevent legal errors from reaching the user
+- To proactively inform users about high-risk clauses
+- To establish a culture of "active verification" instead of blind trust
 
-## Protokol Adımları
+## Protocol Steps
 
-### Adım 1: Fact-Check Protocol'ü Çalıştır
+### Step 1: Run the Fact-Check Protocol
 
-Her skill'in `<SELF-TEST>` bloğundaki kontrol listesini tamamla:
+Complete the checklist in each skill's `<SELF-TEST>` block:
 
 ```
 <SELF-TEST>
-Agent, çıktıyı teslim etmeden ÖNCE bu kontrolleri tamamlamalıdır:
-- [ ] Referans verilen kanun maddeleri gerçek ve doğru mu?
-- [ ] Kullanılan hukuki terimler doğru bağlamda mı?
-- [ ] Tarih ve süre bilgileri tutarlı mı?
-- [ ] [Skill'e özgü kontroller]
+Before delivering the output, the agent must complete these checks:
+- [ ] Are all cited legal provisions real and accurate?
+- [ ] Are legal terms used in the correct context?
+- [ ] Are dates and time periods consistent?
+- [ ] [Skill-specific checks]
 </SELF-TEST>
 ```
 
-Herhangi bir kontrol başarısız olursa: **DUR, düzelt, tekrar kontrol et.**
+If any check fails: **STOP, fix it, and re-check.**
 
-### Adım 2: Risk Taraması Yap
+### Step 2: Perform Risk Scanning
 
-Üretilen belgedeki en yüksek riskli 3-5 maddeyi tespit et:
-- Hukuki sonuçları en ağır olan maddeler
-- Yanlış anlaşılmaya en açık ifadeler
-- Sektöre/duruma göre özelleştirme gerektiren kısımlar
+Identify the top 3-5 highest-risk clauses in the generated document:
+- Clauses with the most severe legal consequences
+- Phrases most likely to be misunderstood
+- Sections that require sector/situation-specific customization
 
-### Adım 3: Kullanıcıya Aktif Soru Sor
+### Step 3: Ask the User an Active Confirmation Question
 
 ```
-"Bu belgede aşağıdaki maddeler en yüksek riskli kısımlardır:
-1. [Madde X] — Risk: [açıklama] → 💡 Alternatif: [daha güvenli metin]
-2. [Madde Y] — Risk: [açıklama] → 💡 Alternatif: [daha güvenli metin]
-3. [Madde Z] — Risk: [açıklama] → 💡 Alternatif: [daha güvenli metin]
+"The following clauses in this document are the highest-risk sections:
+1. [Clause X] - Risk: [explanation] -> 💡 Alternative: [safer text]
+2. [Clause Y] - Risk: [explanation] -> 💡 Alternative: [safer text]
+3. [Clause Z] - Risk: [explanation] -> 💡 Alternative: [safer text]
 
-Bu kısımları özel durumunuza göre incelediniz mi?
-Alternatif önerileri uygulamak ister misiniz?"
+Have you reviewed these sections for your specific situation?
+Would you like to apply the suggested alternatives?"
 ```
 
-### Adım 4: Kullanıcı Onayı
+### Step 4: User Approval
 
-- Kullanıcı onaylamadan belge tamamlanmış SAYILMAZ
-- `<HARD-GATE>` mekanizması ile zorunlu kılınır
-- Agent onay almadan bir sonraki adıma geçemez
+- The document is NOT considered complete until the user approves
+- This is enforced via the `<HARD-GATE>` mechanism
+- The agent cannot proceed to the next step without approval
 
-## Agent İçin Zorunlu Kurallar
+## Mandatory Rules for the Agent
 
-1. **Atlama yasağı** — Bu protokolün hiçbir adımı atlanamaz
-2. **Sıra zorunluluğu** — Adımlar sırasıyla uygulanmalıdır
-3. **Dürüstlük** — Agent, tespit edemediği riskleri "risk yok" olarak sunmamalı
-4. **Proaktiflik** — Kullanıcı sormasa bile riskli maddeleri belirtmeli
+1. **No skipping** - No step in this protocol may be skipped.
+2. **Order is mandatory** - Steps must be applied in sequence.
+3. **Honesty** - The agent must not present undetected risks as "no risk."
+4. **Proactivity** - The agent must flag risky clauses even if the user does not ask.

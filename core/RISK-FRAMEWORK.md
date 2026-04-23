@@ -1,80 +1,80 @@
-# Risk Seviyesi Çerçevesi (Risk Framework)
+# Risk Level Framework
 
-## Amaç
+## Purpose
 
-Lex-Skill'deki her becerinin risk seviyesini tanımlar ve agent'ın her seviyede nasıl davranması gerektiğini belirler.
+Defines the risk level of each skill in Lex-Skill and specifies how the agent must behave at each level.
 
-## Risk Seviyeleri
+## Risk Levels
 
 ### 🟢 Low Risk
 
-**Agent Davranışı:** Özgür hareket eder, bilgilendirme yapar ama durmaz.
+**Agent Behavior:** Operates with flexibility, provides guidance, but does not halt.
 
-**Karakteristikler:**
-- Belge hukuki bağlayıcılık taşımaz
-- Hatalı üretim doğrudan hak kaybına yol açmaz
-- Genel bilgilendirme niteliğindedir
+**Characteristics:**
+- The document is not legally binding
+- Incorrect output does not directly cause loss of rights
+- Primarily informational in nature
 
-**Örnek Skill'ler:** cookie-policy
+**Example Skills:** cookie-policy
 
-**Agent Talimatı:**
-1. Context bilgilerini kontrol et
-2. Belgeyi üret
-3. Fact-Check Protocol'ü çalıştır
-4. Disclaimer ekle
-5. Teslim et
+**Agent Instructions:**
+1. Check context information
+2. Generate the document
+3. Run the Fact-Check Protocol
+4. Add the disclaimer
+5. Deliver
 
 ---
 
 ### 🟡 Medium Risk
 
-**Agent Davranışı:** Her kritik noktada açıklama ve alternatif sunar.
+**Agent Behavior:** Provides explanations and alternatives at every critical point.
 
-**Karakteristikler:**
-- Belge hukuki sonuçlar doğurabilir
-- Hatalı üretim düzeltilebilir ama maliyetli olabilir
-- Sektöre/duruma özgü özelleştirme kritik
+**Characteristics:**
+- The document may produce legal consequences
+- Incorrect output can be corrected, but potentially at high cost
+- Sector/situation-specific customization is critical
 
-**Örnek Skill'ler:** privacy-policy, nda-generator, terms-of-use
+**Example Skills:** privacy-policy, nda-generator, terms-of-use
 
-**Agent Talimatı:**
-1. Context bilgilerini kontrol et (eksikse `lawyer-context-manager`'ı tetikle)
-2. Belgeyi üret
-3. Kritik noktalarda açıklama ve alternatif sun
-4. Fact-Check Protocol'ü çalıştır
-5. Agentic Verification — risk taraması yap, kullanıcıya sun
-6. Kullanıcı onayı al
-7. Disclaimer ekle
-8. Teslim et
+**Agent Instructions:**
+1. Check context information (if missing, trigger `lawyer-context-manager`)
+2. Generate the document
+3. Provide explanations and alternatives at critical points
+4. Run the Fact-Check Protocol
+5. Agentic Verification - perform risk scanning and present findings to the user
+6. Obtain user approval
+7. Add the disclaimer
+8. Deliver
 
 ---
 
 ### 🔴 High Risk
 
-**Agent Davranışı:** HARD-GATE — durur, zorunlu bilgileri sorar, onay almadan devam etmez.
+**Agent Behavior:** HARD-GATE - halts, asks for mandatory information, and does not continue without approval.
 
-**Karakteristikler:**
-- Belge doğrudan hukuki süreç başlatabilir
-- Yasal süreleri tetikleyebilir
-- Mahkemede delil olarak kullanılabilir
-- Hatalı üretim geri dönüşü zor veya imkansız hak kayıplarına yol açabilir
+**Characteristics:**
+- The document may directly initiate legal proceedings
+- It may trigger legal deadlines
+- It may be used as evidence in court
+- Incorrect output may cause irreversible or hard-to-recover rights loss
 
-**Örnek Skill'ler:** legal-letter, contract-review
+**Example Skills:** legal-letter, contract-review
 
-**Agent Talimatı:**
-1. Context bilgilerini kontrol et (eksikse `lawyer-context-manager`'ı tetikle)
-2. **<HARD-GATE>** — Belge üretmeden ÖNCE zorunlu soruları sor
-3. Tüm zorunlu bilgileri al; eksik bilgi varsa DUR — devam etme
-4. Kullanıcı tüm soruları yanıtladıktan sonra belgeyi üret
-5. Fact-Check Protocol'ü çalıştır
-6. Agentic Verification — risk taraması yap, en yüksek riskli maddeleri sun
-7. Kullanıcı onayı al
-8. Disclaimer ekle
-9. Teslim et
+**Agent Instructions:**
+1. Check context information (if missing, trigger `lawyer-context-manager`)
+2. **<HARD-GATE>** - ask mandatory questions BEFORE generating the document
+3. Collect all mandatory information; if information is missing, STOP - do not continue
+4. Generate the document only after the user answers all required questions
+5. Run the Fact-Check Protocol
+6. Agentic Verification - perform risk scanning and present the highest-risk clauses
+7. Obtain user approval
+8. Add the disclaimer
+9. Deliver
 
-## Skill'lerde Risk Seviyesi Belirleme
+## Defining Risk Level in Skills
 
-YAML frontmatter'daki `risk_level` alanı bu çerçeveye göre belirlenir:
+The `risk_level` field in YAML frontmatter is set according to this framework:
 
 ```yaml
 risk_level: "low"    # 🟢
@@ -82,18 +82,18 @@ risk_level: "medium" # 🟡
 risk_level: "high"   # 🔴
 ```
 
-## Genel Güvenlik Akışı
+## General Safety Flow
 
 ```
-Agent skill'i okur
+Agent reads the skill
        ↓
-[🔴 High Risk ise] → HARD-GATE: Zorunlu bilgileri sor → Onay al
+[If 🔴 High Risk] -> HARD-GATE: Ask mandatory information -> Obtain approval
        ↓
-Belgeyi üret
+Generate document
        ↓
-Fact-Check Protocol (<SELF-TEST> bloğu)
+Fact-Check Protocol (`<SELF-TEST>` block)
        ↓
-Agentic Verification (kullanıcıya risk + alternatif sun)
+Agentic Verification (present risk + alternatives to user)
        ↓
-Kullanıcı onaylar → Disclaimer eklenir → Teslim
+User approves -> Disclaimer added -> Deliver
 ```

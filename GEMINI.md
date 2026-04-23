@@ -26,11 +26,11 @@ To use a skill, I will read the `SKILL.md` file in the corresponding directory.
 
 ## Lex-Skill
 
-Hukuki beceriler `skills/` dizininde bulunur.
-Herhangi bir hukuki belge üretimi veya analiz isteğinde,
-önce `skills/lawyer-context-manager/SKILL.md` okunmalıdır.
+Legal skills are located in the `skills/` directory.
+For any legal document generation or analysis request,
+`skills/lawyer-context-manager/SKILL.md` must be read first.
 
-### Mevcut Hukuki Beceriler
+### Current Legal Skills
 - privacy-policy
 - contract-review
 - terms-of-use

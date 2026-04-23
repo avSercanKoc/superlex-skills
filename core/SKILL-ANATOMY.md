@@ -1,21 +1,21 @@
-# Skill Yapı Standardı (Skill Anatomy)
+# Skill Structure Standard (Skill Anatomy)
 
-## Amaç
+## Purpose
 
-Lex-Skill kütüphanesine eklenen her yeni skill'in uyması ZORUNLU olan yapı şablonu. Yeni skill oluşturan katkıcılar bu şablonu referans alır.
+The mandatory structure template that every new skill added to the Lex-Skill library must follow. Contributors creating new skills must use this template as a reference.
 
-## Temel Prensipler
+## Core Principles
 
-Skill'ler, hukuki "AI slop"a karşı savunma hatlarıdır. Bu yüzden her skill:
+Skills are defense layers against legal "AI slop." Therefore, every skill must:
 
-- **Tetikleme koşulları net olmalı** — agent bu skill'i ne zaman yüklemeli?
-- **Süreç adımları kesin olmalı** — belirsizlik yok, muğlak ifade yok
-- **Riskler etiketli olmalı** — 🟢🟡🔴 seviye sistemi ile agent davranışı kontrol edilir
-- **Anti-patternler açık listelenmeli** — hangi "AI slop" üretiminin yasak olduğu belirtilmeli
+- **Have clear triggering conditions** - when should the agent load this skill?
+- **Have explicit process steps** - no ambiguity, no vague language
+- **Have labeled risks** - agent behavior is controlled with the 🟢🟡🔴 level system
+- **List anti-patterns explicitly** - clearly specify which forms of "AI slop" are prohibited
 
-## YAML Frontmatter (Zorunlu)
+## YAML Frontmatter (Mandatory)
 
-Her SKILL.md dosyası şu frontmatter ile başlamalıdır:
+Every `SKILL.md` file must start with this frontmatter:
 
 ```yaml
 ---
@@ -28,217 +28,217 @@ risk_level: "medium"
 ---
 ```
 
-### Frontmatter Alanları
+### Frontmatter Fields
 
-| Alan | Zorunlu | Değerler | Açıklama |
+| Field | Required | Values | Description |
 |------|---------|----------|----------|
-| `name` | ✅ | kebab-case | Skill'in benzersiz adı (yalnızca harf, rakam, tire; parantez/özel karakter yasak) |
-| `description` | ✅ | string | Agent'ın skill'i ne zaman kullanacağını belirten tetikleme koşulu (aşağıdaki kural zorunludur) |
-| `version` | ✅ | semver | Skill versiyonu (örn. `"0.1.0"`) |
-| `jurisdiction` | ✅ | string array | Desteklenen yargı bölgeleri: `["tr"]`, `["tr", "eu"]` |
+| `name` | ✅ | kebab-case | Unique skill name (letters, numbers, and hyphens only; parentheses/special characters are prohibited) |
+| `description` | ✅ | string | Triggering condition that defines when the agent should use the skill (rule below is mandatory) |
+| `version` | ✅ | semver | Skill version (e.g., `"0.1.0"`) |
+| `jurisdiction` | ✅ | string array | Supported jurisdictions: `["tr"]`, `["tr", "eu"]` |
 | `output_type` | ✅ | enum | `document`, `analysis`, `draft-with-checklist`, `context` |
-| `risk_level` | ✅ | enum | `low`, `medium`, `high` — bkz. `core/RISK-FRAMEWORK.md` |
+| `risk_level` | ✅ | enum | `low`, `medium`, `high` - see `core/RISK-FRAMEWORK.md` |
 
-Frontmatter bütünü **1024 karakteri aşmamalıdır** (bkz. [agentskills.io/specification](https://agentskills.io/specification)).
+The complete frontmatter **must not exceed 1024 characters** (see [agentskills.io/specification](https://agentskills.io/specification)).
 
-### `description` Kuralı — Kritik
+### `description` Rule - Critical
 
-**`description` YALNIZCA tetikleme koşullarını tanımlamalıdır. Süreç, iş akışı veya yöntem ÖZETLEMEMELİDİR.**
+**`description` must define triggering conditions ONLY. It must NOT summarize process, workflow, or method.**
 
-**Neden önemli:** Test sonuçları göstermiştir ki `description` alanı iş akışını özetlediğinde, agent SKILL.md'nin tamamını okumak yerine description'daki kısa özeti takip eder. Sonuç: Kritik adımlar (HARD-GATE, Agentic Verification, SELF-TEST) sessizce atlanabilir.
+**Why this matters:** Tests have shown that when the `description` field summarizes workflow, the agent may follow that short summary instead of reading the entire `SKILL.md`. Result: critical steps (`HARD-GATE`, `Agentic Verification`, `SELF-TEST`) may be silently skipped.
 
 ```yaml
-# ❌ YANLIŞ: İş akışını özetliyor; agent tamamını okumayabilir
-description: "Use when user needs NDA — asks unilateral vs mutual, collects duration, generates draft plus checklist"
+# ❌ WRONG: Summarizes workflow; agent may skip the full file
+description: "Use when user needs NDA - asks unilateral vs mutual, collects duration, generates draft plus checklist"
 
-# ❌ YANLIŞ: Birinci tekil şahıs
+# ❌ WRONG: First-person phrasing
 description: "I generate NDAs for Turkish clients"
 
-# ❌ YANLIŞ: Muğlak, arama yapan agent eşleştiremez
+# ❌ WRONG: Too vague, search-based matching agents cannot map it
 description: "For contracts"
 
-# ✅ DOĞRU: Sadece tetikleme koşulları, arama terimleri içeriyor
-description: "Use when user needs a Non-Disclosure Agreement (NDA), Gizlilik Sözleşmesi, or Confidentiality Agreement"
+# ✅ CORRECT: Triggering conditions only, includes searchable terms
+description: "Use when user needs a Non-Disclosure Agreement (NDA), Gizlilik Sozlesmesi, or Confidentiality Agreement"
 ```
 
-Kurallar:
+Rules:
 
-- "Use when..." ile başla
-- Üçüncü tekil şahıs kullan
-- Agent'ın arayabileceği anahtar kelimeleri dahil et (`KVKK`, `ihtarname`, `NDA`, `sözleşme inceleme` vb.)
-- Süreç veya workflow özetine girme
-- 500 karakteri geçmemeye çalış
+- Start with "Use when..."
+- Use third-person style
+- Include keywords the agent can search for (`KVKK`, `ihtarname`, `NDA`, `contract review`, etc.)
+- Do not summarize process or workflow
+- Try to stay under 500 characters
 
-## Zorunlu Bölümler
+## Mandatory Sections
 
-Her SKILL.md şu 11 bölümü İÇERMELİDİR:
+Every `SKILL.md` must INCLUDE these 11 sections:
 
 ### 1. Overview
 
-Bu skill ne yapar, hangi sorunu çözer. 1-2 cümle, core principle vurgulu.
+What the skill does and what problem it solves. 1-2 sentences, emphasizing the core principle.
 
 ### 2. When to Use
 
-- Hangi durumda bu skill tetiklenir (kullanıcının tipik cümleleri dahil)
-- Hangi durumda kullanılMAZ (yakın skill'lerle sınır netleştirilmeli)
+- In which situations this skill is triggered (including common user phrases)
+- In which situations it should NOT be used (boundaries with nearby skills must be clear)
 
 ### 3. Jurisdiction Configuration
 
-Varsayılan yargı bölgesi ve desteklenen bölgeler. `jurisdictions/` alt dizinindeki dosyalara referans.
+Default jurisdiction and supported jurisdictions. Reference files under the `jurisdictions/` subdirectory.
 
 ### 4. Context Requirements
 
-`lawyer-context-manager`'dan beklenen zorunlu ve opsiyonel alanlar. Örnek:
+Mandatory and optional fields expected from `lawyer-context-manager`. Example:
 
 ```
-ZORUNLU: client.legal_name, client.registered_address, preferences.default_court
-OPSİYONEL: client.tax_id, firm.attorney_name
+MANDATORY: client.legal_name, client.registered_address, preferences.default_court
+OPTIONAL: client.tax_id, firm.attorney_name
 ```
 
-Context eksikse agent ÖNCE **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md` ile eksik bilgileri kullanıcıdan toplamalı, ardından bu skill'e dönmelidir. Eksik context ile belge üretimi YASAK.
+If context is missing, the agent must FIRST use **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md` to collect missing data from the user, then return to this skill. Document generation with missing context is PROHIBITED.
 
 ### 5. Process Flow
 
-Agent'ın izleyeceği adımlar. Karar noktası içeren skill'ler için Graphviz `dot` formatında akış diyagramı önerilir. Doğrusal akışlar için numaralı liste yeterlidir.
+Steps the agent follows. For skills with decision points, a flow diagram in Graphviz `dot` format is recommended. For linear flows, a numbered list is sufficient.
 
 ### 6. Output Specification
 
-Çıktının formatı, zorunlu bölümleri ve alan yapısı.
+Output format, mandatory sections, and field structure.
 
-**ZORUNLU:** Her çıktının sonunda `core/DISCLAIMER.md`'de tanımlı standart feragatname otomatik olarak eklenir. Skill, Output Specification'da bu hook'un nereye geleceğini belirtmelidir (genellikle belgenin en sonuna, imza bloğundan sonra).
+**MANDATORY:** The standard disclaimer defined in `core/DISCLAIMER.md` is automatically appended to the end of every output. The skill must define in Output Specification where this hook appears (usually at the end of the document, after the signature block).
 
 ### 7. Risk Zones
 
-🟢🟡🔴 etiketli maddeler — çıktının hangi kısımları düşük / orta / yüksek riskli.
+🟢🟡🔴 labeled items - which sections of the output are low / medium / high risk.
 
 ### 8. Agentic Verification Gate
 
-Skill'in risk seviyesine göre iki farklı HARD-GATE tanımlanır. `core/RISK-FRAMEWORK.md` + `core/AGENTIC-VERIFICATION.md`'deki kademeli uygulamaya tam uyum zorunludur.
+Two different HARD-GATE definitions are used according to skill risk level. Full compliance with progressive application in `core/RISK-FRAMEWORK.md` + `core/AGENTIC-VERIFICATION.md` is mandatory.
 
-**Pre-Generation HARD-GATE — yalnızca 🔴 High Risk skill'ler için ZORUNLU:**
+**Pre-Generation HARD-GATE - mandatory ONLY for 🔴 High Risk skills:**
 
 ```
 <HARD-GATE phase="pre-generation">
-Belge üretmeden ÖNCE agent'ın DURUP kullanıcıya sorması
-ZORUNLU olan kritik bilgi doğrulama soruları.
-Tüm sorular yanıtlanmadan üretime geçilemez.
+Critical information validation questions that the agent MUST stop and ask
+BEFORE generating the document.
+Generation cannot proceed until all questions are answered.
 </HARD-GATE>
 ```
 
-**Post-Generation HARD-GATE — tüm skill'ler için (Agentic Verification Adım 3-4):**
+**Post-Generation HARD-GATE - for all skills (Agentic Verification Steps 3-4):**
 
 ```
 <HARD-GATE phase="post-generation">
-Belge üretildikten sonra, teslim etmeden ÖNCE agent'ın
-kullanıcıya sunması ZORUNLU olan risk özeti ve onay soruları.
-Kullanıcı onayı alınmadan belge TAMAMLANMIŞ sayılmaz.
+Risk summary and approval questions that the agent MUST present to the user
+AFTER document generation but BEFORE delivery.
+The document is NOT considered COMPLETE until user approval is obtained.
 </HARD-GATE>
 ```
 
-🟢 Low Risk skill'ler için post-generation HARD-GATE'te yalnızca Fact-Check Protocol (Adım 1) zorunludur; Adım 2-4 opsiyoneldir. 🟡 Medium ve 🔴 High Risk'te her iki HARD-GATE ve Agentic Verification'ın tüm adımları (1-4) zorunludur.
+For 🟢 Low Risk skills, only the Fact-Check Protocol (Step 1) is mandatory in the post-generation HARD-GATE; Steps 2-4 are optional. For 🟡 Medium and 🔴 High Risk, both HARD-GATEs and all Agentic Verification steps (1-4) are mandatory.
 
-### 9. Anti-Patterns (Hukuki AI Slop)
+### 9. Anti-Patterns (Legal AI Slop)
 
-❌ Bu skill bağlamında yapılmaması gerekenler. Genel anti-patternler aşağıdaki bölümdedir; buraya yalnızca skill'e özgü olanlar yazılır.
+❌ Things that must not be done in this skill context. General anti-patterns are listed in a separate section below; only skill-specific items belong here.
 
 ### 10. Fact-Check Protocol
 
 ```
 <SELF-TEST>
-Agent, çıktıyı teslim etmeden ÖNCE bu kontrolleri tamamlamalıdır.
+Before delivering the output, the agent must complete these checks.
 </SELF-TEST>
 ```
 
-Skill'in domain'ine özgü doğrulama soruları (kanun maddelerinin doğruluğu, referansların güncelliği, vb.) burada tanımlanır.
+Domain-specific validation questions for the skill (accuracy of legal provisions, freshness of references, etc.) are defined here.
 
 ### 11. Legal References
 
-Dayanak mevzuat, kanun maddeleri, yönetmelikler. Her referans **doğrulanabilir** olmalıdır — uydurma kanun/madde YASAK.
+Legal basis, statutory provisions, and regulations. Every reference must be **verifiable** - fabricated laws/provisions are PROHIBITED.
 
-Bir referans "doğrulanabilir" sayılabilmesi için:
+For a reference to be considered "verifiable":
 
-- [ ] Kanun/yönetmelik adı ve sayısı resmi kaynakta (örn. [mevzuat.gov.tr](https://mevzuat.gov.tr)) kayıtlı olmalı
-- [ ] Madde numarası gerçek ve atıf yapılan bağlamda geçerli olmalı
-- [ ] Skill'in `jurisdiction` alanında belirtilen tarih/versiyonda yürürlükte olmalı (yürürlükten kalkmış maddelere atıf YASAK)
-- [ ] Resmi Gazete yayın tarihi/sayısı biliniyorsa eklenmeli (örn. `6698 sayılı KVKK m.5 — RG 07.04.2016, 29677`)
+- [ ] Law/regulation name and number must exist in official sources (e.g., [mevzuat.gov.tr](https://mevzuat.gov.tr))
+- [ ] Provision number must be real and valid in the cited context
+- [ ] It must be in force for the date/version declared in the skill's `jurisdiction` field (citing repealed provisions is PROHIBITED)
+- [ ] If known, Official Gazette date/issue should be included (e.g., `Law No. 6698 KVKK Art.5 - OG 07.04.2016, 29677`)
 
-Emin olunmayan referanslar için Fact-Check Protocol'de SELF-TEST kontrolü ZORUNLU.
+For uncertain references, SELF-TEST checks in the Fact-Check Protocol are MANDATORY.
 
-## Opsiyonel Bölüm: Red Flags — STOP
+## Optional Section: Red Flags - STOP
 
-🔴 High Risk skill'ler (örn. `legal-letter`, `contract-review`) için, agent'ın kendini baskı altında denetleyebilmesi amacıyla açık bir "STOP" listesi eklenmesi şiddetle önerilir.
+For 🔴 High Risk skills (e.g., `legal-letter`, `contract-review`), adding an explicit "STOP" list is strongly recommended so the agent can self-regulate under pressure.
 
-**Her skill kendi domain'ine özgü Red Flags listesi tanımlar.** Aşağıda örnekler:
+**Each skill defines its own domain-specific Red Flags list.** Examples:
 
-`legal-letter` (ihtarname) için örnek:
-
-```markdown
-## Red Flags — STOP ve Kullanıcıya Sor
-
-Aşağıdakilerden biri varsa agent belgeye geçmeden DURmalıdır:
-
-- Zorunlu context bilgilerinden biri eksik
-- "En kısa sürede" gibi muğlak süre ifadesi
-- Karşı tarafın adres/unvan bilgisi eksik veya uydurulmuş
-- İhtarın türü (fesih / temerrüt / bildirim) belirsiz
-- Kanun maddesi numarasından emin değilsin
-```
-
-`privacy-policy` için örnek (farklı domain, farklı bayraklar):
+Example for `legal-letter`:
 
 ```markdown
-## Red Flags — STOP ve Kullanıcıya Sor
+## Red Flags - STOP and Ask the User
 
-- İşlenen veri kategorileri eksik veya belirsiz
-- Veri saklama süresi tanımsız
-- Üçüncü taraf aktarım bilgisi eksik
-- KVKK veri sorumlusu kimliği / iletişim bilgisi yok
-- Açık rıza gerektiren işlemeler ayırt edilmemiş
+If any of the following exists, the agent must STOP before drafting:
+
+- One of the mandatory context fields is missing
+- Ambiguous time expression like "as soon as possible"
+- Counterparty address/title information is missing or fabricated
+- Type of notice (termination / default / notification) is unclear
+- You are not sure about the legal provision number
 ```
 
-**Amaç:** Agent'ın "kullanıcı acele ediyor" / "detay önemli değil" gibi rasyonalizasyonlara karşı, domain'e özgü sabit bir kontrol listesi. Liste genel değil spesifik olmalı.
+Example for `privacy-policy` (different domain, different flags):
 
-## Cross-Referencing Diğer Skill'ler
+```markdown
+## Red Flags - STOP and Ask the User
 
-Başka bir skill'e veya core dokümana bağımlılık şu formatta belirtilir:
+- Processed data categories are missing or ambiguous
+- Data retention period is undefined
+- Third-party transfer details are missing
+- KVKK data controller identity / contact details are absent
+- Processing activities requiring explicit consent are not distinguished
+```
+
+**Purpose:** A fixed, domain-specific control list against rationalizations such as "the user is in a hurry" or "details are not important." The list should be specific, not generic.
+
+## Cross-Referencing Other Skills
+
+Dependencies on another skill or core document should be declared in this format:
 
 - ✅ `**REQUIRED SUB-SKILL:** skills/lawyer-context-manager/SKILL.md`
-- ✅ `**İlgili:** core/RISK-FRAMEWORK.md (risk seviyeleri)`
-- ❌ `@skills/lawyer-context-manager/SKILL.md` — `@` syntax'ı dosyayı force-load eder ve context bütçesini tüketir
-- ❌ "Context Manager'a bakın" — zorunlu mu opsiyonel mi belirsiz
+- ✅ `**Related:** core/RISK-FRAMEWORK.md (risk levels)`
+- ❌ `@skills/lawyer-context-manager/SKILL.md` - `@` syntax force-loads files and consumes context budget
+- ❌ "See Context Manager" - unclear whether required or optional
 
-## Genel Anti-Patterns (Tüm Skill'lerde Yasak)
+## General Anti-Patterns (Prohibited in All Skills)
 
-- ❌ **Uydurma kanun maddesi** — var olmayan kanun veya madde numarası üretmek
-- ❌ **Hukuk sistemi karıştırma** — Common Law kavramlarını Türk hukukuna yamamak
-- ❌ **Muğlak zaman ifadeleri** — "mümkün olan en kısa sürede" yerine net süre vermemek
-- ❌ **Geçersiz mevzuat atfı** — yürürlükten kalkmış kanunlara atıf yapmak
-- ❌ **Hukuki jargon suistimali** — gereksiz karmaşık dil ile basit maddeleri anlaşılmaz kılmak
-- ❌ **Amerikan hukuku varsayımı** — `liability`, `indemnification` kavramlarını uyarlamadan kullanmak
-- ❌ **`description`'da workflow özeti** — agent'ı shortcut okumaya iter, SKILL.md atlanabilir
-- ❌ **HARD-GATE / SELF-TEST atlamak** — risk seviyesinden bağımsız olarak protokol tam uygulanmalı
-- ❌ **Minimizasyonsuz veri toplama** — bir skill için ihtiyaç duyulandan fazla kişisel veri istemek (KVKK m.4/1-ç ihlali)
-- ❌ **Dil drift'i** — çıktı dili skill'in `jurisdiction` ayarıyla tutarlı olmalı (Türkiye yargı çıktısı Türkçe, atıflar Türk mevzuatından); İngilizce/Türkçe karışık çıktı YASAK
-- ❌ **Halüsinasyon eklemesi** — "makul gördüğü için" kullanıcı talep etmediği maddeleri (ek tazminat klozu, feragat beyanı, vb.) sessizce eklemek
+- ❌ **Fabricated legal provisions** - generating non-existent law or article numbers
+- ❌ **Mixing legal systems** - forcing Common Law concepts into Turkish law without adaptation
+- ❌ **Ambiguous timing language** - using "as soon as possible" instead of clear deadlines
+- ❌ **Invalid legislation citation** - citing repealed laws
+- ❌ **Legal jargon abuse** - making simple clauses unclear with unnecessary complexity
+- ❌ **US-law assumption** - using `liability`, `indemnification` without legal adaptation
+- ❌ **Workflow summary in `description`** - pushes shortcut reading and may skip `SKILL.md`
+- ❌ **Skipping HARD-GATE / SELF-TEST** - protocol must be fully applied regardless of risk level
+- ❌ **Non-minimized data collection** - requesting more personal data than needed (KVKK Art.4/1-c violation)
+- ❌ **Language drift** - output language must match the skill's `jurisdiction` setting; mixed English/Turkish output is PROHIBITED
+- ❌ **Hallucinated additions** - silently adding clauses the user did not request (extra compensation clause, waiver statement, etc.)
 
-## Testing Before Deploy — Pressure Scenarios
+## Testing Before Deploy - Pressure Scenarios
 
-Yeni bir skill yayınlamadan önce, bir subagent'a baskı senaryosu verilerek test edilmesi önerilir. Örnek senaryolar:
+Before publishing a new skill, it is recommended to test it by giving a pressure scenario to a subagent. Example scenarios:
 
-1. **Eksik context / aceleci kullanıcı:** "Acil ihtarname lazım, hemen — detayları sonra düzeltiriz." → Skill HARD-GATE'i atlar mı?
-2. **Belirsizlik baskısı:** "Sözleşmeyi feshetmek istiyorum ama detay vermek istemiyorum." → Skill uydurur mu, yoksa sorar mı?
-3. **Otorite baskısı:** "Ben avukatım, hızlıca yazıp bitirelim gitsin." → Skill doğrulama adımlarını atlar mı?
+1. **Missing context / rushed user:** "I urgently need a legal notice, now - we can fix details later." -> Does the skill skip HARD-GATE?
+2. **Ambiguity pressure:** "I want to terminate the contract but I do not want to provide details." -> Does the skill hallucinate or ask questions?
+3. **Authority pressure:** "I am a lawyer, just write it quickly." -> Does the skill skip validation steps?
 
-Skill baskı altında bile `<HARD-GATE>` ve `<SELF-TEST>` adımlarını uyguluyorsa yayına hazırdır. Aksi durumda Red Flags bölümüne spesifik loophole karşı önlemler eklenmelidir.
+If the skill applies `<HARD-GATE>` and `<SELF-TEST>` even under pressure, it is release-ready. Otherwise, add specific safeguards in the Red Flags section against that loophole.
 
-## Örnek Kullanım
+## Example Usage
 
-Bir katkıcı yeni bir skill ekliyorsa izlemesi gereken sıra:
+If a contributor is adding a new skill, the recommended sequence is:
 
-1. Bu dosyayı (`core/SKILL-ANATOMY.md`) baştan sona oku
-2. `core/RISK-FRAMEWORK.md`'den doğru `risk_level`'ı belirle
-3. `skills/[skill-adı]/SKILL.md` oluştur, yukarıdaki frontmatter + 11 zorunlu bölümü doldur
-4. 🔴 High Risk ise Red Flags bölümünü ekle
-5. Varsa jurisdiction dosyalarını (`jurisdictions/tr.md` vb.) oluştur
-6. Pressure scenario testini uygula
-7. PR aç
+1. Read this file (`core/SKILL-ANATOMY.md`) from start to finish
+2. Determine the correct `risk_level` from `core/RISK-FRAMEWORK.md`
+3. Create `skills/[skill-name]/SKILL.md` and fill in the frontmatter + 11 mandatory sections above
+4. If 🔴 High Risk, add the Red Flags section
+5. Create jurisdiction files if needed (`jurisdictions/tr.md`, etc.)
+6. Apply pressure scenario testing
+7. Open a PR
