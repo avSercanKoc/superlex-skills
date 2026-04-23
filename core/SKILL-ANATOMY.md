@@ -95,7 +95,7 @@ ZORUNLU: client.legal_name, client.registered_address, preferences.default_court
 OPSİYONEL: client.tax_id, firm.attorney_name
 ```
 
-Context eksikse agent **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md` ile doldurmalıdır.
+Context eksikse agent ÖNCE **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md` ile eksik bilgileri kullanıcıdan toplamalı, ardından bu skill'e dönmelidir. Eksik context ile belge üretimi YASAK.
 
 ### 5. Process Flow
 
@@ -105,20 +105,37 @@ Agent'ın izleyeceği adımlar. Karar noktası içeren skill'ler için Graphviz 
 
 Çıktının formatı, zorunlu bölümleri ve alan yapısı.
 
+**ZORUNLU:** Her çıktının sonunda `core/DISCLAIMER.md`'de tanımlı standart feragatname otomatik olarak eklenir. Skill, Output Specification'da bu hook'un nereye geleceğini belirtmelidir (genellikle belgenin en sonuna, imza bloğundan sonra).
+
 ### 7. Risk Zones
 
 🟢🟡🔴 etiketli maddeler — çıktının hangi kısımları düşük / orta / yüksek riskli.
 
 ### 8. Agentic Verification Gate
 
+Skill'in risk seviyesine göre iki farklı HARD-GATE tanımlanır. `core/RISK-FRAMEWORK.md` + `core/AGENTIC-VERIFICATION.md`'deki kademeli uygulamaya tam uyum zorunludur.
+
+**Pre-Generation HARD-GATE — yalnızca 🔴 High Risk skill'ler için ZORUNLU:**
+
 ```
-<HARD-GATE>
-Belge üretildikten sonra agent'ın DURUP kullanıcıya
-sorması ZORUNLU olan kritik doğrulama soruları.
+<HARD-GATE phase="pre-generation">
+Belge üretmeden ÖNCE agent'ın DURUP kullanıcıya sorması
+ZORUNLU olan kritik bilgi doğrulama soruları.
+Tüm sorular yanıtlanmadan üretime geçilemez.
 </HARD-GATE>
 ```
 
-🔴 High Risk skill'ler için ayrıca **üretim öncesi** HARD-GATE zorunludur (bkz. `core/RISK-FRAMEWORK.md`).
+**Post-Generation HARD-GATE — tüm skill'ler için (Agentic Verification Adım 3-4):**
+
+```
+<HARD-GATE phase="post-generation">
+Belge üretildikten sonra, teslim etmeden ÖNCE agent'ın
+kullanıcıya sunması ZORUNLU olan risk özeti ve onay soruları.
+Kullanıcı onayı alınmadan belge TAMAMLANMIŞ sayılmaz.
+</HARD-GATE>
+```
+
+🟢 Low Risk skill'ler için post-generation HARD-GATE'te yalnızca Fact-Check Protocol (Adım 1) zorunludur; Adım 2-4 opsiyoneldir. 🟡 Medium ve 🔴 High Risk'te her iki HARD-GATE ve Agentic Verification'ın tüm adımları (1-4) zorunludur.
 
 ### 9. Anti-Patterns (Hukuki AI Slop)
 
@@ -138,9 +155,22 @@ Skill'in domain'ine özgü doğrulama soruları (kanun maddelerinin doğruluğu,
 
 Dayanak mevzuat, kanun maddeleri, yönetmelikler. Her referans **doğrulanabilir** olmalıdır — uydurma kanun/madde YASAK.
 
+Bir referans "doğrulanabilir" sayılabilmesi için:
+
+- [ ] Kanun/yönetmelik adı ve sayısı resmi kaynakta (örn. [mevzuat.gov.tr](https://mevzuat.gov.tr)) kayıtlı olmalı
+- [ ] Madde numarası gerçek ve atıf yapılan bağlamda geçerli olmalı
+- [ ] Skill'in `jurisdiction` alanında belirtilen tarih/versiyonda yürürlükte olmalı (yürürlükten kalkmış maddelere atıf YASAK)
+- [ ] Resmi Gazete yayın tarihi/sayısı biliniyorsa eklenmeli (örn. `6698 sayılı KVKK m.5 — RG 07.04.2016, 29677`)
+
+Emin olunmayan referanslar için Fact-Check Protocol'de SELF-TEST kontrolü ZORUNLU.
+
 ## Opsiyonel Bölüm: Red Flags — STOP
 
-🔴 High Risk skill'ler (örn. `legal-letter`, `contract-review`) için, agent'ın kendini baskı altında denetleyebilmesi amacıyla açık bir "STOP" listesi eklenmesi şiddetle önerilir:
+🔴 High Risk skill'ler (örn. `legal-letter`, `contract-review`) için, agent'ın kendini baskı altında denetleyebilmesi amacıyla açık bir "STOP" listesi eklenmesi şiddetle önerilir.
+
+**Her skill kendi domain'ine özgü Red Flags listesi tanımlar.** Aşağıda örnekler:
+
+`legal-letter` (ihtarname) için örnek:
 
 ```markdown
 ## Red Flags — STOP ve Kullanıcıya Sor
@@ -154,7 +184,19 @@ Aşağıdakilerden biri varsa agent belgeye geçmeden DURmalıdır:
 - Kanun maddesi numarasından emin değilsin
 ```
 
-**Amaç:** Agent'ın "kullanıcı acele ediyor" / "detay önemli değil" gibi rasyonalizasyonlara karşı sabit bir kontrol listesi.
+`privacy-policy` için örnek (farklı domain, farklı bayraklar):
+
+```markdown
+## Red Flags — STOP ve Kullanıcıya Sor
+
+- İşlenen veri kategorileri eksik veya belirsiz
+- Veri saklama süresi tanımsız
+- Üçüncü taraf aktarım bilgisi eksik
+- KVKK veri sorumlusu kimliği / iletişim bilgisi yok
+- Açık rıza gerektiren işlemeler ayırt edilmemiş
+```
+
+**Amaç:** Agent'ın "kullanıcı acele ediyor" / "detay önemli değil" gibi rasyonalizasyonlara karşı, domain'e özgü sabit bir kontrol listesi. Liste genel değil spesifik olmalı.
 
 ## Cross-Referencing Diğer Skill'ler
 
@@ -175,6 +217,9 @@ Başka bir skill'e veya core dokümana bağımlılık şu formatta belirtilir:
 - ❌ **Amerikan hukuku varsayımı** — `liability`, `indemnification` kavramlarını uyarlamadan kullanmak
 - ❌ **`description`'da workflow özeti** — agent'ı shortcut okumaya iter, SKILL.md atlanabilir
 - ❌ **HARD-GATE / SELF-TEST atlamak** — risk seviyesinden bağımsız olarak protokol tam uygulanmalı
+- ❌ **Minimizasyonsuz veri toplama** — bir skill için ihtiyaç duyulandan fazla kişisel veri istemek (KVKK m.4/1-ç ihlali)
+- ❌ **Dil drift'i** — çıktı dili skill'in `jurisdiction` ayarıyla tutarlı olmalı (Türkiye yargı çıktısı Türkçe, atıflar Türk mevzuatından); İngilizce/Türkçe karışık çıktı YASAK
+- ❌ **Halüsinasyon eklemesi** — "makul gördüğü için" kullanıcı talep etmediği maddeleri (ek tazminat klozu, feragat beyanı, vb.) sessizce eklemek
 
 ## Testing Before Deploy — Pressure Scenarios
 
