@@ -64,7 +64,7 @@ Lex-Skill'deki her becerinin risk seviyesini tanımlar ve agent'ın her seviyede
 **Agent Talimatı:**
 1. Context bilgilerini kontrol et (eksikse `lawyer-context-manager`'ı tetikle)
 2. **<HARD-GATE>** — Belge üretmeden ÖNCE zorunlu soruları sor
-3. Tüm zorunlu bilgileri al, eksik bilgi varsa DURMA — devam etme
+3. Tüm zorunlu bilgileri al; eksik bilgi varsa DUR — devam etme
 4. Kullanıcı tüm soruları yanıtladıktan sonra belgeyi üret
 5. Fact-Check Protocol'ü çalıştır
 6. Agentic Verification — risk taraması yap, en yüksek riskli maddeleri sun
