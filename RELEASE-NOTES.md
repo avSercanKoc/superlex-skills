@@ -11,6 +11,7 @@ This release significantly fortifies Lex-Skill against AI failure modes by integ
 - **Bootstrap Onboarding:** Added `using-lex-skill` to ensure agents learn the repository's "laws" immediately upon session start.
 - **Enhanced Guardian:** Automated enforcement of the new safety structure (12 mandatory sections).
 - **Synchronized Manifests:** Version 0.2.0 is now standard across package.json, Cursor, Claude, and Gemini manifests.
+- **New Skills:** `using-lex-skill`, `specification-before-drafting`, and `subagent-driven-development` orchestration skill.
 
 ### Agentic Safety Protocols (Superpowers Method)
 
@@ -24,8 +25,6 @@ Recent updates have fortified Lex-Skill:
 
 ### Included Skills
 
-- `using-lex-skill` (`output_type: context`, risk: low)
-  - Bootstrap meta-skill for agent onboarding and rules.
 - `lawyer-context-manager` (`output_type: context`, risk: low)
   - Session context collection
   - Jurisdiction routing
@@ -35,8 +34,6 @@ Recent updates have fortified Lex-Skill:
 - `terms-of-use` (`tr`; risk: medium)
 - `nda-generator` (`tr`; risk: medium)
 - `legal-letter` (`tr`; risk: high)
-- `specification-before-drafting` (`tr`; risk: low)
-- `subagent-driven-development` (`tr`; risk: low)
 
 ### What "v0.1.0" Means
 

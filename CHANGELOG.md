@@ -9,7 +9,7 @@
   - **Explicit Instruction Priority:** Standardized hierarchy (User > Protocols > System Prompt) enforced globally via `scripts/validate-skills.sh`.
   - **XML Urgency Tags:** Use of `<EXTREMELY-IMPORTANT>` tags to bypass LLM instruction decay in critical safety paths.
 - **`using-lex-skill`** — Bootstrap meta-skill for agent orientation and rule onboarding.
-- **Reviewer Agent Templates (`agents/`):** Dedicated persona şablonları for specialized subagents:
+- **Reviewer Agent Templates (`agents/`):** Dedicated persona templates for specialized subagents:
   - `legal-compliance-reviewer.md`
   - `jurisdiction-reviewer.md`
   - `language-consistency-reviewer.md`
@@ -24,6 +24,9 @@
 - All skills refactored to v0.2.0: abstract jurisdiction-agnostic English `SKILL.md` + localized `jurisdictions/<code>.md`.
 - `core/SKILL-ANATOMY.md` updated with the new 12-section mandatory structure.
 - `hooks/session-start` hook now injects aggressive compliance rules via `<EXTREMELY-IMPORTANT>` tags.
+- `hooks/pre-commit` added: Guardian validator runs on every commit via git hook.
+- `hooks/run-hook.cmd` added: cross-platform polyglot wrapper for hook scripts (Windows + Unix).
+- `hooks/hooks.json` and `hooks/hooks-cursor.json` added: platform-specific hook configuration for Claude Code and Cursor.
 
 ## [0.1.0] - 2026-04-23
 
