@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Contributor Handbook
+    url: https://github.com/avSercanKoc/lex-skill/blob/main/CONTRIBUTING.md
+    about: Read before opening a PR or asking a design question.
+  - name: 🔐 Security Issue
+    url: https://github.com/avSercanKoc/lex-skill/blob/main/SECURITY.md
+    about: Report security issues via the process described here, not as a public issue.
