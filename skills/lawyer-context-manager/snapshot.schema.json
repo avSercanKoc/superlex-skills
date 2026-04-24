@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lex-skill/lex-skill/schemas/lex-snapshot/1.0.json",
+  "title": "Lex-Skill Portable Context Snapshot",
+  "description": "Schema for lex-snapshot-<slug>.json files produced by skills/lawyer-context-manager. Carries a frozen lawyer + firm + client context between chat sessions.",
+  "type": "object",
+  "required": [
+    "kind",
+    "schema_version",
+    "lex_skill_version",
+    "frozen_at",
+    "jurisdiction",
+    "preferences",
+    "client",
+    "meta"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "type": "string",
+      "const": "lex-snapshot",
+      "description": "Magic marker. Importers reject anything whose kind is not exactly 'lex-snapshot'."
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$",
+      "description": "Semver-lite major.minor version of this schema. Importers compare against their supported versions."
+    },
+    "lex_skill_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Version of the lawyer-context-manager skill that wrote the file."
+    },
+    "frozen_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp with timezone for the moment the user approved the snapshot."
+    },
+    "jurisdiction": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[a-z0-9]+)?$",
+      "description": "Jurisdiction code the snapshot was frozen under (e.g. 'tr', 'eu', 'us', 'us-ny'). The importer compares this to the active jurisdiction and surfaces any mismatch in the Import HARD-GATE."
+    },
+    "preferences": { "$ref": "#/$defs/preferences" },
+    "firm":        { "$ref": "#/$defs/firm" },
+    "client":      { "$ref": "#/$defs/client" },
+    "meta":        { "$ref": "#/$defs/meta" }
+  },
+
+  "$defs": {
+    "preferences": {
+      "type": "object",
+      "required": [
+        "default_governing_law",
+        "default_language",
+        "date_format",
+        "currency",
+        "formality_level"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_governing_law": { "type": "string" },
+        "default_court":         { "type": "string" },
+        "default_language":      { "type": "string" },
+        "date_format":           { "type": "string" },
+        "currency":              { "type": "string" },
+        "formality_level":       { "type": "string", "enum": ["formal", "neutral"] }
+      }
+    },
+
+    "firm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "firm_name":              { "type": "string" },
+        "attorney_name":          { "type": "string" },
+        "bar_association":        { "type": "string" },
+        "contact":                { "type": "string" },
+        "preferred_jurisdiction": { "type": "string" },
+        "preferred_arbitration":  { "type": "string" },
+        "signature_style":        { "type": "string" }
+      }
+    },
+
+    "client": {
+      "type": "object",
+      "required": ["client_type"],
+      "oneOf": [
+        { "$ref": "#/$defs/client_individual" },
+        { "$ref": "#/$defs/client_corporate"  }
+      ]
+    },
+
+    "client_individual": {
+      "type": "object",
+      "required": ["client_type", "full_name", "id_placeholder", "residential_address"],
+      "additionalProperties": false,
+      "properties": {
+        "client_type":         { "type": "string", "const": "individual" },
+        "full_name":           { "type": "string", "minLength": 1 },
+        "id_placeholder":      {
+          "type": "string",
+          "pattern": "^\\[[A-Z0-9_]+_PLACEHOLDER\\]$",
+          "description": "MUST be a placeholder token, never a raw national-ID. Enforces PII minimization on the wire."
+        },
+        "residential_address": { "type": "string", "minLength": 1 },
+        "occupation":          { "type": "string" }
+      }
+    },
+
+    "client_corporate": {
+      "type": "object",
+      "required": ["client_type", "legal_name", "registered_address"],
+      "additionalProperties": false,
+      "properties": {
+        "client_type":          { "type": "string", "const": "corporate" },
+        "legal_name":           { "type": "string", "minLength": 1 },
+        "registered_address":   { "type": "string", "minLength": 1 },
+        "trade_registry":       { "type": "string" },
+        "tax_id":               { "type": "string" },
+        "company_registry_id":  { "type": "string" },
+        "authorized_signatory": { "type": "string" },
+        "industry":             { "type": "string" }
+      }
+    },
+
+    "meta": {
+      "type": "object",
+      "required": ["generated_by"],
+      "additionalProperties": false,
+      "properties": {
+        "generated_by":              { "type": "string", "const": "lawyer-context-manager" },
+        "source_session":            { "type": "string" },
+        "notes":                     { "type": "string" },
+        "imported_from_frozen_at":   {
+          "type": "string",
+          "format": "date-time",
+          "description": "When a snapshot is imported and re-frozen, the original frozen_at is preserved here."
+        }
+      }
+    }
+  }
+}

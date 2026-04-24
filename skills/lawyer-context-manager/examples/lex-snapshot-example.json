@@ -1,0 +1,43 @@
+{
+  "kind": "lex-snapshot",
+  "schema_version": "1.0",
+  "lex_skill_version": "0.3.0",
+  "frozen_at": "2026-04-23T14:30:00+03:00",
+  "jurisdiction": "tr",
+
+  "preferences": {
+    "default_governing_law": "Türk Hukuku",
+    "default_court": "İstanbul Anadolu Mahkemeleri ve İcra Daireleri",
+    "default_language": "Türkçe",
+    "date_format": "GG.AA.YYYY",
+    "currency": "TRY",
+    "formality_level": "formal"
+  },
+
+  "firm": {
+    "firm_name": "Yılmaz & Demir Hukuk Bürosu",
+    "attorney_name": "Av. Ayşe Yılmaz",
+    "bar_association": "İstanbul Barosu",
+    "contact": "Bağdat Cad. No:123 K:4 Kadıköy / İstanbul — +90 216 000 00 00 — info@yilmazdemir.av.tr",
+    "preferred_jurisdiction": "İstanbul Anadolu Mahkemeleri ve İcra Daireleri",
+    "preferred_arbitration": "ISTAC",
+    "signature_style": "Av. Ad Soyad, Baro Sicil No, Büro Adresi"
+  },
+
+  "client": {
+    "client_type": "corporate",
+    "legal_name": "Acme Teknoloji Anonim Şirketi",
+    "registered_address": "Maslak Mah. Büyükdere Cad. No:255 Sarıyer / İstanbul",
+    "trade_registry": "İstanbul Ticaret Sicili 123456",
+    "tax_id": "1234567890",
+    "company_registry_id": "0123456789012345",
+    "authorized_signatory": "Mehmet Öztürk — Genel Müdür",
+    "industry": "SaaS / Bulut Yazılım Hizmetleri"
+  },
+
+  "meta": {
+    "generated_by": "lawyer-context-manager",
+    "source_session": "manual",
+    "notes": "Örnek snapshot — bu dosya depoda saklanabilir; gerçek müvekkil snapshot'ları .gitignore tarafından hariç tutulur."
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "lex-snapshot",
+  "schema_version": "1.0",
+  "lex_skill_version": "0.3.0",
+  "frozen_at": "2026-04-23T09:15:00+03:00",
+  "jurisdiction": "tr",
+
+  "preferences": {
+    "default_governing_law": "Türk Hukuku",
+    "default_court": "Ankara Tüketici Mahkemeleri",
+    "default_language": "Türkçe",
+    "date_format": "GG.AA.YYYY",
+    "currency": "TRY",
+    "formality_level": "formal"
+  },
+
+  "firm": {
+    "attorney_name": "Av. Mehmet Kaya",
+    "bar_association": "Ankara Barosu",
+    "contact": "Kızılay / Ankara"
+  },
+
+  "client": {
+    "client_type": "individual",
+    "full_name": "Ayşe Yılmaz",
+    "id_placeholder": "[TCKN_PLACEHOLDER]",
+    "residential_address": "Çankaya Mah. 123. Sk. No:5 D:7 Çankaya / Ankara",
+    "occupation": "Öğretmen"
+  },
+
+  "meta": {
+    "generated_by": "lawyer-context-manager",
+    "source_session": "manual",
+    "notes": "PII minimizasyonu: id_placeholder alanı [TCKN_PLACEHOLDER] olarak korunmuştur — ham TCKN hiçbir şekilde dosyaya yazılmaz."
+  }
+}
