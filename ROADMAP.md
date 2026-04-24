@@ -1,6 +1,6 @@
-# 🗺️ Lex-Skill Roadmap
+# 🗺️ SuperLex Skills Roadmap
 
-This roadmap outlines the future development of Lex-Skill. As an open-source project, priorities are driven by community needs and legal engineering breakthroughs.
+This roadmap outlines the future development of SuperLex Skills. As an open-source project, priorities are driven by community needs and legal engineering breakthroughs.
 
 ## 🚀 Phase 1: Foundation (Current)
 - [x] **Core Framework:** Disclaimer, Risk Framework, and Agentic Verification.

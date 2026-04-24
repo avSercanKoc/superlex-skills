@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the Turkish jurisdiction file for the `using-lex-skill` bootstrap skill. Since this is a meta-skill designed to onboard the AI agent, it does not produce external Turkish legal text.
+This is the Turkish jurisdiction file for the `using-superlex-skills` bootstrap skill. Since this is a meta-skill designed to onboard the AI agent, it does not produce external Turkish legal text.
 
 ## Pre-Generation HARD-GATE Template
 

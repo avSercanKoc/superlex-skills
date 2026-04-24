@@ -1,6 +1,6 @@
 # Türkiye — Skill Yazma Kılavuzu (TR)
 
-> Bu dosya `skills/writing-lex-skills/SKILL.md` tarafından aktif yetki alanı `tr`
+> Bu dosya `skills/writing-superlex-skills/SKILL.md` tarafından aktif yetki alanı `tr`
 > olarak çözümlendiğinde yüklenir. Motor soyuttur; Türkçe çalışma dili talimatları,
 > baskı testi şablonları ve katkı notları burada bulunur.
 
@@ -15,7 +15,7 @@ bir mevzuat atıfı gerekmez. Aşağıdaki kaynaklar referans niteliğindedir:
 
 ## Özet Şablonu
 
-Bu skill bir hukuki belge değil, yeni bir Lex-Skill becerisi üretir.
+Bu skill bir hukuki belge değil, yeni bir SuperLex Skills becerisi üretir.
 
 ```
 Üretilen: skills/<skill-adı>/SKILL.md (Motor)

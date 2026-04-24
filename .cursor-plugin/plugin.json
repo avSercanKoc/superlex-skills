@@ -1,13 +1,13 @@
 {
-  "name": "lex-skill",
-  "displayName": "Lex-Skill",
+  "name": "superlex-skills",
+  "displayName": "SuperLex Skills",
   "description": "Agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis. Turkish law first, extensible to other jurisdictions. Three-layer safety model (Disclaimer, Risk Framework, Agentic Verification).",
   "version": "0.2.0",
   "author": {
-    "name": "Lex-Skill Contributors"
+    "name": "SuperLex Skills Contributors"
   },
-  "homepage": "https://github.com/avSercanKoc/lex-skill",
-  "repository": "https://github.com/avSercanKoc/lex-skill",
+  "homepage": "https://github.com/avSercanKoc/superlex-skills",
+  "repository": "https://github.com/avSercanKoc/superlex-skills",
   "license": "MIT",
   "keywords": [
     "legal",

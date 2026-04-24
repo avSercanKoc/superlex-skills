@@ -2,7 +2,7 @@
 
 ## Scope
 
-Lex-Skill is a plugin for AI coding agents — it contains skill definitions,
+SuperLex Skills is a plugin for AI coding agents — it contains skill definitions,
 safety protocols, and process flows, not executable server code. The security
 surface is therefore different from a typical software project.
 
@@ -41,7 +41,7 @@ mitigation within **7 days** for critical issues.
 
 ## What We Consider a Critical Issue
 
-A **critical** security issue in Lex-Skill is one that:
+A **critical** security issue in SuperLex Skills is one that:
 - Allows a HARD-GATE to be systematically bypassed without user awareness
 - Causes the disclaimer to be omitted from a delivered legal document
 - Allows jurisdiction mixing to produce a document claiming compliance with
@@ -61,7 +61,7 @@ We follow a **coordinated disclosure** model:
 
 ## Security Model Note
 
-Lex-Skill's safety model is designed around **human-in-the-loop** verification:
+SuperLex Skills's safety model is designed around **human-in-the-loop** verification:
 every high-risk output requires explicit user approval through a HARD-GATE before
 delivery. No skill in this library should ever produce a binding legal document
 without a human lawyer reviewing and approving the output. If you discover a

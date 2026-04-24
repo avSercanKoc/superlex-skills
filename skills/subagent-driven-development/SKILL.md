@@ -115,10 +115,10 @@ digraph sdd_flow {
 Executes a single task from the plan. Receives: full task text, context snapshot, jurisdiction. MUST invoke the applicable legal skill (e.g. `nda-generator`, `contract-review`), apply its HARD-GATE and SELF-TEST, attach the disclaimer, then report back with status.
 
 **Role 2 — Compliance Reviewer**
-Dispatched after drafter reports DONE. Reads the draft independently — does NOT trust the drafter's report. Verifies: HARD-GATE satisfied, SELF-TEST passed, disclaimer present, no anti-patterns, correct working language. **Use the persona template in [agents/legal-compliance-reviewer.md](file:///Users/sercankoc/Desktop/lex-skill/agents/legal-compliance-reviewer.md).**
+Dispatched after drafter reports DONE. Reads the draft independently — does NOT trust the drafter's report. Verifies: HARD-GATE satisfied, SELF-TEST passed, disclaimer present, no anti-patterns, correct working language. **Use the persona template in [agents/legal-compliance-reviewer.md](file:///Users/sercankoc/Desktop/superlex-skills/agents/legal-compliance-reviewer.md).**
 
 **Role 3 — Quality Reviewer**
-Dispatched only after compliance passes. Checks: language clarity, no silent additions, no jurisdiction leakage, clause consistency. **Use the persona templates in [agents/jurisdiction-reviewer.md](file:///Users/sercankoc/Desktop/lex-skill/agents/jurisdiction-reviewer.md) and [agents/language-consistency-reviewer.md](file:///Users/sercankoc/Desktop/lex-skill/agents/language-consistency-reviewer.md).**
+Dispatched only after compliance passes. Checks: language clarity, no silent additions, no jurisdiction leakage, clause consistency. **Use the persona templates in [agents/jurisdiction-reviewer.md](file:///Users/sercankoc/Desktop/superlex-skills/agents/jurisdiction-reviewer.md) and [agents/language-consistency-reviewer.md](file:///Users/sercankoc/Desktop/superlex-skills/agents/language-consistency-reviewer.md).**
 
 ### State Tracking
 The Orchestrator MUST create a local markdown file (e.g., `orchestration-status.md`) to track the list of tasks and their current statuses. The Orchestrator MUST update this file immediately after any subagent returns, before dispatching the next subagent. This prevents state loss during long multi-task orchestrations.

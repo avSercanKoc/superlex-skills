@@ -3,7 +3,7 @@ name: validate-skills
 description: Run the Guardian validator to check all skills (or a single skill) against core/SKILL-ANATOMY.md. Use before opening a PR.
 ---
 
-Run the Lex-Skill Guardian validator:
+Run the SuperLex Skills Guardian validator:
 
 ```bash
 # Validate all skills

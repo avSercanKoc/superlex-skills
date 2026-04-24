@@ -18,7 +18,7 @@ Proceed directly with your assigned task using the context you were given.
 
 ## Overview
 
-A meta-skill that collects, freezes, **exports**, and **imports** the recurring information about the lawyer, the firm, and the client. Every other legal skill in Lex-Skill depends on this context. The skill exists to prevent hallucinated party data, to enforce PII minimization, to make every downstream document consistent, and — from v0.3.0 — to let a user carry their lawyer-firm-client context between chat sessions as a *portable snapshot file* (`lex-snapshot-<slug>.json`).
+A meta-skill that collects, freezes, **exports**, and **imports** the recurring information about the lawyer, the firm, and the client. Every other legal skill in SuperLex Skills depends on this context. The skill exists to prevent hallucinated party data, to enforce PII minimization, to make every downstream document consistent, and — from v0.3.0 — to let a user carry their lawyer-firm-client context between chat sessions as a *portable snapshot file* (`lex-snapshot-<slug>.json`).
 
 The schema, workflow, and snapshot file format are jurisdiction-agnostic; concrete placeholder names, working-language summary templates, freeze lines, HARD-GATE prompt text, and import / export dialogue live in `jurisdictions/<code>.md`.
 
@@ -226,7 +226,7 @@ The portable snapshot is a JSON document that conforms to the JSON Schema at `sk
 {
   "kind": "lex-snapshot",
   "schema_version": "1.0",
-  "lex_skill_version": "0.3.0",
+  "superlex_skills_version": "0.3.0",
   "frozen_at": "<ISO-8601 timestamp with timezone>",
   "jurisdiction": "<ISO-style jurisdiction code — e.g. tr>",
   "preferences": { ...Preferences schema... },

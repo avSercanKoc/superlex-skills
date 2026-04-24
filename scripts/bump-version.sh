@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# bump-version.sh — Lex-Skill Version Synchronizer
+# bump-version.sh — SuperLex Skills Version Synchronizer
 #
 # Usage:
 #   scripts/bump-version.sh <new-version>   Bump all declared files
@@ -56,7 +56,7 @@ cmd_check() {
   local has_drift=0
   local versions=()
 
-  echo "⚖️  Lex-Skill Version Check:"
+  echo "⚖️  SuperLex Skills Version Check:"
   echo ""
 
   while IFS=$'\t' read -r path field; do
@@ -115,7 +115,7 @@ cmd_bump() {
     exit 1
   fi
 
-  echo "🚀 Bumping Lex-Skill to $new_version..."
+  echo "🚀 Bumping SuperLex Skills to $new_version..."
   
   while IFS=$'\t' read -r path field; do
     local fullpath="$REPO_ROOT/$path"

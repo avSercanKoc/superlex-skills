@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The mandatory structure template that every new skill added to the Lex-Skill library must follow. Contributors creating new skills must use this template as a reference.
+The mandatory structure template that every new skill added to the SuperLex Skills library must follow. Contributors creating new skills must use this template as a reference.
 
 ## Core Principles
 

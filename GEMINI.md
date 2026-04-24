@@ -1,10 +1,10 @@
-# Lex-Skill — Gemini CLI Configuration
+# SuperLex Skills — Gemini CLI Configuration
 
 @./CLAUDE.md
 
 ## Skill Discovery
 
-All Lex-Skill legal skills live in `skills/`. To use a skill:
+All SuperLex Skills legal skills live in `skills/`. To use a skill:
 
 1. Read its `SKILL.md` (jurisdiction-agnostic spine, in English).
 2. Resolve the active jurisdiction.
@@ -41,10 +41,10 @@ signalled by the `<SUBAGENT-STOP>` block at the top of that skill.
 
 ## Current Legal Skills
 
-- `using-lex-skill` — bootstrap meta-skill (agent onboarding)
+- `using-superlex-skills` — bootstrap meta-skill (agent onboarding)
 - `lawyer-context-manager` — meta-skill (context + jurisdiction routing)
 - `specification-before-drafting` — meta-skill (pre-drafting strategy)
-- `writing-lex-skills` — meta-skill (TDD-based skill authoring and pressure testing)
+- `writing-superlex-skills` — meta-skill (TDD-based skill authoring and pressure testing)
 - `privacy-policy` — `tr`, `eu`
 - `contract-review` — `tr`
 - `terms-of-use` — `tr`

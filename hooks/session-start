@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lex-Skill SessionStart Hook — Hardened Edition
+# SuperLex Skills SessionStart Hook — Hardened Edition
 # Injects legal context, bootstrap rules, and skill discovery at session start.
 
 set -euo pipefail
@@ -41,7 +41,7 @@ bootstrap_content=$(awk '
   /^## The Core Safety Layers/ { p=1 }
   /^## Engine vs Fuel/ { p=0 }
   p { print }
-' "${PLUGIN_ROOT}/skills/using-lex-skill/SKILL.md" 2>/dev/null || echo "Lex-Skill safety protocols are mandatory.")
+' "${PLUGIN_ROOT}/skills/using-superlex-skills/SKILL.md" 2>/dev/null || echo "SuperLex Skills safety protocols are mandatory.")
 
 # 3. Extract <SUBAGENT-STOP> block
 subagent_stop_block=$(awk '
@@ -60,7 +60,7 @@ if [ -n "${GEMINI_EXTENSION:-}" ]; then platform="Gemini CLI"; fi
 # 5. Build Session Context
 session_context=$(cat <<EOF
 <EXTREMELY-IMPORTANT>
-You are an AI legal engineering agent operating inside the Lex-Skill repository (v${PLUGIN_VERSION}).
+You are an AI legal engineering agent operating inside the SuperLex Skills repository (v${PLUGIN_VERSION}).
 Detected Platform: ${platform}
 
 IF A LEGAL SKILL APPLIES TO YOUR TASK, YOU MUST USE IT. THIS IS NOT OPTIONAL.

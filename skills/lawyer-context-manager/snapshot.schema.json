@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/lex-skill/lex-skill/schemas/lex-snapshot/1.0.json",
-  "title": "Lex-Skill Portable Context Snapshot",
+  "$id": "https://github.com/avSercanKoc/superlex-skills/schemas/lex-snapshot/1.0.json",
+  "title": "SuperLex Skills Portable Context Snapshot",
   "description": "Schema for lex-snapshot-<slug>.json files produced by skills/lawyer-context-manager. Carries a frozen lawyer + firm + client context between chat sessions.",
   "type": "object",
   "required": [
     "kind",
     "schema_version",
-    "lex_skill_version",
+    "superlex_skills_version",
     "frozen_at",
     "jurisdiction",
     "preferences",
@@ -26,7 +26,7 @@
       "pattern": "^[0-9]+\\.[0-9]+$",
       "description": "Semver-lite major.minor version of this schema. Importers compare against their supported versions."
     },
-    "lex_skill_version": {
+    "superlex_skills_version": {
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
       "description": "Version of the lawyer-context-manager skill that wrote the file."

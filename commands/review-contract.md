@@ -3,7 +3,7 @@ name: review-contract
 description: Review a contract for legal risks, missing clauses, and jurisdiction-specific issues. Invokes lawyer-context-manager then routes to contract-review.
 ---
 
-Invoke the `lex-skill:lawyer-context-manager` skill and signal that the task
+Invoke the `superlex-skills:lawyer-context-manager` skill and signal that the task
 is a contract review.
 
 Read `skills/lawyer-context-manager/SKILL.md`. After context collection and

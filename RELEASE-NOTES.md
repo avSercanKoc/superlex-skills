@@ -1,21 +1,21 @@
-# Lex-Skill Release Notes
+# SuperLex Skills Release Notes
 
 ## v0.2.0 (2026-04-24) — Agentic Safety Hardening
 
-This release significantly fortifies Lex-Skill against AI failure modes by integrating the "Superpowers" behavioral methodology. It transforms the library from a collection of templates into a self-regulating agentic framework.
+This release significantly fortifies SuperLex Skills against AI failure modes by integrating the "Superpowers" behavioral methodology. It transforms the library from a collection of templates into a self-regulating agentic framework.
 
 ### Highlights
 
 - **"Superpowers" Methodology Integration:** Behavioral hardening via Rationalization Tables and "The Iron Law" of verification.
 - **Reviewer Agent Ecosystem:** Dedicated subagent templates in `agents/` for specialized compliance and quality reviews.
-- **Bootstrap Onboarding:** Added `using-lex-skill` to ensure agents learn the repository's "laws" immediately upon session start.
+- **Bootstrap Onboarding:** Added `using-superlex-skills` to ensure agents learn the repository's "laws" immediately upon session start.
 - **Enhanced Guardian:** Automated enforcement of the new safety structure (12 mandatory sections).
 - **Synchronized Manifests:** Version 0.2.0 is now standard across package.json, Cursor, Claude, and Gemini manifests.
-- **New Skills:** `using-lex-skill`, `specification-before-drafting`, and `subagent-driven-development` orchestration skill.
+- **New Skills:** `using-superlex-skills`, `specification-before-drafting`, and `subagent-driven-development` orchestration skill.
 
 ### Agentic Safety Protocols (Superpowers Method)
 
-Recent updates have fortified Lex-Skill:
+Recent updates have fortified SuperLex Skills:
 - **Rationalization Prevention Tables:** Added to the `Anti-Patterns` section of every skill to stop the agent from taking cognitive shortcuts.
 - **The Iron Law (Verification-Before-Completion):** Integrated into `core/AGENTIC-VERIFICATION.md` to ensure the agent never claims success without fresh evidence.
 - **Instruction Priority:** A strict hierarchy (User > Protocols > System Prompt) enforced globally.

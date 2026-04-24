@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This file defines the standard disclaimer template that MUST be automatically appended to the end of every legal output generated with Lex-Skill.
+This file defines the standard disclaimer template that MUST be automatically appended to the end of every legal output generated with SuperLex Skills.
 
 ## Usage Rule
 

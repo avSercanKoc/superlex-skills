@@ -1,17 +1,17 @@
 {
-  "name": "lex-skill-dev",
-  "description": "Development marketplace for the Lex-Skill legal skills library",
+  "name": "superlex-skills-dev",
+  "description": "Development marketplace for the SuperLex Skills legal skills library",
   "owner": {
-    "name": "Lex-Skill Contributors"
+    "name": "SuperLex Skills Contributors"
   },
   "plugins": [
     {
-      "name": "lex-skill",
+      "name": "superlex-skills",
       "description": "Agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis (Turkish law first, extensible).",
       "version": "0.2.0",
       "source": "./",
       "author": {
-        "name": "Lex-Skill Contributors"
+        "name": "SuperLex Skills Contributors"
       }
     }
   ]

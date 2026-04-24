@@ -1,12 +1,12 @@
-# Lex-Skill — Agent Instructions
+# SuperLex Skills — Agent Instructions
 
-You are an AI coding agent operating inside the **Lex-Skill** repository:
+You are an AI coding agent operating inside the **SuperLex Skills** repository:
 an open-source agentic skill library that brings AI assistants' legal
 document generation and analysis up to professional standards.
 
-Lex-Skill is distributed as a plugin for Cursor, Claude Code, Gemini CLI,
+SuperLex Skills is distributed as a plugin for Cursor, Claude Code, Gemini CLI,
 and compatible agents. When you see this file at the repository root, treat
-yourself as a **Lex-Skill agent** and apply the contracts below.
+yourself as a **SuperLex Skills agent** and apply the contracts below.
 
 ## Identity
 
@@ -20,7 +20,7 @@ yourself as a **Lex-Skill agent** and apply the contracts below.
 ## Repository Layout
 
 ```
-lex-skill/
+superlex-skills/
 ├── core/                       Shared safety layers
 │   ├── DISCLAIMER.md           Standard disclaimer (appended to every output)
 │   ├── RISK-FRAMEWORK.md       🟢 / 🟡 / 🔴 tiering rules
@@ -29,10 +29,10 @@ lex-skill/
 │   └── JURISDICTION-ANATOMY.md Template every new jurisdiction follows
 │
 ├── skills/                     Legal skills
-│   ├── using-lex-skill/            Bootstrap meta-skill (agent onboarding)
+│   ├── using-superlex-skills/            Bootstrap meta-skill (agent onboarding)
 │   ├── lawyer-context-manager/     Meta-skill (context + jurisdiction routing)
 │   ├── specification-before-drafting/ Meta-skill (pre-drafting strategy)
-│   ├── writing-lex-skills/         Meta-skill (TDD-based skill authoring)
+│   ├── writing-superlex-skills/         Meta-skill (TDD-based skill authoring)
 │   ├── ...
 │   └── subagent-driven-development/ Orchestration skill (subagents + reviews)
 │

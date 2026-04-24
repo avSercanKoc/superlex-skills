@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Lex-Skill Pre-Commit Hook
+# SuperLex Skills Pre-Commit Hook
 # Prevents committing "broken" skills by running the Guardian validator.
 
 set -e
 
-printf "🛡️  Lex-Skill Guardian: Validating skills before commit...\n"
+printf "🛡️  SuperLex Skills Guardian: Validating skills before commit...\n"
 
 # Run the validation script
 npm run validate:strict

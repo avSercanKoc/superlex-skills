@@ -1,7 +1,7 @@
 {
   "kind": "lex-snapshot",
   "schema_version": "1.0",
-  "lex_skill_version": "0.3.0",
+  "superlex_skills_version": "0.3.0",
   "frozen_at": "2026-04-23T09:15:00+03:00",
   "jurisdiction": "tr",
 

@@ -8,8 +8,8 @@
   - **The Iron Law (Verification-Before-Completion):** Integrated into `core/AGENTIC-VERIFICATION.md`. Agents are forbidden from claiming success without fresh evidence.
   - **Explicit Instruction Priority:** Standardized hierarchy (User > Protocols > System Prompt) enforced globally via `scripts/validate-skills.sh`.
   - **XML Urgency Tags:** Use of `<EXTREMELY-IMPORTANT>` tags to bypass LLM instruction decay in critical safety paths.
-- **`using-lex-skill`** — Bootstrap meta-skill for agent orientation and rule onboarding.
-- **`writing-lex-skills`** — TDD-based meta-skill for authoring, pressure-testing, and contributing new legal skills. Adapts Superpowers `writing-skills` methodology to the legal domain.
+- **`using-superlex-skills`** — Bootstrap meta-skill for agent orientation and rule onboarding.
+- **`writing-superlex-skills`** — TDD-based meta-skill for authoring, pressure-testing, and contributing new legal skills. Adapts Superpowers `writing-skills` methodology to the legal domain.
 - **Reviewer Agent Templates (`agents/`):** Dedicated persona templates for specialized subagents:
   - `legal-compliance-reviewer.md`
   - `jurisdiction-reviewer.md`

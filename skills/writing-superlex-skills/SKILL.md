@@ -1,5 +1,5 @@
 ---
-name: writing-lex-skills
+name: writing-superlex-skills
 description: "Use when creating a new legal skill, adding a jurisdiction to an existing skill, or improving and pressure-testing existing skill content. Adapts TDD methodology to legal skill authoring."
 version: "0.1.0"
 jurisdiction: ["tr"]
@@ -7,7 +7,7 @@ output_type: "context"
 risk_level: "low"
 ---
 
-# Writing Lex-Skills
+# Writing SuperLex Skills
 
 ## Overview
 
@@ -68,7 +68,7 @@ Before authoring a skill, establish:
 ## Process Flow
 
 ```dot
-digraph writing_lex_skills {
+digraph writing_superlex_skills {
   rankdir=TB;
   node [shape=box, style=rounded];
 

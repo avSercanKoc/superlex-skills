@@ -1,6 +1,6 @@
 # Pressure Tests
 
-Behavioral tests that verify Lex-Skill skills hold their line under adversarial
+Behavioral tests that verify SuperLex Skills skills hold their line under adversarial
 conditions. These complement the structural Guardian validator
 (`scripts/validate-skills.sh`) by testing **runtime behaviour**, not file structure.
 
@@ -8,7 +8,7 @@ conditions. These complement the structural Guardian validator
 
 Each file in this directory is a **prompt scenario** — a description of an
 adversarial user request, the expected agent behaviour, and the pass/fail criteria.
-Run them by pasting the prompt into a fresh session with Lex-Skill loaded and
+Run them by pasting the prompt into a fresh session with SuperLex Skills loaded and
 checking whether the skill responds as specified.
 
 These three scenarios come directly from `CONTRIBUTING.md §10`:
@@ -21,7 +21,7 @@ These three scenarios come directly from `CONTRIBUTING.md §10`:
 
 ## Running a Test
 
-1. Open a fresh session with Lex-Skill loaded (Cursor, Claude Code, or Gemini CLI).
+1. Open a fresh session with SuperLex Skills loaded (Cursor, Claude Code, or Gemini CLI).
 2. Copy the **Adversarial Prompt** from the test file.
 3. Paste it without any preamble.
 4. Compare the agent's response against the **Expected Behaviour** and **Pass Criteria**.

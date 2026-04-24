@@ -1,6 +1,6 @@
-# Installing Lex-Skill for OpenCode
+# Installing SuperLex Skills for OpenCode
 
-Lex-Skill is fully compatible with OpenCode's native skill discovery and plugin system.
+SuperLex Skills is fully compatible with OpenCode's native skill discovery and plugin system.
 
 ## Prerequisites
 
@@ -8,11 +8,11 @@ Lex-Skill is fully compatible with OpenCode's native skill discovery and plugin 
 
 ## Installation
 
-Add Lex-Skill to the `plugin` array in your `opencode.json` (global or project-level):
+Add SuperLex Skills to the `plugin` array in your `opencode.json` (global or project-level):
 
 ```json
 {
-  "plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git"]
+  "plugin": ["superlex-skills@git+https://github.com/avSercanKoc/superlex-skills.git"]
 }
 ```
 
@@ -26,22 +26,22 @@ Use OpenCode's native `skill` tool:
 
 ```
 use skill tool to list skills
-use skill tool to load lex-skill/lawyer-context-manager
+use skill tool to load superlex-skills/lawyer-context-manager
 ```
 
-Lex-Skill enforces a **Lawyer-in-the-loop** workflow. It will automatically trigger its `<HARD-GATE>` risk summaries during generation.
+SuperLex Skills enforces a **Lawyer-in-the-loop** workflow. It will automatically trigger its `<HARD-GATE>` risk summaries during generation.
 
 ## Updating
 
-Lex-Skill updates automatically when you restart OpenCode. To pin a specific version (e.g., v0.1.0):
+SuperLex Skills updates automatically when you restart OpenCode. To pin a specific version (e.g., v0.1.0):
 
 ```json
 {
-  "plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git#v0.1.0"]
+  "plugin": ["superlex-skills@git+https://github.com/avSercanKoc/superlex-skills.git#v0.1.0"]
 }
 ```
 
 ## Getting Help
 
-- Report issues: <https://github.com/avSercanKoc/lex-skill/issues>
-- Full documentation: <https://github.com/avSercanKoc/lex-skill/blob/main/README.md>
+- Report issues: <https://github.com/avSercanKoc/superlex-skills/issues>
+- Full documentation: <https://github.com/avSercanKoc/superlex-skills/blob/main/README.md>

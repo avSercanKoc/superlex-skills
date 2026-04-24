@@ -1,8 +1,8 @@
-# Lex-Skill Developer Handbook
+# SuperLex Skills Developer Handbook
 
-Welcome. This document is written for the people who extend Lex-Skill, not for the people who invoke it from a chat. If you are a lawyer, a legal engineer, or an open-source developer who wants to plug a new legal regime — your country's law, a new specialised skill, a better prompt — into this library, **read this file from start to finish before touching any skill directory.**
+Welcome. This document is written for the people who extend SuperLex Skills, not for the people who invoke it from a chat. If you are a lawyer, a legal engineer, or an open-source developer who wants to plug a new legal regime — your country's law, a new specialised skill, a better prompt — into this library, **read this file from start to finish before touching any skill directory.**
 
-Lex-Skill is a library of *agentic* skills: small, self-contained contracts that an AI coding agent loads at runtime to produce legal artefacts (policies, contracts, notices, reports). The library's safety model depends on every contributor understanding **one architectural idea** — the separation of abstract skill logic from concrete legal content. The rest of this handbook is a long explanation of why that separation exists, how to respect it, and how to extend the library without breaking it.
+SuperLex Skills is a library of *agentic* skills: small, self-contained contracts that an AI coding agent loads at runtime to produce legal artefacts (policies, contracts, notices, reports). The library's safety model depends on every contributor understanding **one architectural idea** — the separation of abstract skill logic from concrete legal content. The rest of this handbook is a long explanation of why that separation exists, how to respect it, and how to extend the library without breaking it.
 
 ---
 
@@ -35,7 +35,7 @@ The formal version of this rule lives in [`core/SKILL-ANATOMY.md`](core/SKILL-AN
 
 ## 2. Why the Engine Speaks English
 
-Contributors frequently ask: *"Lex-Skill started as a Turkish-law library — why is the engine in English rather than in Turkish?"* There are three reasons and they compound.
+Contributors frequently ask: *"SuperLex Skills started as a Turkish-law library — why is the engine in English rather than in Turkish?"* There are three reasons and they compound.
 
 **Reason 1 — Agent matching.** Coding agents load skills by reading file content and frontmatter, not by querying a database. English is the de-facto working language of every general-purpose AI agent on the market today. An English `SKILL.md` with a well-formed `Use when ...` description maximises the chance that the agent correctly triggers the skill regardless of the user's prompt language. Multilingual triggering keywords are explicitly allowed — and encouraged — inside the `description` frontmatter line and inside the `## When to Use` section, because that is where discoverability lives.
 
@@ -56,7 +56,7 @@ The consequence, in practice, is strict:
 A contributor's map of the repo:
 
 ```
-lex-skill/
+superlex-skills/
 ├── core/                          # shared, jurisdiction-agnostic building blocks
 │   ├── SKILL-ANATOMY.md           # the mandatory 12-section structure + separation rules
 │   ├── RISK-FRAMEWORK.md          # 🟢🟡🔴 definitions
@@ -401,7 +401,7 @@ If the skill fails any of these, patch its Red Flags, HARD-GATEs, or anti-patter
 Paste this into your pull-request description and tick each box.
 
 ```markdown
-## Lex-Skill PR Checklist
+## SuperLex Skills PR Checklist
 
 Engine hygiene:
 - [ ] I did not add statute numbers or working-language labels to any `SKILL.md`.
@@ -454,7 +454,7 @@ These are always a rejection, regardless of the contribution path.
 ## 13. Governance, Licensing, Legal Notice
 
 - **License.** The library is MIT (`LICENSE`). By contributing you agree your contribution ships under the same license.
-- **No legal advice.** Lex-Skill outputs are drafting aids. They are not legal advice and MUST be reviewed by a qualified attorney before use. Every generated document carries the disclaimer in `core/DISCLAIMER.md`. Please do not remove it, weaken it, or bury it in small print.
+- **No legal advice.** SuperLex Skills outputs are drafting aids. They are not legal advice and MUST be reviewed by a qualified attorney before use. Every generated document carries the disclaimer in `core/DISCLAIMER.md`. Please do not remove it, weaken it, or bury it in small print.
 - **Privacy.** Contributors must not include real client data, real PII, or real contracts in PRs, fixtures, or examples. All examples are synthetic.
 - **Review cadence.** Jurisdiction files age as laws change. Every jurisdiction file SHOULD be revisited at least once per year; a contributor who notices an amendment is welcome to open a PR titled `jurisdictions/<code>: update <skill> for <amendment>`.
 - **Scope.** We currently accept contributions for `tr`, `eu`, and any national jurisdiction whose contributor commits to maintain the file for at least one annual review cycle. If you cannot commit to that, open an issue instead and someone may pick it up.

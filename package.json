@@ -1,5 +1,5 @@
 {
-  "name": "lex-skill",
+  "name": "superlex-skills",
   "version": "0.2.0",
   "private": true,
   "description": "Open-source agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis.",

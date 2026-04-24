@@ -1,4 +1,4 @@
-# Lex-Skill Implementation Plan
+# SuperLex Skills Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Pure Markdown skill files, YAML frontmatter, Graphviz dot diagrams for process flows.
 
-**Spec:** `docs/superpowers/specs/2026-04-23-lex-skill-design.md`
+**Spec:** `docs/superpowers/specs/2026-04-23-superlex-skills-design.md`
 
 ---
 
@@ -33,7 +33,7 @@
 ```
 MIT License
 
-Copyright (c) 2026 Lex-Skill Contributors
+Copyright (c) 2026 SuperLex Skills Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -57,7 +57,7 @@ SOFTWARE.
 - [ ] **Step 3: Create `README.md`**
 
 ```markdown
-# ⚖️ Lex-Skill
+# ⚖️ SuperLex Skills
 
 AI kodlama asistanlarının hukuki belge üretme kalitesini
 profesyonel standartlara taşıyan beceri kütüphanesi.
@@ -70,7 +70,7 @@ profesyonel standartlara taşıyan beceri kütüphanesi.
 
 ## Kurulum
 \`\`\`
-npx skills add https://github.com/[kullanıcı]/lex-skill
+npx skills add https://github.com/[kullanıcı]/superlex-skills
 \`\`\`
 
 ## Beceriler
@@ -173,13 +173,13 @@ MIT — Detaylar için [LICENSE](LICENSE) dosyasına bakın.
 - ✅ Agentic Verification Gate (`<HARD-GATE>` bloğu) zorunlu (🔴 High risk skill'ler için)
 ```
 
-- [ ] **Step 5: Update `GEMINI.md` — add Lex-Skill section**
+- [ ] **Step 5: Update `GEMINI.md` — add SuperLex Skills section**
 
 Append the following section after the existing content in `GEMINI.md`:
 
 ```markdown
 
-## Lex-Skill
+## SuperLex Skills
 
 Hukuki beceriler `skills/` dizininde bulunur.
 Herhangi bir hukuki belge üretimi veya analiz isteğinde,
@@ -237,7 +237,7 @@ git commit -m "chore: initialize repo infrastructure"
 
 ## Amaç
 
-Bu dosya, Lex-Skill ile üretilen her hukuki çıktının sonuna otomatik olarak eklenmesi ZORUNLU olan standart feragatname şablonunu tanımlar.
+Bu dosya, SuperLex Skills ile üretilen her hukuki çıktının sonuna otomatik olarak eklenmesi ZORUNLU olan standart feragatname şablonunu tanımlar.
 
 ## Kullanım Kuralı
 
@@ -294,7 +294,7 @@ git commit -m "feat(core): add standard disclaimer template"
 
 ## Amaç
 
-Lex-Skill'deki her becerinin risk seviyesini tanımlar ve agent'ın her seviyede nasıl davranması gerektiğini belirler.
+SuperLex Skills'deki her becerinin risk seviyesini tanımlar ve agent'ın her seviyede nasıl davranması gerektiğini belirler.
 
 ## Risk Seviyeleri
 
@@ -1756,7 +1756,7 @@ git commit -m "feat(skills): add legal-letter skill with TR jurisdiction"
 
 ## Execution Handoff
 
-Plan complete and saved to `docs/superpowers/plans/2026-04-23-lex-skill.md`. Two execution options:
+Plan complete and saved to `docs/superpowers/plans/2026-04-23-superlex-skills.md`. Two execution options:
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 **2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints

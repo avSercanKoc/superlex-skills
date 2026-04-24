@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate-skills.sh — Lex-Skill "Guardian"
+# validate-skills.sh — SuperLex Skills "Guardian"
 #
 # Purpose:
 #   Enforces core/SKILL-ANATOMY.md on every skill. Run in CI and before every PR.
@@ -452,7 +452,7 @@ check_single_jurisdiction_file() {
 
 # ---------- main loop -------------------------------------------------------
 
-printf "%sLex-Skill Guardian%s — validating %s skill(s) against core/SKILL-ANATOMY.md & JURISDICTION-ANATOMY.md\n" \
+printf "%sSuperLex Skills Guardian%s — validating %s skill(s) against core/SKILL-ANATOMY.md & JURISDICTION-ANATOMY.md\n" \
   "$C_BOLD" "$C_RESET" "${#TARGETS[@]}"
 
 for target in "${TARGETS[@]}"; do

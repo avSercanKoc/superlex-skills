@@ -1,15 +1,15 @@
-# ⚖️ Lex-Skill
+# ⚖️ SuperLex Skills
 
 **The open-source agentic skill library for lawyers.**  
 *Jurisdiction-aware legal document generation and analysis for AI coding assistants.*
 
 ---
 
-## What Lex-Skill Solves
+## What SuperLex Skills Solves
 
 General-purpose AI agents are excellent at writing text, but in the legal domain, they are often "confidently wrong." Generic agents suffer from **Legal AI Slop**: uydurma (fabricated) article numbers, mixing of legal regimes (KVKK vs. GDPR), and an absence of professional guardrails.
 
-**Lex-Skill** transforms your AI agent from a creative writer into a disciplined **Legal Associate**. It enforces:
+**SuperLex Skills** transforms your AI agent from a creative writer into a disciplined **Legal Associate**. It enforces:
 
 - **Strict Context Collection:** No drafting without knowing the client's sector and legal status.
 - **Jurisdiction Routing:** Automatic selection of the correct legal framework (TR, EU, etc.).
@@ -20,7 +20,7 @@ General-purpose AI agents are excellent at writing text, but in the legal domain
 
 ## The Philosophy: Legal Engineering
 
-Lex-Skill is built on three core pillars of legal engineering:
+SuperLex Skills is built on three core pillars of legal engineering:
 
 1. **Lawyer-in-the-Loop:** The agent never makes the final legal call. It identifies risks and presents "Safe Harbor" alternatives for the lawyer's approval.
 2. **Motor vs. Fuel Architecture:** The logic spine (`SKILL.md`) is separated from the local legal data (`jurisdictions/*.md`). This allows for global scalability while maintaining local precision.
@@ -28,9 +28,9 @@ Lex-Skill is built on three core pillars of legal engineering:
 
 ---
 
-## The Lex-Skill Workflow
+## The SuperLex Skills Workflow
 
-When you ask Lex-Skill for a document or analysis, it follows a deterministic path:
+When you ask SuperLex Skills for a document or analysis, it follows a deterministic path:
 
 1. **Context Intake:** The `lawyer-context-manager` ensures the agent knows who you are representing.
 2. **Jurisdiction Injection:** The agent loads the specific "Legal Fuel" (e.g., `tr.md` for Turkish law) into the "Logic Motor."
@@ -42,56 +42,56 @@ When you ask Lex-Skill for a document or analysis, it follows a deterministic pa
 
 ## Installation & IDE Integration
 
-Lex-Skill is designed to be a native "plugin" for the world's leading AI coding environments.
+SuperLex Skills is designed to be a native "plugin" for the world's leading AI coding environments.
 
-### 🔵 Cursor
+### Cursor
 
 Install as a repository-based skill:
 
 ```text
-/add-plugin https://github.com/avSercanKoc/lex-skill
+/add-plugin https://github.com/avSercanKoc/superlex-skills
 ```
 
 *Uses `.cursor-plugin/` for deep agent discovery.*
 
-### 🟠 Claude Code
+### Claude Code
 
 Install via the CLI:
 
 ```bash
-/plugin install https://github.com/avSercanKoc/lex-skill
+/plugin install https://github.com/avSercanKoc/superlex-skills
 ```
 
 *Uses `.claude-plugin/` and `CLAUDE.md` for role definition.*
 
-### ⚪ OpenCode
+### OpenCode
 
 Install as a native plugin:
 
 ```bash
 # Add to your opencode.json
-"plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git"]
+"plugin": ["superlex-skills@git+https://github.com/avSercanKoc/superlex-skills.git"]
 ```
 
 *Uses `.opencode/` for universal agentic installation.*
 
-### 💾 Codex
+### Codex
 
 Clone and symlink:
 
 ```bash
-git clone https://github.com/avSercanKoc/lex-skill.git ~/.codex/lex-skill
-ln -s ~/.codex/lex-skill/skills ~/.agents/skills/lex-skill
+git clone https://github.com/avSercanKoc/superlex-skills.git ~/.codex/superlex-skills
+ln -s ~/.codex/superlex-skills/skills ~/.agents/skills/superlex-skills
 ```
 
 *Uses `.codex/` for native skill discovery.*
 
-### 🔷 Gemini CLI
+### Gemini CLI
 
 Add to your project's `GEMINI.md` or rely on `gemini-extension.json` for auto-discovery:
 
 ```bash
-git clone https://github.com/avSercanKoc/lex-skill.git
+git clone https://github.com/avSercanKoc/superlex-skills.git
 # Then reference the repo root in your Gemini CLI workspace settings.
 ```
 
@@ -103,10 +103,10 @@ git clone https://github.com/avSercanKoc/lex-skill.git
 
 | Category | Skill | Risk | Jurisdiction | Description |
 |---|---|---|---|---|
-| **Meta** | `using-lex-skill` | 🟢 Low | `tr` | Bootstrap meta-skill for agent onboarding and rules. |
+| **Meta** | `using-superlex-skills` | 🟢 Low | `tr` | Bootstrap meta-skill for agent onboarding and rules. |
 | **Meta** | `lawyer-context-manager` | 🟢 Low | `tr` | Central client & firm profile management. |
 | **Meta** | `specification-before-drafting` | 🟢 Low | `tr` | Pre-drafting legal strategy and risk specification. |
-| **Meta** | `writing-lex-skills` | 🟢 Low | `tr` | TDD-based guide for authoring, testing, and contributing new skills. |
+| **Meta** | `writing-superlex-skills` | 🟢 Low | `tr` | TDD-based guide for authoring, testing, and contributing new skills. |
 | **Drafting** | `privacy-policy` | 🟡 Med | `tr`, `eu` | KVKK/GDPR compliant data protection policies. |
 | **Drafting** | `terms-of-use` | 🟡 Med | `tr` | Platform-specific (SaaS/E-com) usage terms. |
 | **Drafting** | `nda-generator` | 🟡 Med | `tr` | Non-disclosure agreements + legal checklist. |
@@ -118,7 +118,7 @@ git clone https://github.com/avSercanKoc/lex-skill.git
 
 ## The Guardian: Automated Validation
 
-Lex-Skill is the only skill library that includes a built-in **Linter for Lawyers**. Our `scripts/validate-skills.sh` script is run on every commit to ensure:
+SuperLex Skills is the only skill library that includes a built-in **Linter for Lawyers**. Our `scripts/validate-skills.sh` script is run on every commit to ensure:
 
 - **The Guardian:** Automated structural and "leakage" validation via `scripts/validate-skills.sh`.
 - **SessionStart Hooks:** Automatic legal context injection via `hooks/session-start`.
@@ -135,7 +135,7 @@ npm run validate
 
 ## Contributing
 
-Lex-Skill is built to grow. You can contribute by adding new **Jurisdiction Packs** (e.g., adding `us.md` or `de.md` to an existing skill) or by creating new **Legal Skills**.
+SuperLex Skills is built to grow. You can contribute by adding new **Jurisdiction Packs** (e.g., adding `us.md` or `de.md` to an existing skill) or by creating new **Legal Skills**.
 
 Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[SKILL-ANATOMY.md](core/SKILL-ANATOMY.md)**, and **[JURISDICTION-ANATOMY.md](core/JURISDICTION-ANATOMY.md)** before submitting a Pull Request.
 
@@ -151,4 +151,4 @@ Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[SKILL-ANATOMY.md](cor
 - **Security:** Responsible disclosure: `SECURITY.md`
 - **Tests:** Behavioral pressure scenarios: `tests/pressure-tests/`
 
-Built with ❤️ by the Lex-Skill contributors and the open-source legal engineering community.
+Built with ❤️ by the SuperLex Skills contributors and the open-source legal engineering community.

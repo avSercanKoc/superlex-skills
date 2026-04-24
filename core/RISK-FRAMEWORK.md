@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the risk level of each skill in Lex-Skill and specifies how the agent must behave at each level.
+Defines the risk level of each skill in SuperLex Skills and specifies how the agent must behave at each level.
 
 ## Risk Levels
 
