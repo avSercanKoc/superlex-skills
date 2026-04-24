@@ -452,7 +452,7 @@ check_single_jurisdiction_file() {
 
 # ---------- main loop -------------------------------------------------------
 
-printf "%sLex-Skill Guardian%s — validating %s skill(s) against core/SKILL-ANATOMY.md\n" \
+printf "%sLex-Skill Guardian%s — validating %s skill(s) against core/SKILL-ANATOMY.md & JURISDICTION-ANATOMY.md\n" \
   "$C_BOLD" "$C_RESET" "${#TARGETS[@]}"
 
 for target in "${TARGETS[@]}"; do
