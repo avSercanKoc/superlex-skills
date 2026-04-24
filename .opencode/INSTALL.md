@@ -12,11 +12,11 @@ Add Lex-Skill to the `plugin` array in your `opencode.json` (global or project-l
 
 ```json
 {
-  "plugin": ["lex-skill@git+https://github.com/[username]/lex-skill.git"]
+  "plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git"]
 }
 ```
 
-Replace `[username]` with your GitHub username.
+Replace `avSercanKoc` with your GitHub username.
 
 Restart OpenCode. The plugin will automatically register the `lawyer-context-manager` and all specialized legal skills.
 
@@ -37,11 +37,11 @@ Lex-Skill updates automatically when you restart OpenCode. To pin a specific ver
 
 ```json
 {
-  "plugin": ["lex-skill@git+https://github.com/[username]/lex-skill.git#v0.1.0"]
+  "plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git#v0.1.0"]
 }
 ```
 
 ## Getting Help
 
-- Report issues: https://github.com/[username]/lex-skill/issues
-- Full documentation: https://github.com/[username]/lex-skill/blob/main/README.md
+- Report issues: <https://github.com/avSercanKoc/lex-skill/issues>
+- Full documentation: <https://github.com/avSercanKoc/lex-skill/blob/main/README.md>

@@ -5,17 +5,20 @@ Enable Lex-Skill's legal engineering workflows in Codex via native skill discove
 ## Installation
 
 1. **Clone the Lex-Skill repository:**
+
    ```bash
-   git clone https://github.com/[username]/lex-skill.git ~/.codex/lex-skill
+   git clone https://github.com/avSercanKoc/lex-skill.git ~/.codex/lex-skill
    ```
 
 2. **Create the skills symlink:**
+
    ```bash
    mkdir -p ~/.agents/skills
    ln -s ~/.codex/lex-skill/skills ~/.agents/skills/lex-skill
    ```
 
    **Windows (PowerShell):**
+
    ```powershell
    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
    cmd /c mklink /J "$env:USERPROFILE\.agents\skills\lex-skill" "$env:USERPROFILE\.codex\lex-skill\skills"
