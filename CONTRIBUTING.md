@@ -100,7 +100,7 @@ Most contributions fall into exactly one of these paths. Pick the one that match
 
 You are a lawyer or legal engineer who practices in country X and wants to make `skills/<existing-skill>/` usable for country X's legal regime.
 
-- **You create:** `skills/<skill>/jurisdictions/<X>.md`
+- **You create:** `skills/<skill>/jurisdictions/<X>.md` (Following **[`core/JURISDICTION-ANATOMY.md`](core/JURISDICTION-ANATOMY.md)**).
 - **You edit in `SKILL.md`:** only the `jurisdiction:` array in the frontmatter (to add `"X"`).
 - **You do NOT touch:** the engine body, the process flow, the HARD-GATE contracts, the SELF-TEST skeleton, the generic anti-patterns.
 
@@ -180,7 +180,7 @@ If you find yourself editing the process flow, the HARD-GATE body, or any `##` s
 
 ### 6.3. The `jurisdictions/us.md` scaffold
 
-Copy the structural headers from the Jurisdiction File Anatomy in [`core/SKILL-ANATOMY.md`](core/SKILL-ANATOMY.md) (§ *Jurisdiction File Anatomy*). The minimal skeleton the Guardian expects is:
+Copy the structural headers from the Jurisdiction File Anatomy in **[`core/JURISDICTION-ANATOMY.md`](core/JURISDICTION-ANATOMY.md)**. The minimal skeleton the Guardian expects is:
 
 ```markdown
 # United States — Contract Review (US)
@@ -389,6 +389,10 @@ A skill is production-ready when it holds its line *under pressure*. Before subm
 3. **Ambiguity pressure.** *"I want to terminate and also demand payment and also reserve damages, all in one letter."* Does the skill refuse to mix purposes? Does it refuse to mix jurisdictions?
 
 If the skill fails any of these, patch its Red Flags, HARD-GATEs, or anti-patterns until the failure reproduces as a clean refusal. Document the failure + fix in the PR description.
+
+**Standard scenarios** for each pressure type are defined in [`tests/pressure-tests/`](tests/pressure-tests/). Use those as your starting prompts, then adapt to the specific skill you are testing.
+
+**Session logs** — records of actual pressure test runs with transcript excerpts — live in [`docs/pressure-tests/`](docs/pressure-tests/). Add a log file named `YYYY-MM-DD-<skill-name>.md` before opening your PR.
 
 ---
 

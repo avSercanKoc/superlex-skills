@@ -5,7 +5,7 @@
 
 ---
 
-## 🏛️ What Lex-Skill Solves
+## What Lex-Skill Solves
 
 General-purpose AI agents are excellent at writing text, but in the legal domain, they are often "confidently wrong." Generic agents suffer from **Legal AI Slop**: uydurma (fabricated) article numbers, mixing of legal regimes (KVKK vs. GDPR), and an absence of professional guardrails.
 
@@ -18,7 +18,7 @@ General-purpose AI agents are excellent at writing text, but in the legal domain
 
 ---
 
-## 🧠 The Philosophy: Legal Engineering
+## The Philosophy: Legal Engineering
 
 Lex-Skill is built on three core pillars of legal engineering:
 
@@ -28,7 +28,7 @@ Lex-Skill is built on three core pillars of legal engineering:
 
 ---
 
-## 🔄 The Lex-Skill Workflow
+## The Lex-Skill Workflow
 
 When you ask Lex-Skill for a document or analysis, it follows a deterministic path:
 
@@ -40,57 +40,73 @@ When you ask Lex-Skill for a document or analysis, it follows a deterministic pa
 
 ---
 
-## 💻 Installation & IDE Integration
+## Installation & IDE Integration
 
 Lex-Skill is designed to be a native "plugin" for the world's leading AI coding environments.
 
 ### 🔵 Cursor
+
 Install as a repository-based skill:
+
 ```text
-/add-plugin https://github.com/[username]/lex-skill
+/add-plugin https://github.com/avSercanKoc/lex-skill
 ```
+
 *Uses `.cursor-plugin/` for deep agent discovery.*
 
 ### 🟠 Claude Code
+
 Install via the CLI:
+
 ```bash
-/plugin install https://github.com/[username]/lex-skill
+/plugin install https://github.com/avSercanKoc/lex-skill
 ```
+
 *Uses `.claude-plugin/` and `CLAUDE.md` for role definition.*
 
 ### ⚪ OpenCode
+
 Install as a native plugin:
+
 ```bash
 # Add to your opencode.json
-"plugin": ["lex-skill@git+https://github.com/[username]/lex-skill.git"]
+"plugin": ["lex-skill@git+https://github.com/avSercanKoc/lex-skill.git"]
 ```
+
 *Uses `.opencode/` for universal agentic installation.*
 
 ### 💾 Codex
+
 Clone and symlink:
+
 ```bash
-git clone https://github.com/[username]/lex-skill.git ~/.codex/lex-skill
+git clone https://github.com/avSercanKoc/lex-skill.git ~/.codex/lex-skill
 ln -s ~/.codex/lex-skill/skills ~/.agents/skills/lex-skill
 ```
+
 *Uses `.codex/` for native skill discovery.*
 
 ### 🔷 Gemini CLI
+
 Add to your project's `GEMINI.md` or rely on `gemini-extension.json` for auto-discovery:
+
 ```bash
-git clone https://github.com/[username]/lex-skill.git
+git clone https://github.com/avSercanKoc/lex-skill.git
 # Then reference the repo root in your Gemini CLI workspace settings.
 ```
+
 *Uses `gemini-extension.json` + `GEMINI.md` for context injection at session start.*
 
 ---
 
-## 🛠️ The Skills Library
+## The Skills Library
 
 | Category | Skill | Risk | Jurisdiction | Description |
 |---|---|---|---|---|
 | **Meta** | `using-lex-skill` | 🟢 Low | `tr` | Bootstrap meta-skill for agent onboarding and rules. |
 | **Meta** | `lawyer-context-manager` | 🟢 Low | `tr` | Central client & firm profile management. |
 | **Meta** | `specification-before-drafting` | 🟢 Low | `tr` | Pre-drafting legal strategy and risk specification. |
+| **Meta** | `writing-lex-skills` | 🟢 Low | `tr` | TDD-based guide for authoring, testing, and contributing new skills. |
 | **Drafting** | `privacy-policy` | 🟡 Med | `tr`, `eu` | KVKK/GDPR compliant data protection policies. |
 | **Drafting** | `terms-of-use` | 🟡 Med | `tr` | Platform-specific (SaaS/E-com) usage terms. |
 | **Drafting** | `nda-generator` | 🟡 Med | `tr` | Non-disclosure agreements + legal checklist. |
@@ -100,7 +116,7 @@ git clone https://github.com/[username]/lex-skill.git
 
 ---
 
-## 🛡️ The Guardian: Automated Validation
+## The Guardian: Automated Validation
 
 Lex-Skill is the only skill library that includes a built-in **Linter for Lawyers**. Our `scripts/validate-skills.sh` script is run on every commit to ensure:
 
@@ -110,26 +126,29 @@ Lex-Skill is the only skill library that includes a built-in **Linter for Lawyer
 - **Safety Compliance:** Verifies that High-Risk skills have both Pre-Gen and Post-Gen `HARD-GATE`s.
 
 Run it locally:
+
 ```bash
 npm run validate
 ```
 
 ---
 
-## 🌍 Contributing
+## Contributing
 
 Lex-Skill is built to grow. You can contribute by adding new **Jurisdiction Packs** (e.g., adding `us.md` or `de.md` to an existing skill) or by creating new **Legal Skills**.
 
-Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)** and the **[SKILL-ANATOMY.md](core/SKILL-ANATOMY.md)** before submitting a Pull Request.
+Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[SKILL-ANATOMY.md](core/SKILL-ANATOMY.md)**, and **[JURISDICTION-ANATOMY.md](core/JURISDICTION-ANATOMY.md)** before submitting a Pull Request.
 
 ---
 
-## 📜 License & Governance
+## License & Governance
 
 - **License:** MIT License - see `LICENSE` for details.
 - **Changelog:** Release history: `CHANGELOG.md`
 - **Future plans:** `ROADMAP.md`
 - **Contributor guide:** `CONTRIBUTING.md`
 - **Community policy:** `CODE_OF_CONDUCT.md`
+- **Security:** Responsible disclosure: `SECURITY.md`
+- **Tests:** Behavioral pressure scenarios: `tests/pressure-tests/`
 
 Built with ❤️ by the Lex-Skill contributors and the open-source legal engineering community.

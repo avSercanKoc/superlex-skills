@@ -9,6 +9,7 @@
   - **Explicit Instruction Priority:** Standardized hierarchy (User > Protocols > System Prompt) enforced globally via `scripts/validate-skills.sh`.
   - **XML Urgency Tags:** Use of `<EXTREMELY-IMPORTANT>` tags to bypass LLM instruction decay in critical safety paths.
 - **`using-lex-skill`** — Bootstrap meta-skill for agent orientation and rule onboarding.
+- **`writing-lex-skills`** — TDD-based meta-skill for authoring, pressure-testing, and contributing new legal skills. Adapts Superpowers `writing-skills` methodology to the legal domain.
 - **Reviewer Agent Templates (`agents/`):** Dedicated persona templates for specialized subagents:
   - `legal-compliance-reviewer.md`
   - `jurisdiction-reviewer.md`
@@ -19,6 +20,12 @@
 - **`subagent-driven-development`** — Orchestration skill for multi-task legal work.
 - **`specification-before-drafting`** — Design-first workflow for legal strategy.
 - **Guardian Validator Updates:** Automated enforcement of Instruction Priority and Rationalization tables.
+- **`tests/pressure-tests/`** — Behavioral test suite with 3 standard adversarial scenarios (rushed user, authority pressure, ambiguity pressure).
+- **`.github/ISSUE_TEMPLATE/`** — Bug report, feature request, and jurisdiction request templates.
+- **`.github/FUNDING.yml`** — GitHub Sponsors configuration.
+- **`commands/`** — Slash commands: `draft-document`, `review-contract`, `validate-skills`.
+- **`SECURITY.md`** — Responsible disclosure policy defining safety-gate bypass as a critical vulnerability.
+- **`docs/pressure-tests/README.md`** — Index and conventions for session logs.
 
 ### Changed
 - All skills refactored to v0.2.0: abstract jurisdiction-agnostic English `SKILL.md` + localized `jurisdictions/<code>.md`.

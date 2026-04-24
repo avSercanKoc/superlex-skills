@@ -25,11 +25,14 @@ lex-skill/
 │   ├── DISCLAIMER.md           Standard disclaimer (appended to every output)
 │   ├── RISK-FRAMEWORK.md       🟢 / 🟡 / 🔴 tiering rules
 │   ├── AGENTIC-VERIFICATION.md HARD-GATE + SELF-TEST protocol
-│   └── SKILL-ANATOMY.md        Template every new skill follows
+│   ├── SKILL-ANATOMY.md        Template every new skill follows
+│   └── JURISDICTION-ANATOMY.md Template every new jurisdiction follows
 │
 ├── skills/                     Legal skills
 │   ├── using-lex-skill/            Bootstrap meta-skill (agent onboarding)
-│   ├── lawyer-context-manager/ Meta-skill (context + jurisdiction routing)
+│   ├── lawyer-context-manager/     Meta-skill (context + jurisdiction routing)
+│   ├── specification-before-drafting/ Meta-skill (pre-drafting strategy)
+│   ├── writing-lex-skills/         Meta-skill (TDD-based skill authoring)
 │   ├── ...
 │   └── subagent-driven-development/ Orchestration skill (subagents + reviews)
 │

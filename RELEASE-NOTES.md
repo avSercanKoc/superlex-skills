@@ -61,7 +61,7 @@ Recent updates have fortified Lex-Skill:
 
 - Jurisdiction coverage is intentionally limited (TR-first, EU only where
   explicitly provided).
-- No automated version bump script is shipped yet; version updates are
-  controlled manually using `.version-bump.json` as the checklist contract.
+- Version bumps are managed via `scripts/bump-version.sh` and `.version-bump.json`,
+  which together define the single source of truth for all plugin manifests.
 - CI wiring for Guardian is repository-dependent and should be configured by
   each downstream integrator.

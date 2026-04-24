@@ -18,6 +18,7 @@ Core safety layers live in `core/`:
 - `core/RISK-FRAMEWORK.md`
 - `core/AGENTIC-VERIFICATION.md`
 - `core/SKILL-ANATOMY.md`
+- `core/JURISDICTION-ANATOMY.md`
 
 ## Mandatory Entry Point
 
@@ -43,6 +44,7 @@ signalled by the `<SUBAGENT-STOP>` block at the top of that skill.
 - `using-lex-skill` — bootstrap meta-skill (agent onboarding)
 - `lawyer-context-manager` — meta-skill (context + jurisdiction routing)
 - `specification-before-drafting` — meta-skill (pre-drafting strategy)
+- `writing-lex-skills` — meta-skill (TDD-based skill authoring and pressure testing)
 - `privacy-policy` — `tr`, `eu`
 - `contract-review` — `tr`
 - `terms-of-use` — `tr`

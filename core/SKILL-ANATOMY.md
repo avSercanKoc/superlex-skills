@@ -359,21 +359,9 @@ Dependencies on another skill or core document should be declared in this format
 
 ## Jurisdiction File Anatomy (`jurisdictions/<code>.md`)
 
-Every jurisdiction file SHOULD contain (section order may be adapted to the skill):
+The structure and rules for creating jurisdiction-specific files (the "Fuel") are comprehensively documented in **[`core/JURISDICTION-ANATOMY.md`](JURISDICTION-ANATOMY.md)**.
 
-1. **Header** — jurisdiction name and scope (e.g. "Türkiye — Privacy / KVKK").
-2. **Core Legislation** — the statutes, regulations, and authority decisions that apply, each with gazette citation where known.
-3. **Mandatory Document Sections** — the output template's section labels in the working language, with the statutory binding for each section.
-4. **Statutory Deep-Dives** — article-by-article notes the agent needs when drafting (e.g. data subject rights enumeration, penalty-clause rules, notice-form rules).
-5. **Output Template** — the exact section headers and structural scaffold the agent writes, in the working language.
-6. **Pre-Generation HARD-GATE Template** (if applicable) — working-language prompt text bound to the HARD-GATE contract in `SKILL.md`.
-7. **Post-Generation HARD-GATE Template** — working-language risk-summary prompt text.
-8. **Jurisdiction-Specific Anti-Patterns** — statute-named prohibitions.
-9. **Jurisdiction-Specific SELF-TEST** — named-article verification checklist.
-10. **Red Flags (jurisdiction-specific)** — if the skill uses Red Flags, the concrete statute-named entries belong here.
-11. **Sources** — official gazette, case-law repository, supervisory authority URLs.
-
-This structure lets a contributor add a new jurisdiction (e.g. `jurisdictions/de.md`) without touching `SKILL.md`.
+Every jurisdiction file MUST follow the guidelines defined there, including the Working Language Rule and the Fact-Check Protocol. The Guardian validator (`scripts/validate-skills.sh`) enforces the presence of specific headers defined in that document.
 
 ## Testing Before Deploy - Pressure Scenarios
 
