@@ -1,87 +1,127 @@
 # ⚖️ Lex-Skill
 
-A skill library that brings AI coding assistants' legal document output
-up to professional standards.
+**The open-source agentic skill library for lawyers.**  
+*Jurisdiction-aware legal document generation and analysis for AI coding assistants.*
 
-## Philosophy
-- 🏛️ Turkish law first, with an extensible architecture
-- 🛡️ Three-layer safety model: Disclaimer → Risk → Agentic Verification
-- 🧠 Personalized output with Context Manager
-- ⚠️ The agent provides not only diagnosis, but also actionable guidance
+---
 
-## Installation
+## 🏛️ What Lex-Skill Solves
 
+General-purpose AI agents are excellent at writing text, but in the legal domain, they are often "confidently wrong." Generic agents suffer from **Legal AI Slop**: uydurma (fabricated) article numbers, mixing of legal regimes (KVKK vs. GDPR), and an absence of professional guardrails.
+
+**Lex-Skill** transforms your AI agent from a creative writer into a disciplined **Legal Associate**. It enforces:
+
+- **Strict Context Collection:** No drafting without knowing the client's sector and legal status.
+- **Jurisdiction Routing:** Automatic selection of the correct legal framework (TR, EU, etc.).
+- **Zero Fabrication:** Mandatory verification of statutes against official gazettes.
+- **Agentic Verification:** A three-layer safety model that forces the agent to stop, flag risks, and offer alternatives before delivery.
+
+---
+
+## 🧠 The Philosophy: Legal Engineering
+
+Lex-Skill is built on three core pillars of legal engineering:
+
+1. **Lawyer-in-the-Loop:** The agent never makes the final legal call. It identifies risks and presents "Safe Harbor" alternatives for the lawyer's approval.
+2. **Motor vs. Fuel Architecture:** The logic spine (`SKILL.md`) is separated from the local legal data (`jurisdictions/*.md`). This allows for global scalability while maintaining local precision.
+3. **Evidence over Claims:** Every citation must be verifiable. If the agent cannot cite the specific gazette or article, it must flag the uncertainty.
+
+---
+
+## 🔄 The Lex-Skill Workflow
+
+When you ask Lex-Skill for a document or analysis, it follows a deterministic path:
+
+1. **Context Intake:** The `lawyer-context-manager` ensures the agent knows who you are representing.
+2. **Jurisdiction Injection:** The agent loads the specific "Legal Fuel" (e.g., `tr.md` for Turkish law) into the "Logic Motor."
+3. **Drafting & Fact-Check:** The agent drafts the document while running an internal `SELF-TEST` against anti-patterns.
+4. **Agentic Verification:** The agent triggers a `<HARD-GATE>`, presenting the 3 highest-risk areas and suggesting safer alternatives.
+5. **The Disclaimer:** Only after approval is the `core/DISCLAIMER.md` appended and the document delivered.
+
+---
+
+## 💻 Installation & IDE Integration
+
+Lex-Skill is designed to be a native "plugin" for the world's leading AI coding environments.
+
+### 🔵 Cursor
+Install as a repository-based skill:
+```text
+/add-plugin https://github.com/[username]/lex-skill
 ```
-npx skills add https://github.com/[username]/lex-skill
+*Uses `.cursor-plugin/` for deep agent discovery.*
+
+### 🟠 Claude Code
+Install via the CLI:
+```bash
+/plugin install https://github.com/[username]/lex-skill
+```
+*Uses `.claude-plugin/` and `CLAUDE.md` for role definition.*
+
+### ⚪ OpenCode
+Install as a native plugin:
+```bash
+# Add to your opencode.json
+"plugin": ["lex-skill@git+https://github.com/[username]/lex-skill.git"]
+```
+*Uses `.opencode/` for universal agentic installation.*
+
+### 💾 Codex
+Clone and symlink:
+```bash
+git clone https://github.com/[username]/lex-skill.git ~/.codex/lex-skill
+ln -s ~/.codex/lex-skill/skills ~/.agents/skills/lex-skill
+```
+*Uses `.codex/` for native skill discovery.*
+
+---
+
+## 🛠️ The Skills Library
+
+| Category | Skill | Risk | Jurisdiction | Description |
+|---|---|---|---|---|
+| **Meta** | `using-lex-skill` | 🟢 Low | `tr` | Bootstrap meta-skill for agent onboarding and rules. |
+| **Meta** | `lawyer-context-manager` | 🟢 Low | `tr` | Central client & firm profile management. |
+| **Meta** | `specification-before-drafting` | 🟢 Low | `tr` | Pre-drafting legal strategy and risk specification. |
+| **Drafting** | `privacy-policy` | 🟡 Med | `tr`, `eu` | KVKK/GDPR compliant data protection policies. |
+| **Drafting** | `terms-of-use` | 🟡 Med | `tr` | Platform-specific (SaaS/E-com) usage terms. |
+| **Drafting** | `nda-generator` | 🟡 Med | `tr` | Non-disclosure agreements + legal checklist. |
+| **Analysis** | `contract-review` | 🔴 High | `tr` | Clause-by-clause risk matrix & balance report. |
+| **Notice** | `legal-letter` | 🔴 High | `tr` | Formal notices (İhtarname) with UETS/Notary rules. |
+| **Orchestrator** | `subagent-driven-development` | 🟢 Low | `tr` | Orchestrates multi-task legal workflows with subagents and reviews. |
+
+---
+
+## 🛡️ The Guardian: Automated Validation
+
+Lex-Skill is the only skill library that includes a built-in **Linter for Lawyers**. Our `scripts/validate-skills.sh` script is run on every commit to ensure:
+
+- **The Guardian:** Automated structural and "leakage" validation via `scripts/validate-skills.sh`.
+- **SessionStart Hooks:** Automatic legal context injection via `hooks/session-start`.
+- **Pre-commit Integrity:** Automated git-hooks to prevent committing invalid skills.
+- **Safety Compliance:** Verifies that High-Risk skills have both Pre-Gen and Post-Gen `HARD-GATE`s.
+
+Run it locally:
+```bash
+npm run validate
 ```
 
-## Skills
+---
 
-| Skill | Output Type | Risk | Description |
-|-------|-----------|------|----------|
-| lawyer-context-manager | context | 🟢 | Meta-skill: Context management |
-| privacy-policy | document | 🟡 | KVKK/GDPR-compliant privacy policy |
-| contract-review | analysis | 🔴 | Contract risk analysis |
-| terms-of-use | document | 🟡 | Terms of use |
-| nda-generator | draft+checklist | 🟡 | Non-disclosure agreement |
-| legal-letter | document | 🔴 | Legal notice / formal notification |
+## 🌍 Contributing
 
-## Architecture
+Lex-Skill is built to grow. You can contribute by adding new **Jurisdiction Packs** (e.g., adding `us.md` or `de.md` to an existing skill) or by creating new **Legal Skills**.
 
-```
-lawyer-skills/
-├── README.md
-├── LICENSE                                # MIT
-├── CONTRIBUTING.md
-├── CHANGELOG.md
-├── GEMINI.md
-├── .gitignore                             # excludes .superpowers/ and .taste-skill/
-│
-├── core/                                  # Shared core components
-│   ├── DISCLAIMER.md                      # Standard disclaimer template
-│   ├── RISK-FRAMEWORK.md                  # 🟢🟡🔴 risk system definition
-│   ├── AGENTIC-VERIFICATION.md            # Post-generation verification protocol
-│   └── SKILL-ANATOMY.md                   # Skill structure standard (template)
-│
-├── skills/                                # Legal skills
-│   ├── lawyer-context-manager/
-│   │   └── SKILL.md
-│   ├── privacy-policy/
-│   │   ├── SKILL.md
-│   │   └── jurisdictions/
-│   │       ├── tr.md                      # KVKK references
-│   │       └── eu.md                      # GDPR references
-│   ├── contract-review/
-│   │   ├── SKILL.md
-│   │   └── jurisdictions/
-│   │       └── tr.md
-│   ├── terms-of-use/
-│   │   ├── SKILL.md
-│   │   └── jurisdictions/
-│   │       └── tr.md
-│   ├── nda-generator/
-│   │   ├── SKILL.md
-│   │   └── jurisdictions/
-│   │       └── tr.md
-│   └── legal-letter/
-│       ├── SKILL.md
-│       └── jurisdictions/
-│           └── tr.md
-│
-├── .superpowers/                          # (gitignore — not published)
-└── .taste-skill/                          # (gitignore — not published)
-```
+Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)** and the **[SKILL-ANATOMY.md](core/SKILL-ANATOMY.md)** before submitting a Pull Request.
 
-## Safety Layers
+---
 
-1. **Disclaimer** — A disclaimer automatically added to every output
-2. **Risk Framework** — Controls agent behavior with a 🟢🟡🔴 level system
-3. **Agentic Verification** — Post-generation validation and user approval
+## 📜 License & Governance
 
-## Contributing
+- **License:** MIT License - see `LICENSE` for details.
+- **Changelog:** Release history: `CHANGELOG.md`
+- **Future plans:** `ROADMAP.md`
+- **Contributor guide:** `CONTRIBUTING.md`
+- **Community policy:** `CODE_OF_CONDUCT.md`
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
-## License
-
-MIT — See [LICENSE](LICENSE) for details.
+Built with ❤️ by [Your Name/Firm] and the open-source legal engineering community.

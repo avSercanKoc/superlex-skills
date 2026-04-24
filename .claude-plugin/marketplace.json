@@ -1,0 +1,18 @@
+{
+  "name": "lex-skill-dev",
+  "description": "Development marketplace for the Lex-Skill legal skills library",
+  "owner": {
+    "name": "Lex-Skill Contributors"
+  },
+  "plugins": [
+    {
+      "name": "lex-skill",
+      "description": "Agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis (Turkish law first, extensible).",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "Lex-Skill Contributors"
+      }
+    }
+  ]
+}

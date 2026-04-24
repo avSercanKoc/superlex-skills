@@ -1,0 +1,24 @@
+{
+  "name": "lex-skill",
+  "description": "Agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis. Turkish law first, extensible to other jurisdictions.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Lex-Skill Contributors"
+  },
+  "homepage": "https://github.com/[username]/lex-skill",
+  "repository": "https://github.com/[username]/lex-skill",
+  "license": "MIT",
+  "keywords": [
+    "legal",
+    "law",
+    "lawyer",
+    "skills",
+    "turkish-law",
+    "hukuk",
+    "kvkk",
+    "gdpr",
+    "contract-review",
+    "nda",
+    "privacy-policy"
+  ]
+}

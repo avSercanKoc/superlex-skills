@@ -1,38 +1,51 @@
-# Superpowers Configuration
+# Lex-Skill — Gemini CLI Configuration
 
-@./.superpowers/skills/using-superpowers/SKILL.md
-@./.superpowers/skills/using-superpowers/references/gemini-tools.md
+@./CLAUDE.md
 
 ## Skill Discovery
 
-All skills are located in `.superpowers/skills/`.
-To use a skill, I will read the `SKILL.md` file in the corresponding directory.
+All Lex-Skill legal skills live in `skills/`. To use a skill:
 
-## Current Skills
+1. Read its `SKILL.md` (jurisdiction-agnostic spine, in English).
+2. Resolve the active jurisdiction.
+3. Read `skills/<skill>/jurisdictions/<code>.md` for the statutory
+   content, output labels, and HARD-GATE prompt text in the
+   jurisdiction's working language.
 
-- brainstorming
-- systematic-debugging
-- test-driven-development
-- writing-plans
-- subagent-driven-development
-- executing-plans
-- dispatching-parallel-agents
-- requesting-code-review
-- receiving-code-review
-- using-git-worktrees
-- finishing-a-development-branch
-- verification-before-completion
-- writing-skills
+Core safety layers live in `core/`:
 
-## Lex-Skill
+- `core/DISCLAIMER.md`
+- `core/RISK-FRAMEWORK.md`
+- `core/AGENTIC-VERIFICATION.md`
+- `core/SKILL-ANATOMY.md`
 
-Legal skills are located in the `skills/` directory.
-For any legal document generation or analysis request,
-`skills/lawyer-context-manager/SKILL.md` must be read first.
+## Mandatory Entry Point
 
-### Current Legal Skills
-- privacy-policy
-- contract-review
-- terms-of-use
-- nda-generator
-- legal-letter
+For **any** legal document generation, contract analysis, legal notice,
+NDA, privacy policy, terms-of-use, or similar legal output, read
+
+```
+skills/lawyer-context-manager/SKILL.md
+```
+
+**before** reading any other skill file and **before** producing any
+draft. See `CLAUDE.md` for the full behavioural contract.
+
+## Subagent Context Skip
+
+If you are operating as a **subagent** dispatched by an orchestrating
+session to execute a specific legal task, skip `lawyer-context-manager`.
+Context is already injected by the orchestrating session. This is
+signalled by the `<SUBAGENT-STOP>` block at the top of that skill.
+
+## Current Legal Skills
+
+- `using-lex-skill` — bootstrap meta-skill (agent onboarding)
+- `lawyer-context-manager` — meta-skill (context + jurisdiction routing)
+- `specification-before-drafting` — meta-skill (pre-drafting strategy)
+- `privacy-policy` — `tr`, `eu`
+- `contract-review` — `tr`
+- `terms-of-use` — `tr`
+- `nda-generator` — `tr`
+- `legal-letter` — `tr`
+- `subagent-driven-development` — orchestration skill (subagents + reviews)

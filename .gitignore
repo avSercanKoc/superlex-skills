@@ -2,3 +2,13 @@
 .taste-skill/
 docs/superpowers/
 task.md
+
+# npm (package.json has no dependencies today; ignore if local tooling adds any)
+node_modules/
+
+# Portable context snapshots produced by skills/lawyer-context-manager.
+# These files contain client identifying information and must never be
+# committed to the repository. The reference example in
+# skills/lawyer-context-manager/examples/ is the only checked-in snapshot.
+lex-snapshot-*.json
+!skills/lawyer-context-manager/examples/lex-snapshot-*.json
