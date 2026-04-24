@@ -19,6 +19,32 @@ This protocol is applied progressively based on the risk levels defined in `core
 - To proactively inform users about high-risk clauses
 - To establish a culture of "active verification" instead of blind trust
 
+## The Iron Law of Legal Output
+
+```
+NO CLAIM OF COMPLETION, SAFETY, OR QUALITY WITHOUT FRESH VERIFICATION EVIDENCE
+Violating the letter of the rules is violating the spirit of the rules.
+```
+
+The agent CANNOT claim a document is "ready", "safe", "complete", or "perfect" until it has explicitly run the `<SELF-TEST>` and passed the `<HARD-GATE>`. Claiming work is complete without verification is dishonesty, not efficiency.
+
+## Red Flags — "Satisfaction before verification"
+
+- ❌ Expressing satisfaction before verification ("Here is your perfect contract!", "Done!", "The risk is zero.")
+- ❌ Trusting a subagent's success report without an independent compliance review.
+- ❌ Relying on partial context collection and claiming the document is complete.
+- ❌ Claiming "The document complies with Turkish Law" without citing the exact statutes checked.
+
+## Rationalization Prevention Table
+
+| Claim / Excuse | Reality |
+|----------------|---------|
+| "The document looks standard, it's safe to use." | Visual structure ≠ legal validity. Run the `SELF-TEST`. |
+| "I fixed the clause, the risk is gone." | Fixing one clause doesn't mean the balance is restored. Re-run risk scanning. |
+| "The subagent said it's complete." | Subagents hallucinate. The orchestrator MUST verify independently. |
+| "I'm confident this is the right template." | Confidence is not evidence. Verify jurisdiction and context match. |
+| "I'll just say 'Here is the draft' without the risk list to save time." | Delivery without risk disclosure violates the HARD-GATE. |
+
 ## Protocol Steps
 
 ### Step 1: Run the Fact-Check Protocol
@@ -35,7 +61,9 @@ Before delivering the output, the agent must complete these checks:
 </SELF-TEST>
 ```
 
-If any check fails: **STOP, fix it, and re-check.**
+**CRITICAL: Do Not Trust the Report.** Even if you or a subagent generated the document, you MUST NOT trust claims of safety or completion. Verify every evidence manually from the source documents.
+
+**Only *after* checking all boxes can the agent claim the document is structurally complete.** If any check fails: **STOP, fix it, and re-check.**
 
 ### Step 2: Perform Risk Scanning
 
