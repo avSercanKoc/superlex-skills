@@ -1,0 +1,11 @@
+{
+  "name": "lex-skill",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Open-source agentic skill library for lawyers: jurisdiction-aware legal document generation and analysis.",
+  "license": "MIT",
+  "scripts": {
+    "validate": "bash scripts/validate-skills.sh",
+    "validate:strict": "bash scripts/validate-skills.sh --strict"
+  }
+}

@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Lex-Skill SessionStart Hook — Hardened Edition
+# Injects legal context, bootstrap rules, and skill discovery at session start.
+
+set -euo pipefail
+
+# Determine plugin root
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+# Escape string for JSON embedding
+escape_for_json() {
+    local s="$1"
+    s="${s//\\/\\\\}"
+    s="${s//\"/\\\"}"
+    s="${s//$'\n'/\\n}"
+    s="${s//$'\r'/\\r}"
+    s="${s//$'\t'/\\t}"
+    printf '%s' "$s"
+}
+
+# 1. Discover Current Legal Skills
+skills_list=""
+if [ -d "${PLUGIN_ROOT}/skills" ]; then
+    for d in "${PLUGIN_ROOT}/skills"/*/; do
+        skill_name=$(basename "$d")
+        skills_list="${skills_list}- ${skill_name}\n"
+    done
+fi
+
+# 2. Extract Bootstrap Rules (Instruction Priority & Safety Layers)
+bootstrap_content=$(awk '
+  /^## Instruction Priority/ { p=1 }
+  /^## When to Use/ { p=0 }
+  /^## The Core Safety Layers/ { p=1 }
+  /^## Engine vs Fuel/ { p=0 }
+  p { print }
+' "${PLUGIN_ROOT}/skills/using-lex-skill/SKILL.md" 2>/dev/null || echo "Lex-Skill safety protocols are mandatory.")
+
+# 3. Extract <SUBAGENT-STOP> block
+subagent_stop_block=$(awk '
+  /<SUBAGENT-STOP>/ { p=1 }
+  /<\/SUBAGENT-STOP>/ { print; p=0 }
+  p { print }
+' "${PLUGIN_ROOT}/skills/lawyer-context-manager/SKILL.md" 2>/dev/null || echo "")
+
+# 4. Detect Platform
+platform="Unknown"
+if [ -n "${CURSOR_PLUGIN_ROOT:-}" ]; then platform="Cursor"; fi
+if [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -z "${COPILOT_CLI:-}" ]; then platform="Claude Code"; fi
+if [ -n "${COPILOT_CLI:-}" ]; then platform="Copilot CLI"; fi
+if [ -n "${GEMINI_EXTENSION:-}" ]; then platform="Gemini CLI"; fi
+
+# 5. Build Session Context
+session_context=$(cat <<EOF
+<EXTREMELY-IMPORTANT>
+You are an AI legal engineering agent operating inside the Lex-Skill repository (v0.2.0).
+Detected Platform: ${platform}
+
+IF A LEGAL SKILL APPLIES TO YOUR TASK, YOU MUST USE IT. THIS IS NOT OPTIONAL.
+
+${subagent_stop_block}
+
+### Current Legal Skills Library
+${skills_list}
+
+### Core Rules & Instruction Priority
+${bootstrap_content}
+
+**MANDATORY ENTRY POINT:** For any legal document generation or analysis, you MUST read 'skills/lawyer-context-manager/SKILL.md' before taking action, unless you are a subagent (see <SUBAGENT-STOP> above).
+</EXTREMELY-IMPORTANT>
+EOF
+)
+
+session_escaped=$(escape_for_json "$session_context")
+
+# 6. Output based on platform contract
+if [ "$platform" = "Cursor" ]; then
+  printf '{\n  "additional_context": "%s"\n}\n' "$session_escaped"
+elif [ "$platform" = "Claude Code" ]; then
+  printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_escaped"
+else
+  # Copilot CLI, Gemini, or SDK standard format
+  printf '{\n  "additionalContext": "%s"\n}\n' "$session_escaped"
+fi

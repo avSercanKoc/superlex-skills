@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Lex-Skill Pre-Commit Hook
+# Prevents committing "broken" skills by running the Guardian validator.
+
+set -e
+
+printf "🛡️  Lex-Skill Guardian: Validating skills before commit...\n"
+
+# Run the validation script
+npm run validate:strict
+
+if [ $? -eq 0 ]; then
+  printf "✅ Validation successful. Proceeding with commit.\n"
+  exit 0
+else
+  printf "❌ Validation failed! Please fix the errors before committing.\n"
+  exit 1
+fi
