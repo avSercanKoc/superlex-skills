@@ -136,7 +136,7 @@ Rules:
 
 ## Optional Pre-Frontmatter Block — `<SUBAGENT-STOP>`
 
-Meta-skills and orchestrator skills (currently: `lawyer-context-manager`) SHOULD include a `<SUBAGENT-STOP>` block immediately after the closing `---` of the frontmatter and before the first `#` heading.
+Meta-skills and orchestrator skills (currently: `lawyer-context-manager`, `specification-before-drafting`, `subagent-driven-development`) SHOULD include a `<SUBAGENT-STOP>` block immediately after the closing `---` of the frontmatter and before the first `#` heading.
 
 **Purpose:** When an agent dispatches a subagent to execute a specific legal task, the subagent already has context injected by the orchestrating session. Loading the meta-skill again wastes the subagent's context budget and risks derailing it from its assigned task.
 
@@ -391,7 +391,7 @@ If a contributor is adding a new skill, the recommended sequence is:
 
 1. Read this file (`core/SKILL-ANATOMY.md`) from start to finish
 2. Determine the correct `risk_level` from `core/RISK-FRAMEWORK.md`
-3. Create `skills/[skill-name]/SKILL.md` and fill in the frontmatter + 11 mandatory sections in **English, jurisdiction-agnostic**
+3. Create `skills/[skill-name]/SKILL.md` and fill in the frontmatter + 12 mandatory sections in **English, jurisdiction-agnostic**
 4. If 🔴 High Risk, add the Red Flags section (abstract categories only)
 5. Create jurisdiction files (`jurisdictions/tr.md`, etc.) using the Jurisdiction File Anatomy above — this is where statutes, working-language labels, and named-article SELF-TEST live
 6. Apply pressure scenario testing

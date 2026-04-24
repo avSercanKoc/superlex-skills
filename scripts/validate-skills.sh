@@ -11,7 +11,7 @@
 #   4.  `description` starts with "Use when" and is <= 500 characters.
 #   5.  `risk_level` is one of {low, medium, high}.
 #   6.  `output_type` is one of {document, analysis, draft-with-checklist, context}.
-#   7.  The 11 mandatory top-level section headers are present, in order.
+#   7.  The 12 mandatory top-level section headers are present, in order.
 #   8.  At least one <HARD-GATE ...> block exists.
 #   9.  If risk_level=high, BOTH phase="pre-generation" AND phase="post-generation" HARD-GATEs exist.
 #   10. A <SELF-TEST> block exists.
