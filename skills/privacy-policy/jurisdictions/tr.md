@@ -12,7 +12,7 @@
 
 ## Zorunlu Politika Bölümleri (TR)
 
-Bir KVKK uyumlu Kişisel Verilerin Korunması ve İşlenmesi Politikasının içermesi gereken başlıklar:
+KVKK uyumlu Kişisel Verilerin Korunması ve İşlenmesi Politikasının içermesi gereken başlıklar — her başlığın dayanağı KVKK'nın ilgili maddesidir:
 
 1. **Veri Sorumlusunun Kimliği** — KVKK m.10 (aydınlatma yükümlülüğü)
 2. **İşlenen Kişisel Veri Kategorileri** — kimlik, iletişim, müşteri işlem, finansal vb.
@@ -25,6 +25,56 @@ Bir KVKK uyumlu Kişisel Verilerin Korunması ve İşlenmesi Politikasının iç
 9. **Veri Güvenliği Tedbirleri** — KVKK m.12 (teknik ve idari tedbirler)
 10. **VERBİS Kaydı Bilgisi** — yükümlü ise sicil numarası, yükümlü değil ise muafiyet gerekçesi
 11. **Başvuru ve İletişim Yöntemleri** — KVKK m.13 (veri sorumlusuna başvuru)
+
+## Output Template (TR — Türkçe Belge İskeleti)
+
+Agent üretilen belgeyi bu iskeleti takip ederek yazar. Başlık yazımı, madde sırası ve dil Türkçe'dir.
+
+```
+KİŞİSEL VERİLERİN KORUNMASI VE İŞLENMESİ POLİTİKASI
+
+1. VERİ SORUMLUSUNUN KİMLİĞİ
+   - Unvan, adres, MERSİS/vergi no, iletişim
+
+2. POLİTİKANIN AMACI VE KAPSAMI
+
+3. TANIMLAR
+   - KVKK m.3 tanımları (ilgili kişi, veri sorumlusu, veri işleyen, açık rıza vb.)
+
+4. İŞLENEN KİŞİSEL VERİ KATEGORİLERİ
+   - Kimlik, iletişim, müşteri işlem, finans, ... (sektöre göre)
+
+5. KİŞİSEL VERİLERİN İŞLENME AMAÇLARI
+
+6. KİŞİSEL VERİLERİN İŞLENMESİNİN HUKUKİ SEBEPLERİ
+   - KVKK m.5 dayanakları tek tek
+   - Özel nitelikli veri varsa KVKK m.6 dayanakları
+
+7. KİŞİSEL VERİLERİN TOPLANMA YÖNTEMİ
+
+8. KİŞİSEL VERİLERİN AKTARILMASI
+   - Yurt içi (KVKK m.8)
+   - Yurt dışı (KVKK m.9) — alıcı ülkeler, dayanak
+
+9. KİŞİSEL VERİLERİN SAKLANMA SÜRESİ
+
+10. KİŞİSEL VERİ GÜVENLİĞİ TEDBİRLERİ
+    - KVKK m.12, teknik ve idari tedbirler
+
+11. VERBİS KAYDI BİLGİSİ
+    - Sicil numarası veya muafiyet gerekçesi
+
+12. İLGİLİ KİŞİNİN HAKLARI
+    - KVKK m.11'deki 9 hak EKSİKSİZ
+
+13. BAŞVURU YÖNTEMLERİ
+    - KVKK m.13 + Veri Sorumlusuna Başvuru Usul ve Esasları Tebliği
+
+14. POLİTİKANIN YÜRÜRLÜĞÜ VE GÜNCELLENMESİ
+
+---
+[DISCLAIMER hook: core/DISCLAIMER.md aynen eklenir, [Date] = GG.AA.YYYY]
+```
 
 ## KVKK m.5 — İşleme Şartları (Genel Veriler)
 
@@ -96,3 +146,69 @@ Veri Sorumluları Siciline (VERBİS) kayıt yükümlülüğü Yönetmelik'te bel
 ## İdari Para Cezaları (KVKK m.18)
 
 Ceza tutarları yıllık yeniden değerleme oranına göre güncellenir. Politika üretirken yasal uyum kritik — son Kurul ilanına bakılmalıdır.
+
+## Post-Generation HARD-GATE Template (TR)
+
+SKILL.md'deki post-generation HARD-GATE'in Türkçe kullanıcıya sunum metni. Agent aşağıdaki kalıbı somut değerlerle doldurarak sunar:
+
+```
+Bu politikada aşağıdaki maddeler en yüksek riskli kısımlardır:
+
+1. [Hukuki sebep seçimi — KVKK m.5/2-... veya m.6/...] — Risk:
+   seçilen dayanak her işleme amacını karşılamalıdır. Dayanak
+   uymazsa işleme hukuka aykırı olur.
+   💡 Alternatif: açık rızaya dayananlar ayrı bölümde listelensin.
+
+2. [Yurt dışı aktarım bölümü] — Risk: Kurul kararı olmadan yurt
+   dışı aktarım risklidir (KVKK m.9); son 7499 sayılı Kanun
+   değişikliği gözden geçirilmeli.
+   💡 Alternatif: aktarım varsa standart sözleşme / açık rıza
+   mekanizması detaylandırılsın.
+
+3. [Saklama süreleri] — Risk: "Gerekli olduğu sürece" gibi muğlak
+   ifade KVKK m.4'e aykırıdır; kategori bazında süre belirtilmeli.
+   💡 Alternatif: her veri kategorisi için maksimum süre tablosu.
+
+Bu kısımları özel durumunuza göre incelediniz mi?
+Alternatif önerileri uygulamak ister misiniz?
+```
+
+Kullanıcı onayı alınmadan belge TESLİM EDİLMEZ.
+
+## Jurisdiction-Specific Anti-Patterns (TR)
+
+- ❌ KVKK m.11'deki 9 hak listesinin eksik verilmesi (7 veya 8 hak listelemek)
+- ❌ VERBİS kayıt durumu belirtilmeden politika üretmek (yükümlü / muaf kategorisi net olmalı)
+- ❌ Yurt dışı aktarımda 7499 sayılı Kanun öncesi m.9 metnine atıf yapmak
+- ❌ Özel nitelikli veri işlemede KVKK Kurulu 2018/10 sayılı kararındaki yeterli tedbirleri atlamak
+- ❌ "Açık rıza" dayanağını her işleme amacına otomatik uygulamak (m.5/1 son çare olmalı)
+- ❌ KVKK m.13 başvuru süresi ve Tebliğ referansının eksik bırakılması
+- ❌ Aydınlatma yükümlülüğünü (m.10) politika içine karıştırarak ayrı aydınlatma metni ihtiyacını gizlemek
+- ❌ E-ticaret müvekkili için sağlık sektörü şablonu gibi sektör uyumsuz veri kategorileri kopyalamak
+
+## Jurisdiction-Specific SELF-TEST (TR)
+
+```
+- [ ] Tüm atıflar KVKK'nın yürürlükteki metnine uygun (özellikle m.9 — 7499 s.K. sonrası)
+- [ ] KVKK m.11 tam 9 hak olarak listelenmiş
+- [ ] Her işleme amacı m.5 veya m.6'daki bir dayanağa tekil olarak bağlanmış
+- [ ] Özel nitelikli veri işleniyorsa Kurul 2018/10 sayılı kararına atıf var ve yeterli tedbirler açıklanmış
+- [ ] VERBİS sicil numarası VEYA muafiyet kategorisi belirtilmiş
+- [ ] Yurt dışı aktarım varsa: yeterli koruma listesi / Kurul izni / standart sözleşme / açık rıza mekanizmalarından biri somut olarak belirtilmiş
+- [ ] KVKK m.13 başvuru süresi (30 gün) ve Veri Sorumlusuna Başvuru Tebliği'ne atıf var
+- [ ] Saklama süreleri "gerekli olduğu sürece" gibi muğlak değil — kategori bazında somut
+- [ ] Veri sorumlusu / veri işleyen ayrımı doğru kullanılmış
+- [ ] Sektör bilgisi (client.industry) politikadaki veri kategorilerine yansımış
+- [ ] Belge Türkçe — yabancı hukuk terminolojisi (liability, indemnification vb.) kullanılmamış
+```
+
+## Legal References (TR)
+
+- **6698 sayılı Kişisel Verilerin Korunması Kanunu** — RG 07.04.2016, Sayı 29677
+  - m.3 (tanımlar), m.4 (genel ilkeler), m.5 (işleme şartları), m.6 (özel nitelikli), m.7 (silme/yok etme/anonimleştirme), m.8 (yurt içi aktarım), m.9 (yurt dışı aktarım — 7499 s.K. ile değişik), m.10 (aydınlatma), m.11 (haklar), m.12 (veri güvenliği), m.13 (başvuru), m.14 (şikayet), m.18 (kabahatler)
+- **VERBİS Yönetmeliği** — RG 30.12.2017, Sayı 30286
+- **Aydınlatma Yükümlülüğü Tebliği** — RG 10.03.2018, Sayı 30356
+- **Silme, Yok Etme, Anonimleştirme Yönetmeliği** — RG 28.10.2017, Sayı 30224
+- **Kişisel Verileri Koruma Kurulu kararları** (31.01.2018 t. 2018/10 özel nitelikli veriler; 02.05.2019 t. 2019/125 yurt dışı aktarım)
+
+Her atıf [mevzuat.gov.tr](https://mevzuat.gov.tr) üzerinden doğrulanmalı. Uydurma madde YASAKTIR.

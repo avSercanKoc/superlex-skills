@@ -28,6 +28,50 @@ A GDPR-compliant privacy policy must cover:
 13. **Whether providing data is a statutory or contractual requirement** — Art. 13(2)(e)
 14. **Automated decision-making, including profiling** — Art. 13(2)(f) / 14(2)(g) + Art. 22
 
+## Output Template (EU — English Document Scaffold)
+
+The agent uses this scaffold when writing the GDPR policy. Headings are in English.
+
+```
+PRIVACY POLICY
+
+1. IDENTITY OF THE CONTROLLER
+   - Name, address, registration, contact, DPO contact (if any)
+
+2. SCOPE OF THIS POLICY
+
+3. DEFINITIONS (per GDPR Art. 4)
+
+4. CATEGORIES OF PERSONAL DATA PROCESSED
+
+5. PURPOSES AND LEGAL BASES (Art. 6, Art. 9 where applicable)
+
+6. SOURCES OF PERSONAL DATA
+
+7. RECIPIENTS / CATEGORIES OF RECIPIENTS
+
+8. INTERNATIONAL TRANSFERS (Art. 44-49 safeguards)
+
+9. RETENTION PERIODS
+
+10. SECURITY MEASURES (Art. 32)
+
+11. DATA SUBJECT RIGHTS (Arts. 15-22)
+    - Right of access, rectification, erasure, restriction,
+      portability, objection, automated decision-making
+
+12. RIGHT TO WITHDRAW CONSENT (where applicable)
+
+13. RIGHT TO LODGE A COMPLAINT (Art. 77)
+
+14. AUTOMATED DECISION-MAKING / PROFILING
+
+15. POLICY CHANGES
+
+---
+[DISCLAIMER hook: core/DISCLAIMER.md is appended verbatim, [Date] = DD.MM.YYYY]
+```
+
 ## Art. 6 — Lawful Basis for Processing
 
 Processing is lawful only if at least one applies:
@@ -102,3 +146,71 @@ Mandatory where:
 ## Cookie Consent (e-Privacy Directive)
 
 Cookie consent is governed by the **e-Privacy Directive** (national implementation), NOT GDPR directly. Consent must meet the GDPR standard (Art. 4(11)) but the consent trigger is the e-Privacy rule. Cookie policies should be SEPARATE from the general privacy policy (do not embed cookie consent mechanics inside the main policy).
+
+## Post-Generation HARD-GATE Template (EU)
+
+The user-facing, English-language prompt bound to the post-generation HARD-GATE defined in `SKILL.md`. The agent fills placeholders with concrete values and delivers this text before seeking approval:
+
+```
+The following clauses in this policy are the highest-risk sections:
+
+1. [Legal-basis mapping — Art. 6 / Art. 9 selections] — Risk:
+   each processing purpose must be tied to a lawful basis; reliance
+   on consent where another basis would fit can be challenged.
+   💡 Alternative: list consent-based purposes in a dedicated block.
+
+2. [International transfers block] — Risk: post-Schrems II, Art. 46
+   safeguards require a Transfer Impact Assessment; relying on
+   derogations (Art. 49) requires strict necessity.
+   💡 Alternative: declare SCCs (Commission Implementing Decision
+   (EU) 2021/914) + TIA explicitly.
+
+3. [Retention periods] — Risk: generic "as long as necessary"
+   wording violates Art. 5(1)(e); a concrete period or determining
+   criterion per category is required.
+   💡 Alternative: table mapping each data category to a maximum
+   retention period or concrete trigger event.
+
+Have you reviewed these sections for your specific situation?
+Would you like to apply the suggested alternatives?
+```
+
+No delivery occurs before explicit user approval.
+
+## Jurisdiction-Specific Anti-Patterns (EU)
+
+- ❌ Listing Arts. 15-22 rights as fewer than 8 items or omitting Art. 22 (automated decision-making)
+- ❌ Declaring an Art. 6(1)(f) "legitimate interests" basis without identifying the interest or running a balancing test (recitals 47-49)
+- ❌ Relying on Art. 49 derogations as a routine transfer mechanism (the derogations are exceptional, not default)
+- ❌ Citing Directive 95/46/EC (repealed)
+- ❌ Combining cookie-consent mechanics with the privacy policy instead of keeping them separate (e-Privacy jurisdictionally distinct)
+- ❌ Omitting the supervisory-authority complaint right (Art. 77) or naming a non-existent authority
+- ❌ Stating controller/processor status ambiguously (the regime depends on this distinction)
+- ❌ Presenting a Member-State-specific rule as EU-wide without anchoring it in the applicable national implementation
+
+## Jurisdiction-Specific SELF-TEST (EU)
+
+```
+- [ ] All citations resolve to GDPR (Regulation (EU) 2016/679) — no Directive 95/46/EC references
+- [ ] Arts. 15-22 rights list is complete (access, rectification, erasure, restriction, portability, objection, Art. 22) with Art. 19 notification obligation covered
+- [ ] Every processing purpose is mapped to a single Art. 6 basis (and Art. 9 basis where special-category data is involved)
+- [ ] Where Art. 6(1)(f) is relied on, the legitimate interest is identified and balancing acknowledged
+- [ ] International transfers section names a mechanism (Art. 45 / Art. 46 / Art. 49) and, if Art. 46, references a TIA
+- [ ] DPO appointment status is stated (appointed with contact OR not required with rationale under Art. 37)
+- [ ] Right to withdraw consent (Art. 13(2)(c)) appears where consent is the basis for any purpose
+- [ ] Right to lodge a complaint (Art. 77) names the applicable supervisory authority category
+- [ ] Retention periods are either concrete or defined by a determining criterion per category
+- [ ] Cookie consent is NOT embedded — the policy references the separate cookie document
+- [ ] Document is in English (or a consistent single EU working language if explicitly overridden) — no language drift
+```
+
+## Legal References (EU)
+
+- **Regulation (EU) 2016/679 (GDPR)** — OJ L 119, 04.05.2016
+  - Arts. 4 (definitions), 5 (principles), 6 (lawfulness), 9 (special categories), 12-22 (data subject rights), 24-32 (controller obligations, security), 33-34 (breach), 37-39 (DPO), 44-49 (transfers), 77 (complaints), 83 (fines)
+- **Directive 2002/58/EC** (e-Privacy) — as amended by 2009/136/EC
+- **Commission Implementing Decision (EU) 2021/914** — Standard Contractual Clauses
+- **Court of Justice of the EU** — Schrems II (C-311/18) on Art. 46 safeguards
+- **EDPB Guidelines** — [edpb.europa.eu](https://edpb.europa.eu) (current version must be checked at policy generation time)
+
+All references verifiable on [eur-lex.europa.eu](https://eur-lex.europa.eu) or the EDPB site. Fabricated articles are PROHIBITED.

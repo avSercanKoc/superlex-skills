@@ -1,39 +1,47 @@
 ---
 name: contract-review
 description: "Use when the user wants an existing contract, agreement, sozlesme, mukavele, or protocol reviewed, risk-assessed, or analyzed clause by clause"
-version: "0.1.0"
+version: "0.2.0"
 jurisdiction: ["tr"]
 output_type: "analysis"
 risk_level: "high"
 ---
 
-# Contract Review (Sözleşme İnceleme)
+# Contract Review
 
 ## Overview
 
 Produces a structured risk-analysis report on an EXISTING contract: clause-by-clause risk matrix, missing-clause list, ambiguous-language list, balance assessment, and a prioritized action plan. This skill never drafts a new contract from scratch — it critiques an input document.
+
+## Instruction Priority
+
+When instructions conflict, resolve in this order:
+
+1. **User's explicit instructions** (AGENTS.md, direct user messages) — highest priority.
+2. **Skill protocols** (HARD-GATE, SELF-TEST, DISCLAIMER, Red Flags) — overrides default helpfulness.
+3. **Default system prompt** — lowest priority.
 
 ## When to Use
 
 Trigger this skill when:
 
 - The user pastes or attaches an existing contract and asks for review / analysis / risk assessment
-- Phrases: "bu sözleşmeyi inceler misin", "sözleşme analizi", "contract review", "risk taraması", "bu maddeyi değerlendir"
-- Before signing — during due diligence or negotiation prep
-- During ongoing negotiation, to compare counterparty's latest redline
+- Phrases: "bu sözleşmeyi inceler misin", "sözleşme analizi", "contract review", "risk taraması", "clause-by-clause analysis"
+- Before signing — during due diligence or negotiation preparation
+- During ongoing negotiation, to compare a counterparty's latest redline
 
 Do NOT use when:
 
 - The user wants a contract DRAFTED from scratch (different skill, not yet in library)
 - The user wants only a specific clause TRANSLATED (out of scope)
-- The user asks general legal advice without a document attached — request the document first
+- The user asks for general legal advice without a document attached — request the document first
 
 ## Jurisdiction Configuration
 
-- Default: `tr`
 - Supported: `tr`
-- Jurisdiction file: `skills/contract-review/jurisdictions/tr.md`
-- If the contract's chosen law is non-Turkish but the user requests a Turkish-law review, WARN the user that the analysis will apply Turkish conflict-of-laws rules (5718 s. MÖHUK) and that foreign-law clauses may be analyzed only from a Turkish-public-policy perspective.
+- Default: `tr`
+- The agent MUST load `jurisdictions/tr.md` after context collection and before analysis. That file provides: statutory citations, the output template's section labels in the working language, the pre- and post-generation HARD-GATE prompt text, the jurisdiction-specific Red Flags, anti-patterns, and SELF-TEST items.
+- If the contract's chosen law is non-Turkish but the user requests a Turkish-law review, the agent MUST warn the user that the analysis will apply the Turkish conflict-of-laws framework referenced in `jurisdictions/tr.md` and that foreign-law clauses can only be analyzed from a Turkish-public-policy perspective.
 
 ## Context Requirements
 
@@ -45,7 +53,7 @@ STRONGLY RECOMMENDED: preferences.default_court,
                      client.industry (sector-specific analysis),
                      contract_stage (negotiation | pre-signature | post-signature)
 
-OPTIONAL: firm.attorney_name, contract_type (if obvious from document, derived; else user-supplied)
+OPTIONAL: firm.attorney_name, contract_type (if obvious from the document, derived; else user-supplied)
 ```
 
 If MANDATORY fields are missing, the agent MUST invoke **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md`. The pre-generation HARD-GATE below also re-asks critical stance questions even when context exists.
@@ -57,6 +65,7 @@ digraph contract_review_flow {
     rankdir=TB;
     start     [label="User submits contract" shape=ellipse];
     context   [label="lawyer-context-manager\n(collect/refresh)" shape=box];
+    load      [label="Load jurisdictions/<code>.md" shape=box];
     hardgate1 [label="Pre-Generation\nHARD-GATE" shape=box style=filled fillcolor="#ffcccc"];
     readdoc   [label="Read contract\n(full text)" shape=box];
     classify  [label="Classify contract\ntype + parties" shape=box];
@@ -71,7 +80,8 @@ digraph contract_review_flow {
     deliver   [label="Deliver report" shape=ellipse];
 
     start     -> context;
-    context   -> hardgate1;
+    context   -> load;
+    load      -> hardgate1;
     hardgate1 -> readdoc;
     readdoc   -> classify;
     classify  -> matrix;
@@ -89,63 +99,23 @@ digraph contract_review_flow {
 
 ## Output Specification
 
-Report structure (Turkish, since default_language = Türkçe):
+The report follows this abstract structure, in this order. Concrete section labels, risk-matrix column headers, and the statutory mappings in the risk column come from `jurisdictions/<code>.md` under its `Output Template` section:
 
-```
-SÖZLEŞME İNCELEME RAPORU
+1. General information (contract type, parties and positions, date, term, governing law, forum, review stage)
+2. Risk matrix — every numbered clause of the contract, each labeled 🟢 🟡 🔴 with concrete finding, statutory basis, and recommended alternative text
+3. Missing-clause list — standard clauses expected for the classified contract type
+4. Ambiguous-phrases list — with concrete replacement wording for each
+5. Balance assessment — which party benefits and why (no neutral summary)
+6. Prioritized action list — three buckets (🔴 change now, 🟡 negotiate, 🟢 acceptable)
+7. Suspicious-reference log — citations to repealed statutes, missing annexes, broken cross-references
 
-1. GENEL BİLGİLER
-   - Sözleşme türü (satış / hizmet / kira / distribütörlük / ...)
-   - Taraflar ve konumları (A = müvekkil, B = karşı taraf)
-   - Sözleşme tarihi, süresi, uygulanacak hukuk, yetkili mahkeme
-   - İnceleme aşaması (müzakere / imza öncesi / imza sonrası)
-
-2. RİSK MATRİSİ
-   Her maddenin 🟢 🟡 🔴 etiketiyle değerlendirmesi.
-
-   | Madde No | Konu | Risk | Bulgu | Hukuki Dayanak | Öneri |
-   |----------|------|------|-------|----------------|-------|
-   | Md. 5    | Cezai şart | 🔴 | Fahiş; TBK m.182/3 indirim riski | TBK m.179, m.182/3 | Tutar %X'e çekilsin veya "kısmi indirim müvekkili etkilemeyecek" ibaresi eklensin |
-   | Md. 8    | Fesih | 🟡 | Karşı tarafa tek taraflı sınırsız hak | TBK m.126 | Haklı sebep / süre eklensin |
-   | ...      | ...  | ... | ...   | ...            | ...   |
-
-3. EKSİK MADDELER
-   Sözleşme türüne göre standart olması gereken maddeler:
-   - [ ] Mücbir sebep tanımı eksik
-   - [ ] KVKK uyumu eki yok (veri işleme varsa)
-   - [ ] Devir yasağı yok
-   - ...
-
-4. MUĞLAK İFADELER
-   - "mümkün olan en kısa sürede" (Md. 3) → öneri: "sipariş tarihinden itibaren 7 iş günü"
-   - "makul ölçüde" (Md. 11) → öneri: ölçü kriteri tanımlansın
-
-5. TARAFLAR ARASI DENGE ANALİZİ
-   - Hangi tarafın lehine ağırlık var? (somut gerekçe ile)
-   - Müvekkil açısından net zayıf pozisyon sahaları
-   - Pazarlık kaldıracı sunan karşılık maddeler
-
-6. ÖNCELİKLİ AKSİYONLAR
-   Üç kategoride sıralı liste:
-   - 🔴 HEMEN DEĞİŞTİRİN (imzalamadan önce zorunlu)
-   - 🟡 MÜZAKERE EDİN (risk azaltıcı, imkân varsa)
-   - 🟢 KABUL EDİLEBİLİR (not: izlenmesi yeterli)
-
-7. GERÇEKLEŞMEYEN / ŞÜPHELİ REFERANSLAR
-   - Yürürlükten kalkmış bir kanuna atıf yapılmış mı?
-   - Sözleşmede anılan bir ek / taahhüt eksik mi?
-
----
-[DISCLAIMER hook: Append core/DISCLAIMER.md here verbatim]
-```
-
-**Disclaimer hook:** `core/DISCLAIMER.md` is appended at the very end of the report. `[Date]` → rapor üretim tarihi (GG.AA.YYYY).
+**Disclaimer hook:** `core/DISCLAIMER.md` is appended at the very end of the report. `[Date]` is filled with the report-generation date using `preferences.date_format`.
 
 ## Risk Zones
 
-- 🟢 General info section (parties, type, date), missing-clause checklist shell, terminology definitions
+- 🟢 General information block (parties, type, date), missing-clause checklist shell, terminology definitions
 - 🟡 Missing-clause identification (depends on correct contract-type classification), ambiguous-phrase flagging, balance narrative
-- 🔴 Risk matrix legal-basis mapping (wrong TBK/TTK article citation is critical), prioritized action recommendations (direct impact on negotiation), any conclusion that a specific clause is enforceable / unenforceable
+- 🔴 Risk-matrix legal-basis mapping (a wrong article citation is critical), prioritized action recommendations (direct impact on negotiation), any conclusion that a specific clause is enforceable or unenforceable
 
 ## Agentic Verification Gate
 
@@ -155,25 +125,19 @@ This skill is 🔴 High Risk. BOTH a pre-generation and a post-generation HARD-G
 
 ```
 <HARD-GATE phase="pre-generation">
-Before reading / analyzing the contract, the agent MUST stop and ask:
+Before reading or analyzing the contract, the agent MUST stop and confirm:
 
-1. "Bu sözleşmede hangi tarafı temsil ediyorsunuz?"
-   (Taraf A mı, Taraf B mi, üçüncü taraf mı? Analiz bu tarafın
-    lehine/aleyhine yönelecek.)
+1. Which party does the client represent? (A / B / third) — the analysis direction depends on this
+2. At what stage is the contract? (negotiation / pre-signature / post-signature) — post-signature constrains available actions
+3. Are there specific clauses the client is concerned about?
+4. Which law governs the contract? Is there a forum-selection or arbitration clause?
+5. Is the contract typical for the client's sector?
 
-2. "Sözleşme hangi aşamada?" (müzakere / imza öncesi / imza sonrası)
-   İmza sonrası ise aksiyonlar kısıtlı olur.
-
-3. "Özellikle endişe duyduğunuz madde(ler) var mı?"
-
-4. "Uygulanacak hukuk Türk Hukuku mu? Yetkili mahkeme / tahkim
-   şartı var mı? (Sözleşmede yazılıysa teyit edelim.)"
-
-5. "Sözleşme tipik sektörünüze özgü mü?"
-   (Örn. ticari satış / distribütörlük / hizmet / iş sözleşmesi)
-
-Do NOT start analysis until all five are answered.
-Fabricating the answers or inferring from the document alone is FORBIDDEN.
+The working-language phrasing of each question is defined in jurisdictions/<code>.md
+under `Pre-Generation HARD-GATE Template`. Do NOT start analysis until all five
+are answered. Fabricating the answers or inferring solely from the document is
+FORBIDDEN.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
@@ -181,96 +145,89 @@ Fabricating the answers or inferring from the document alone is FORBIDDEN.
 
 ```
 <HARD-GATE phase="post-generation">
-After producing the report the agent MUST stop and ask:
+After producing the report the agent MUST stop and present the three highest-risk
+findings, each with a concrete risk explanation and a suggested alternative text.
+The user-facing text is delivered in the working language of the active jurisdiction
+using the template defined in jurisdictions/<code>.md under
+`Post-Generation HARD-GATE Template`.
 
-"Bu sözleşmede aşağıdaki maddeler en yüksek riskli kısımlardır:
-
-1. [En riskli madde 1] — Risk: [kısa açıklama] → 💡 Alternatif: [metin]
-2. [En riskli madde 2] — Risk: [kısa açıklama] → 💡 Alternatif: [metin]
-3. [En riskli madde 3] — Risk: [kısa açıklama] → 💡 Alternatif: [metin]
-
-Öncelikli aksiyonlardan hangilerini detaylandırmamı istersiniz?
-Karşı tarafa sunulacak redline taslağını hazırlayayım mı?
-Tespit ettiğim eksik maddeler için alternatif metin önerisi ister misiniz?"
-
-The report is NOT complete until the user confirms the findings
-or requests iteration. Delivery before approval is FORBIDDEN.
+The report is NOT considered complete until the user confirms or requests iteration.
+Delivery before approval is FORBIDDEN.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
 ## Red Flags — STOP and Ask the User
 
-The agent MUST stop BEFORE finalizing the report if any of the following is present:
+The agent MUST stop BEFORE finalizing the report if any of the following applies:
 
-- Hangi tarafın temsil edildiği belirsiz (pre-gen HARD-GATE eksik)
-- Sözleşmenin tipini belirleyememe (distribütörlük mü, franchise mi, satış mı?)
-- Uygulanacak hukukun yabancı olması ve Türk hukuku referansları istenmesi (MÖHUK m.2, m.24)
-- Sözleşmede okunamayan ek / ilave referansı (ek-1, protokol vb. metinde yok)
-- Yürürlükten kalkmış mevzuata atıf — tespit edildi ama karşı tarafla teyit edilmedi
-- Cezai şart tutarının sözleşme bedeline oranı belirlenemedi (fahiş mi değil mi?)
-- Bir tarafın tüketici (TKHK m.3) olup olmadığı belirsiz — farklı koruma rejimi tetikler
-- KVKK kapsamında veri işleme var ama sözleşmede veri eki yok — ayrı uyarı gerekir
-- İş sözleşmesi incelemesinde iş güvencesi kapsamı (İK m.18: 30 işçi + 6 ay kıdem) teyit edilmedi
+- Which party the client represents is unclear (pre-gen HARD-GATE was incomplete)
+- The contract type cannot be classified with confidence
+- The governing law is foreign but a domestic-law analysis is requested without a conflict-of-laws framework acknowledgment
+- An unreadable annex / addendum is referenced and not provided
+- A repealed statute is cited and was not verified with the counterparty
+- The penalty-clause amount cannot be compared to the contract value (gross-disproportion test cannot run)
+- Whether a party qualifies as a consumer cannot be determined (different protection regime triggered)
+- The contract involves personal-data processing but no data-protection addendum or cross-reference is present
+- For employment-contract reviews, the statutory protection threshold cannot be confirmed
+
+Jurisdiction-specific Red Flags tied to statute numbers (e.g. merchant-to-merchant notice-form rules, consumer-protection triggers, employment-threshold formulas) live in `jurisdictions/<code>.md` under `Jurisdiction-Specific Red Flags`.
 
 ## Anti-Patterns (Legal AI Slop)
 
-- ❌ Sözleşmenin tamamını okumadan genel yorum yapmak
-- ❌ "Bu sözleşme iyidir / kötüdür" gibi kesin yargı — analiz madde madde, gerekçeli
-- ❌ Tarafların lehine/aleyhine değerlendirme yapmadan özetle yetinmek
-- ❌ Eksik madde tespit etmeden raporu kapatmak
-- ❌ US-law terimleri (indemnification, hold harmless, warranty) Türk hukuku karşılıkları olmadan kopyalamak
-- ❌ Cezai şart için hakim indirim yetkisini (TBK m.182/3) unutarak "sabit tutar" tavsiye etmek
-- ❌ Tüketici sözleşmesinde TKHK emredici hükümlerine aykırı maddeleri "risk: düşük" etiketlemek
-- ❌ Yürürlükten kalkmış 818 s. BK veya 6762 s. TTK'ya atıf
-- ❌ Tahkim şartını yazılı şekil zorunluluğu (6100 s.K. m.412) kontrol etmeden geçerli saymak
-- ❌ Emredici hukuka aykırılık (TBK m.27) testini atlayıp sadece "dengesiz" yorumuyla yetinmek
+- ❌ Producing a general opinion without reading the full contract
+- ❌ Overall "this contract is good / bad" verdicts — analysis must be clause-by-clause with reasons
+- ❌ Failing to declare which party benefits (omitting the balance assessment)
+- ❌ Delivering the report without a missing-clause list
+- ❌ Importing cross-system terms (`indemnification`, `hold harmless`, `warranty`) without adapting to the active jurisdiction
+- ❌ Recommending a fixed penalty-clause amount without acknowledging the statutory judicial-reduction power of the active jurisdiction
+- ❌ Flagging a consumer-contract clause as "low risk" when it conflicts with a mandatory consumer-protection provision
+- ❌ Citing repealed legislation
+- ❌ Treating an arbitration clause as enforceable without checking the written-form requirement of the active jurisdiction
+- ❌ Skipping the mandatory-law conformity test before offering only a "balance" critique
+
+Jurisdiction-specific anti-patterns live in `jurisdictions/<code>.md`.
+
+### Rationalization (Self-Correction)
+
+| Thought | Reality |
+|---------|---------|
+| "I'll just summarize the contract quickly" | You are doing a strict legal risk review, not a summary. Clause-by-clause analysis is required. |
+| "The user is in a hurry, I'll just skip the HARD-GATE" | Rushed users are exactly why the HARD-GATE exists. Never skip it. |
+| "Violating the letter is fine if I follow the spirit" | Violating the letter is violating the spirit. No exceptions. |
+| "I'll trust the drafter's self-report" | Drafters hallucinate. Verify evidence manually. |
 
 ## Fact-Check Protocol
 
 ```
 <SELF-TEST>
-Before delivering the report the agent MUST confirm:
+Before delivering the report, the agent MUST run:
 
-- [ ] All cited TBK / TTK / TMK / TKHK article numbers match jurisdictions/tr.md
-- [ ] No reference to 818 sayılı BK or 6762 sayılı TTK (abrogated)
+Generic checks (every jurisdiction):
 - [ ] Risk matrix covers EVERY numbered clause of the contract (no gaps)
-- [ ] Each 🔴 risk has a concrete legal basis + alternative text
+- [ ] Each 🔴 risk entry cites a concrete legal basis AND provides alternative text
 - [ ] Missing-clause list is contract-type-specific (not generic)
-- [ ] Ambiguous phrases list contains specific replacement wording
-- [ ] Balance analysis names which party benefits and why (not neutral summary)
-- [ ] Consumer-contract check: if party A or B is a tüketici, TKHK emredici hükümleri applied
-- [ ] Cezai şart clauses analyzed with TBK m.182/3 (hakim indirimi) note
-- [ ] Sorumluluk sınırlandırma clauses checked against TBK m.115 (kasıt/ağır kusurdan kaçınılamaz)
-- [ ] Rekabet yasağı clauses checked against TBK m.444-447 (yer/süre/konu sınırı)
-- [ ] KVKK trigger: if the contract involves personal data, data-processing addendum recommendation is made
-- [ ] Tacirler arası sözleşme ise TTK m.18/3 bildirim şekli teyit edildi
-- [ ] Action items grouped 🔴/🟡/🟢 with concrete steps, not generic advice
+- [ ] Ambiguous-phrases list contains specific replacement wording
+- [ ] Balance analysis names which party benefits and why (not a neutral summary)
+- [ ] Action items are grouped 🔴/🟡/🟢 with concrete steps, not generic advice
+- [ ] No cross-system boilerplate terms remain without adaptation
 - [ ] core/DISCLAIMER.md is appended with correct [Date]
+
+Jurisdiction-specific checks:
+- [ ] All items in the `Jurisdiction-Specific SELF-TEST` section of jurisdictions/<code>.md pass
+**CRITICAL:** Do Not Trust the Report. Verify every evidence manually from the source documents.
 </SELF-TEST>
 ```
 
 ## Legal References
 
-- **6098 sayılı Türk Borçlar Kanunu (TBK)** — RG 04.02.2011, Sayı 27836
-  - m.1, m.12, m.19-20, m.25-27, m.29-30, m.36-38, m.112-118, m.117-126, m.136-138, m.146-147, m.179-182, m.444-447, m.115
-- **6102 sayılı Türk Ticaret Kanunu (TTK)** — RG 14.02.2011, Sayı 27846
-  - m.18/3, m.54-63, m.122
-- **4721 sayılı Türk Medeni Kanunu (TMK)** — RG 08.12.2001, Sayı 24607
-  - m.2 (dürüstlük kuralı), m.9-16 (ehliyet)
-- **6502 sayılı Tüketicinin Korunması Hakkında Kanun (TKHK)** — RG 28.11.2013, Sayı 28835
-- **4857 sayılı İş Kanunu** — RG 10.06.2003, Sayı 25134
-- **6100 sayılı Hukuk Muhakemeleri Kanunu (HMK)** — RG 04.02.2011, Sayı 27836
-  - m.412 (tahkim şartı — yazılı şekil)
-- **5718 sayılı Milletlerarası Özel Hukuk ve Usul Hukuku Hakkında Kanun (MÖHUK)** — yabancı hukuk seçimi
-- Yargıtay içtihatları ([karararama.yargitay.gov.tr](https://karararama.yargitay.gov.tr))
-
-All references verifiable on [mevzuat.gov.tr](https://mevzuat.gov.tr). Fabricated articles PROHIBITED.
+Statute-level citations, regulation numbers, gazette issues, and case-law anchors live in `jurisdictions/<code>.md` under its `Legal References` section. Every reference there MUST be verifiable in an official source. Fabricated provisions are PROHIBITED across the library.
 
 ---
 
 **Related:**
-- `core/SKILL-ANATOMY.md` — structure standard
-- `core/RISK-FRAMEWORK.md` — 🔴 High Risk definition
-- `core/AGENTIC-VERIFICATION.md` — all 4 steps + pre-generation HARD-GATE mandatory
-- `core/DISCLAIMER.md` — appended at end of report
 - **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md` — run first if context is missing
+- **REQUIRED BACKGROUND:** `core/RISK-FRAMEWORK.md` (risk levels)
+- **REQUIRED BACKGROUND:** `core/AGENTIC-VERIFICATION.md` (safety protocols)
+- `core/SKILL-ANATOMY.md`
+- `core/DISCLAIMER.md`

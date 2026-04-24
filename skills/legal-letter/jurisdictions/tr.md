@@ -1,5 +1,7 @@
 # Türkiye — İhtarname, Bildirim ve Fesih Mektubu Referansları
 
+> Bu dosya `skills/legal-letter/SKILL.md` tarafından yüklenir. `SKILL.md` soyut ve İngilizcedir; somut Türk hukuku detayları, çıktı şablonu, Türkçe HARD-GATE istemleri ve Türkiye'ye özel SELF-TEST kalemleri burada tanımlanır.
+
 ## Temel Mevzuat
 
 - **7201 sayılı Tebligat Kanunu** — RG 19.02.1959, Sayı 10139 (pek çok kez değişiklik)
@@ -9,6 +11,8 @@
 - **6098 sayılı Türk Borçlar Kanunu (TBK)** — temerrüt, fesih, mehil tayini hükümleri
 - **1512 sayılı Noterlik Kanunu** — noter ihtarnamesi usulü
 - **5809 sayılı Elektronik Haberleşme Kanunu** (KEP referansı)
+- **6100 sayılı Hukuk Muhakemeleri Kanunu (HMK)** — süre hesabı (m.92-93), yazılı delil başlangıcı (m.202)
+- **5237 sayılı Türk Ceza Kanunu (TCK)** — tehdit (m.106), hakaret (m.125) — ihtarname üslubunda kritik sınır
 
 > Tüm atıflar [mevzuat.gov.tr](https://mevzuat.gov.tr) üzerinden doğrulanmalı.
 
@@ -67,46 +71,196 @@ Muacceliyet kazanmış bir borçta borçlunun temerrüde düşmesi için **ihtar
 - **TBK m.125:** Temerrüde düşen borçlunun alternatif hakları
 - **TBK m.126 (Sürekli edimli sözleşmelerde):** Kiralama, hizmet gibi sürekli edimli sözleşmelerde fesih ileriye etkili olur; mehil tayini koşulları farklıdır
 
-## İhtarnamenin Zorunlu Unsurları
+## Ayıp Bildirimi — Kritik Süreler
 
-1. **Başlık:** "İHTARNAMEDİR" veya "FESİH BİLDİRİMİDİR" veya "BİLDİRİM" (net, kesin)
-2. **Keşideci:** Ad/Unvan, adres, TCKN/MERSİS (TCKN yerine [TCKN_PLACEHOLDER])
-3. **Muhatap:** Ad/Unvan, adres (tüzel kişi ise kayıtlı merkez)
-4. **Vekil (varsa):** Avukat ad, baro, adres
-5. **Konu:** Bildirimin özeti (temerrüt, fesih, ödeme talebi, ayıp bildirimi vb.)
-6. **Olay Örgüsü:** Kronolojik, somut (tarih, belge, sözleşme maddesi referansları)
-7. **Hukuki Dayanak:** İlgili TBK / TTK maddeleri
-8. **Talep (Netice-i Talep):** Karşı taraftan ne istendiği + süre (örn. "işbu ihtarnamenin tebliğinden itibaren 7 gün içinde")
-9. **İhlal Halinde Sonuçlar:** Fesih, dava, icra takibi uyarısı
-10. **Tarih ve İmza**
+- **TBK m.223** (adi satım) — genel muayene ve ihbar yükümlülüğü
+- **TTK m.23/1-c** — ticari satımda: açık ayıplar 2 gün içinde, gizli ayıplar 8 gün içinde muayene ve ihbar; aksi halde MALI KABUL ETMİŞ SAYILIR
+- **TKHK m.12** — tüketici satımlarında 2 yıllık zamanaşımı (ayıbın hile ile gizlenmesi hariç)
+- Ayıp ihbar süresi kaçmışsa ihtar anlamsız hale gelir — HARD-GATE'te bu risk mutlaka kontrol edilir
 
-## İhtarnameye Eklenecek Standart Uyarılar
+## Output Template (TR)
 
-- "Aksi hâlde tüm yasal haklarımızın saklı kaldığını bildiririz" (hak saklama beyanı)
-- Fesih ise: "Sözleşmenin [tarih] itibariyle feshedilmiş sayılacağını" (fesih iradesi belirsiz olmamalı)
-- Ticari iş ise: "Tacirler arası bildirim olarak TTK m.18/3 uyarınca [yöntem] ile yapılmıştır"
+İhtarname Türkçe düzenlenir; aşağıdaki şablon `SKILL.md` → Output Specification numaralandırması ile birebir eşleşir.
 
-## Dili ve Üslubu
+```
+İHTARNAMEDİR              ← veya "FESİH BİLDİRİMİDİR" / "TEMERRÜT İHTARIDIR" / "AYIP BİLDİRİMİDİR" (tek amaç)
 
-- **Formal ve nesnel** — kişisel tehdit, duygu, küçümseme KESİNLİKLE YASAK (TCK m.106 tehdit riski, TCK m.125 hakaret riski)
-- **Kesin, net ifadeler** — "mümkün olan en kısa sürede" yerine "7 gün içinde"
-- **Pasif ses yerine aktif ses** mümkün olduğunca (belirsizliği azaltır)
-- **Yargıtay terminolojisi** tercih edilir ("temerrüt", "mehil tayini", "haklı fesih", "dönme")
+KEŞİDECİ:
+Ad/Unvan : {client.legal_name | client.full_name}
+TCKN/MERSİS : [TCKN_PLACEHOLDER] | {client.mersis_no}
+Adres : {client.registered_address | client.residential_address}
 
-## Sık Yapılan Hatalar
+VEKİL (varsa):
+Av. {firm.attorney_name}, {bar_association} Barosu ({bar_no})
+Adres/İletişim : {firm.contact}
 
-- ❌ E-posta / WhatsApp ile tacirler arası fesih (TTK m.18/3 ihlali → fesih geçersiz)
-- ❌ Süre belirtmeden "derhal ödeyiniz" (mehil tayini eksik)
-- ❌ Karşı tarafın adresinin eksik veya hatalı (tebliğ edilemeyebilir)
-- ❌ Fesih iradesini muğlak bırakma ("gerekirse fesih hakkımı kullanırım" — geçersiz)
-- ❌ Ayıplı mal ihbarında süre geçmiş (TBK m.223: 2 yıl, TKHK m.12: 2 yıl; ticaride TTK m.23/1-c 8 gün muayene)
-- ❌ Tehditkâr üslup (TCK m.106 tehdit suçu riski)
-- ❌ Noter gerekli iken iadeli taahhütlü seçmek (değerli uyuşmazlıklarda)
-- ❌ KEP adresi olmayan muhataba KEP'ten gönderim (adres yoksa tebliğ sayılmaz)
-- ❌ Tebligat yöntemini sözleşmeye aykırı seçmek (sözleşmede noter şart koşulmuşsa)
+MUHATAP:
+Ad/Unvan : {counterparty.legal_name | counterparty.full_name}
+Adres : {counterparty.address}  (kayıt kaynağı: ticaret sicili / nüfus / sözleşme)
+
+KONU: {bildirimin tek cümlelik özeti}
+
+AÇIKLAMALAR:
+1. [Tarih] — [olay / belge / sözleşme maddesi referansı]
+2. [Tarih] — [olay / belge / sözleşme maddesi referansı]
+3. ...
+
+HUKUKİ DAYANAK:
+İşbu bildirim 6098 sayılı TBK m.{...}, 6102 sayılı TTK m.{...} ve/veya Sözleşmenin m.{...} hükümleri uyarınca düzenlenmiştir.
+{Tacirler arası ise ek cümle: "Tacirler arası bildirim olarak TTK m.18/3 uyarınca {yöntem} ile tebliğ edilmektedir."}
+
+NETİCE-İ TALEP:
+İşbu ihtarnamenin tarafınıza tebliğinden itibaren {X} gün içinde:
+- {somut edim / somut tutar + KDV + işlemiş faiz}
+- {veya} sözleşmeye aykırı durumun ortadan kaldırılması
+tarafınızca yerine getirilmediği takdirde;
+
+AKSİ HALDE:
+- Sözleşme {tarih} itibariyle feshedilmiş / sözleşmeden dönülmüş sayılacaktır.   ← fesih ise net irade
+- Aleyhinizde dava / icra takibi başlatılacaktır.
+- Tüm yasal haklarımızı saklı tuttuğumuzu beyan ederiz.
+
+Saygılarımızla.
+
+Tarih : {generation_date}
+İmza  : _______________________   (keşideci / vekil)
+
+---
+NOT — NOTER / KEP OPERATÖRÜNE:
+- Tebligat yöntemi : {notary | KEP | iadeli taahhütlü | elden}
+- Tacirler arası mı : {evet/hayır}  (evet ise TTK m.18/3 şekil listesi dışına çıkılmamalı)
+- Gerekirse UETS / KEP adresi : {counterparty.e_notice_address}
+- Tebliğ sonrası tebliğ evrakı keşideciye iletilecektir.
+```
+
+`core/DISCLAIMER.md` belgenin en sonuna `[Date]` alanı doldurularak eklenir.
+
+## Pre-Generation HARD-GATE Template (TR)
+
+Ajan taslak yazmadan önce, kullanıcıya Türkçe olarak aşağıdaki beş soruyu birlikte sorar. Hiçbirini uydurmaz; yanıt eksikse taslağa BAŞLAMAZ.
+
+```
+İhtarname hazırlamaya başlamadan önce beş kritik soru:
+
+1) Bu bildirimin **tek** hukuki amacı nedir?
+   (Temerrüt ihtarı / Fesih / Sözleşmeden dönme / Ayıp bildirimi / Ödeme talebi / Diğer)
+   — Birden fazla amacı tek ihtarnamede toplamak ekseriyetle hatadır.
+
+2) Muhatabın kimliği ve adresi nedir, adresi nasıl doğruladınız?
+   (Ticaret sicili / nüfus / sözleşme / diğer)
+   — Adres şüpheli veya bilinmiyorsa durun — adres uydurmak YASAKTIR.
+
+3) Tebliğ yöntemi ne olacak?
+   (Noter / KEP (UETS) / iadeli taahhütlü / elden imzaya karşı)
+   — Taraflardan en az biri tacir mi? Evet ise TTK m.18/3 uyarınca yalnız
+     noter, taahhütlü mektup, telgraf veya KEP ile tebligat geçerlidir.
+   — Muhatabın KEP/UETS adresi var mı?
+   — Sözleşmede zorunlu bir tebliğ biçimi mi kararlaştırılmış?
+
+4) Karşı tarafa kaç günlük süre verilecek ve bu sürenin dayanağı nedir?
+   (TBK m.X / sözleşme m.Y / makul takdiri süre)
+   — "Derhal", "en kısa sürede" kabul edilmez; somut gün sayısı + dayanak şart.
+   — Fesih / dönme için mehil tayini (TBK m.123) gerekli mi?
+
+5) Uyuşmazlığın kronolojisi nedir, daha önce ihtar çekildi mi, destekleyici
+   belgeler (sözleşme, fatura, yazışma) mevcut mu?
+   — Olay örgüsünü ajan varsayımıyla doldurmak YASAKTIR.
+
+Beş sorunun tümüne somut yanıt alınmadan taslağa BAŞLANMAZ.
+```
+
+## Post-Generation HARD-GATE Template (TR)
+
+Taslak tamamlandığında kullanıcıya Türkçe olarak sunulur:
+
+```
+İhtarname taslağı hazır. Göndermeden önce üç yüksek riskli karar ve zorunlu uyarılar:
+
+1) Tebliğ yöntemi — {seçilen yöntem}
+   Risk : {TTK m.18/3 şekil listesine uyum / sözleşme ile uyum / ispat gücü}
+   Alternatif : {önerilen alternatif yöntem (örn. noter ihtarnamesi)}
+
+2) Süre ve dayanak — {X} gün, dayanak {TBK m.X / sözleşme m.Y}
+   Risk : {mehil tayini gereği / kesin vade uygulaması / süre hesabı (HMK m.92-93)}
+   Alternatif : {önerilen süre aralığı ve gerekçesi}
+
+3) Fesih/talep iradesinin netliği
+   Risk : Muğlak ifade ("gerekirse feshedebilirim") fesih iradesini sakatlar.
+   Alternatif : "Sözleşme tebliğ tarihinden itibaren {süre} dolunca feshedilmiş sayılacaktır" gibi kesin ifade.
+
+Ek uyarılar (ZORUNLU):
+- Bu taslak, noter / KEP operatörü tarafından tebliğden önce tekrar kontrol edilmelidir.
+- Kanuni süre tebliğ tarihinden itibaren işlemeye başlar (HMK m.92); takvim hatırlatıcısı kurmanızı öneririz.
+- Süre kaçırıldığında fesih / dönme / dava hakkı sönümlenebilir.
+
+Taslağı (a) bu haliyle onaylıyor musunuz, yoksa (b) revize mi edelim?
+Onayınız olmadan çıktı gönderilmez.
+```
+
+## Jurisdiction-Specific Red Flags (TR)
+
+Aşağıdaki hallerden herhangi biri varsa üretim durdurulur, kullanıcıya Türkçe sorulur:
+
+- Muhatap tacir ve seçilen tebligat yöntemi TTK m.18/3 listesinde yok (e-posta, WhatsApp, SMS)
+- Muhatabın UETS adresi var ancak UETS tercih edilmiyor (Elektronik Tebligat Yönetmeliği m.7 — zorunluluk)
+- Fesih/dönme talep ediliyor ancak TBK m.123 gereği mehil tayini atlanmış veya muğlak
+- Temerrüt ihtarı isteniyor ancak borç henüz muaccel değil veya vade kesin (TBK m.117/2 istisna) — ihtarın anlamı sorgulanır
+- Ayıp bildirimi: ticari satımda 2/8 günlük muayene-ihbar süresi (TTK m.23/1-c) veya TKHK m.12'deki 2 yıllık süre geçmiş olabilir
+- Tebliğ yöntemi sözleşmede kararlaştırılan yönteme aykırı
+- Kullanıcı tehditkâr / hakaret içeren ifade kullanmamızı istiyor (TCK m.106 tehdit, TCK m.125 hakaret riski)
+- İadeli taahhütlü seçilmiş ama uyuşmazlık değeri yüksek / noter tutanağı aranacak delil niteliği bekleniyor
+- Kullanıcı birden fazla amacı (fesih + tazminat + haksız rekabet) tek ihtarnamede toplamak istiyor
+- [TCKN_PLACEHOLDER] yerine ham TCKN / pasaport numarası yazılması talep ediliyor
+
+## Jurisdiction-Specific Anti-Patterns (TR)
+
+- ❌ Tacirler arası fesih ihtarını e-posta / WhatsApp / SMS ile tavsiye etmek (TTK m.18/3 ihlali → fesih geçersiz)
+- ❌ "Mümkün olan en kısa sürede" / "derhal ödeyiniz" gibi mehil tayini içermeyen formüller (TBK m.123 ihlali)
+- ❌ Muhatap adresini uydurmak veya doğrulanmamış adresi kullanmak
+- ❌ Fesih iradesini muğlak bırakmak ("gerekirse fesih hakkımı saklı tutarım" — Yargıtay geçersiz sayar)
+- ❌ Ayıplı mal ihbarında TTK m.23/1-c 2/8 gün veya TKHK m.12 süresini atlamak
+- ❌ Tehdit (TCK m.106) veya hakaret (TCK m.125) içeren üslup
+- ❌ UETS adresi olan muhataba iadeli taahhütlü seçmek (Elektronik Tebligat Yönetmeliği m.7 zorunluluğu ihmali)
+- ❌ Noter gerekli iken iadeli taahhütlü seçmek (yüksek değerli fesih/dönmelerde içerik ispatı zayıflar)
+- ❌ KEP adresi olmayan muhataba KEP'ten gönderim önermek (adres yoksa tebliğ sayılmaz)
+- ❌ Mülga 818 sayılı BK hükümlerine atıf (TBK yürürlükte)
+- ❌ İhtarnamede ham TCKN / pasaport / IBAN yazmak ([..._PLACEHOLDER] kullanılmalı)
+- ❌ "Süre ihtiyaridir" diyerek süresiz ihtar düzenlemek
+- ❌ Hak saklama beyanını atlamak
+
+## Jurisdiction-Specific SELF-TEST (TR)
+
+`SKILL.md` → Fact-Check Protocol içindeki genel listeye ek olarak:
+
+- [ ] Taraflardan biri tacir ise tebliğ yöntemi TTK m.18/3 listesindedir (noter, taahhütlü mektup, telgraf, KEP)
+- [ ] Muhatabın UETS adresi varsa ve elektronik tebligat yapılabilirse UETS tercih nedenleri değerlendirildi (Elektronik Tebligat Yönetmeliği m.7)
+- [ ] Fesih/dönme ihtarı ise mehil tayini (TBK m.123) somut gün sayısıyla verildi veya TBK m.124 istisnası açıkça gerekçelendirildi
+- [ ] Temerrüt ihtarı ise muacceliyet ve ihtar gereği (TBK m.117/1) doğrulandı; kesin vade/istisna (TBK m.117/2) ayrıca ele alındı
+- [ ] Ayıp bildirimi ise ilgili süre (TBK m.223 / TTK m.23/1-c / TKHK m.12) kaçmamıştır
+- [ ] Hukuki dayanak paragrafında atıflar yürürlükteki TBK/TTK maddeleridir — 818 s. mülga BK atıfı yok
+- [ ] Süre hesabı HMK m.92 ("tebliğ günü sayılmaz") ve HMK m.93 (tatil günü) uyumludur
+- [ ] İrade beyanı kesindir (fesih/dönme/talep — "gerekirse" ifadesi yok)
+- [ ] Üslup TCK m.106 (tehdit) ve TCK m.125 (hakaret) sınırlarını ihlal etmiyor
+- [ ] TCKN / pasaport / hesap numarası [..._PLACEHOLDER] biçimindedir, ham veri yok
+- [ ] Tacirler arası ise belgede "TTK m.18/3 uyarınca {yöntem} ile tebliğ" ibaresi var
+- [ ] Hak saklama beyanı ("tüm yasal haklarımız saklıdır") eklenmiştir
+- [ ] Belgenin sonunda `core/DISCLAIMER.md` eklidir, `[Date]` `preferences.date_format` ile dolduruldu
 
 ## Yargıtay İçtihat İzleme
 
 - Tebligat Kanunu uygulaması sıklıkla içtihatla şekillenir
 - Fesih bildirimlerinde şekle uymama sonuçları için [karararama.yargitay.gov.tr](https://karararama.yargitay.gov.tr) taranmalı
 - HGK kararları özellikle belirleyici
+
+## Legal References (TR) — Özet
+
+- TBK m.117 vd. (temerrüt), TBK m.123-126 (mehil / fesih / dönme), TBK m.223 (ayıp)
+- TTK m.18/3 (tacirler arası ihtar şekli), TTK m.23/1-c (ticari satımda muayene-ihbar)
+- TKHK m.12 (tüketici satımında ayıp zamanaşımı)
+- Tebligat Kanunu m.1 vd., HMK m.92-93 (süre hesabı), HMK m.202 (yazılı delil başlangıcı)
+- Elektronik Tebligat Yönetmeliği m.5, m.7, m.9
+- TCK m.106 (tehdit), TCK m.125 (hakaret)
+- 1512 s. Noterlik Kanunu (ihtarname prosedürü)
+- 7155 s.K. — ticari uyuşmazlıklarda dava şartı arabuluculuk
+
+> Tüm referanslar [mevzuat.gov.tr](https://mevzuat.gov.tr) üzerinden doğrulanmalıdır. Uydurma madde numarası PROJE GENELİNDE YASAKTIR.

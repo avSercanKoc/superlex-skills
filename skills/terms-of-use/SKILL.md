@@ -1,38 +1,46 @@
 ---
 name: terms-of-use
 description: "Use when the user needs terms of service, terms of use, kullanim kosullari, hizmet sartlari, or usage conditions for a website, mobile app, SaaS product, or marketplace"
-version: "0.1.0"
+version: "0.2.0"
 jurisdiction: ["tr"]
 output_type: "document"
 risk_level: "medium"
 ---
 
-# Terms of Use (Kullanım Koşulları)
+# Terms of Use
 
 ## Overview
 
-Generates a Terms of Use / Kullanım Koşulları document tailored to the platform type (website, mobile app, SaaS, marketplace) and sector. The skill enforces consistency with the accompanying Privacy Policy, flags the need for companion documents in e-commerce scenarios, and applies TBK m.20-25 (GİK) and 6563 s.K. constraints.
+Generates a Terms of Use document tailored to the platform type (website, mobile app, SaaS, marketplace) and sector. The skill enforces consistency with the accompanying privacy policy, flags the need for companion documents in e-commerce scenarios, and applies the active jurisdiction's general-terms-and-conditions regime.
+
+## Instruction Priority
+
+When instructions conflict, resolve in this order:
+
+1. **User's explicit instructions** (AGENTS.md, direct user messages) — highest priority.
+2. **Skill protocols** (HARD-GATE, SELF-TEST, DISCLAIMER, Red Flags) — overrides default helpfulness.
+3. **Default system prompt** — lowest priority.
 
 ## When to Use
 
 Trigger this skill when:
 
-- The user asks for "kullanım koşulları", "hizmet şartları", "terms of use", "terms of service", "kullanım sözleşmesi"
+- The user asks for "kullanım koşulları", "hizmet şartları", "terms of use", "terms of service", or "kullanım sözleşmesi"
 - A new digital platform / application / SaaS needs a user-facing agreement
-- Existing terms of use need to be regenerated because the product scope, platform type, or sector has changed
+- Existing terms of use must be regenerated because the product scope, platform type, or sector has changed
 
 Do NOT use when:
 
 - A **privacy policy** is needed (separate skill: `skills/privacy-policy`)
-- A **Mesafeli Satış Sözleşmesi** is needed (e-commerce distance-sales contract — different document)
-- An **Ön Bilgilendirme Formu** (TKHK m.48 pre-contract info) is needed (different document)
-- A **Data Processing Agreement** between controller and processor is needed
+- A distance-sales contract is needed (different document under the active jurisdiction's consumer regime)
+- A pre-contract information form / disclosure is needed (different document)
+- A Data Processing Agreement between controller and processor is needed
 
 ## Jurisdiction Configuration
 
-- Default: `tr`
 - Supported: `tr`
-- Jurisdiction file: `skills/terms-of-use/jurisdictions/tr.md`
+- Default: `tr`
+- The agent MUST load `jurisdictions/tr.md` after context collection and before drafting. That file provides: statutory citations, the Turkish output scaffold, the companion-documents HARD-GATE text, the post-generation HARD-GATE prompt text, jurisdiction-specific anti-patterns, and the jurisdiction-specific SELF-TEST items.
 
 ## Context Requirements
 
@@ -42,7 +50,7 @@ MANDATORY: client.legal_name, client.registered_address,
            preferences.default_court, preferences.default_language
 
 STRONGLY RECOMMENDED: client.contact (user complaints address),
-                     client.mersis_no (required by 6563 s.K. m.5)
+                     client.mersis_no (trade registry identifier in TR)
 
 OPTIONAL: client.tax_id, firm.attorney_name
 
@@ -63,6 +71,7 @@ digraph terms_flow {
     rankdir=TB;
     start     [label="User requests\nterms of use" shape=ellipse];
     context   [label="lawyer-context-manager\n(collect/refresh)" shape=box];
+    load      [label="Load jurisdictions/<code>.md" shape=box];
     intake    [label="Platform / age / paid /\nUGC / marketplace intake" shape=box];
     ecom      [label="E-commerce detected?" shape=diamond];
     ecomgate  [label="Companion-documents\nHARD-GATE" shape=box style=filled fillcolor="#ffcccc"];
@@ -74,7 +83,8 @@ digraph terms_flow {
     deliver   [label="Deliver" shape=ellipse];
 
     start     -> context;
-    context   -> intake;
+    context   -> load;
+    load      -> intake;
     intake    -> ecom;
     ecom      -> ecomgate [label="yes"];
     ecom      -> draft    [label="no"];
@@ -96,114 +106,61 @@ IF client.industry == "e-commerce"
 OR platform_type in {"marketplace", "hybrid"}
 OR paid_service == true (with physical goods / distance contract):
 
-Agent MUST warn the user:
+The agent MUST stop and warn the user that Terms of Use ALONE are not sufficient
+under the active jurisdiction's consumer / e-commerce regime. The warning enumerates
+the companion documents required (pre-contract information form, distance-sales
+contract, cookie policy, privacy policy, payment / intermediary-service obligations).
 
-"E-ticaret / mesafeli sözleşme faaliyeti tespit edildi. Türk hukukunda
-Kullanım Koşulları TEK BAŞINA yeterli DEĞİLDİR. Aşağıdaki belgeler de
-ZORUNLUDUR:
+The working-language warning text and the concrete statute-bound checklist live in
+jurisdictions/<code>.md under `Companion-Documents HARD-GATE Template`.
 
-1. Ön Bilgilendirme Formu — 6502 sayılı TKHK m.48 + Mesafeli
-   Sözleşmeler Yönetmeliği m.5
-2. Mesafeli Satış Sözleşmesi — Mesafeli Sözleşmeler Yönetmeliği
-3. (Aracı hizmet sağlayıcıysanız) 6563 s.K. 7416 değişiklikleri
-   ile genişletilmiş bilgilendirme yükümlülükleri
-4. (Ödeme alıyorsanız) PCI-DSS uyumu ve ödeme kuruluşu mevzuatı
-   (6493 s.K.)
-5. Çerez Politikası (ayrı belge — e-Privacy + KVKK m.10)
-6. Privacy Policy (privacy-policy skill'i ile ayrı üretilmeli)
-
-Devam ediyorum — ama bu ek belgeleri de hazırlamak ister misiniz?
-(Evet dersiniz, ilgili skill'lere yönlendiririm.)"
-
-Do NOT continue drafting until the user acknowledges the gap.
+Do NOT continue drafting until the user acknowledges the gap and decides whether
+to generate the companion documents as well.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
 ## Output Specification
 
-Output language: Turkish (default).
+The document follows this abstract structure. Concrete section labels, statutory bindings, and conditional sub-sections (SaaS SLA, marketplace intermediary duties, mobile-app store rules) come from `jurisdictions/<code>.md` under its `Output Template` section:
 
-```
-KULLANIM KOŞULLARI
-
-1. TARAFLAR VE KAPSAM
-   - Hizmet Sağlayıcı kimliği (6563 s.K. m.3, m.5)
-   - Kullanıcı tanımı
-
-2. TANIMLAR
-
-3. HİZMETİN KAPSAMI VE NİTELİĞİ
-   - Platform türüne özgü detay
-
-4. ÜYELİK / HESAP AÇMA KOŞULLARI
-   - Yaş sınırı (varsa)
-   - Hesap güvenliği ve bildirim yükümlülüğü
-   - Kimlik doğrulama (varsa)
-
-5. KULLANICI YÜKÜMLÜLÜKLERİ
-   - Yasaklı davranış listesi (5651 s.K. m.8 yasadışı içerik)
-
-6. ÖDEME VE ABONELİK KOŞULLARI (paid_service == true ise)
-   - Ücret, fatura, yenileme, iptal
-   - İade / cayma (TKHK m.48 varsa)
-
-7. FİKRİ MÜLKİYET
-   - Platform içeriği sahipliği (FSEK)
-   - (UGC varsa) Kullanıcı içeriği için kullanıcıdan platforma lisans
-   - Telif hakkı ihlali bildirim prosedürü (5651 s.K. m.9; FSEK m.71)
-
-8. KİŞİSEL VERİLERİN KORUNMASI
-   - Privacy Policy'ye referans (çelişki YASAK)
-
-9. HİZMETİN KESİNTİSİ VE SÜRDÜRÜLEBİLİRLİĞİ
-   - (SaaS ise) SLA, planlı bakım
-
-10. SORUMLULUĞUN SINIRLANDIRILMASI
-    - TBK m.115 emredici sınırına uygun
-    - Tüketici ise TKHK m.5 haksız şart kontrolü gözetilmiş
-
-11. FESİH KOŞULLARI
-    - Haklı fesih (ihlal halinde)
-    - Kullanıcının hesap kapatma hakkı
-    - İade / veri taşınabilirliği (SaaS için kritik)
-
-12. UYUŞMAZLIK ÇÖZÜMÜ
-    - Tüketici ise TKHK m.68 Tüketici Hakem Heyeti / Mahkemesi
-    - B2B ise yetkili mahkeme (preferences.default_court) / arabuluculuk
-
-13. DEĞİŞİKLİK HAKKI VE BİLDİRİM
-    - Tek taraflı sınırsız değişiklik YASAK (TBK m.24)
-    - Esaslı değişiklikte ön bildirim süresi
-
-14. UYGULANACAK HUKUK VE YÜRÜRLÜK
-    - Türk Hukuku
-    - Yürürlük tarihi
-
----
-[DISCLAIMER hook: Append core/DISCLAIMER.md here verbatim]
-```
+1. Parties and scope (service-provider identity + user definition)
+2. Definitions
+3. Service description and nature
+4. Membership / account creation (age limit, account security)
+5. User obligations (prohibited-conduct list)
+6. Payment and subscription terms (only if `paid_service == true`)
+7. Intellectual property (platform content + UGC licensing if applicable + takedown procedure)
+8. Personal-data protection (reference to the privacy policy — consistency enforced)
+9. Service continuity (SLA for SaaS, maintenance windows)
+10. Limitation of liability (bounded by mandatory law of the active jurisdiction)
+11. Termination conditions (just-cause termination, user's right to close account, SaaS data portability)
+12. Dispute resolution (consumer forum vs. B2B forum/arbitration)
+13. Unilateral-change right and notice mechanism (bounded by mandatory law)
+14. Governing law and effective date
 
 **Platform-type conditional sections:**
-- Marketplace/hybrid ⇒ add section "Aracı Hizmet Sağlayıcı Yükümlülükleri" (6563 s.K. 7416 değişiklikleri)
-- SaaS ⇒ add "Hizmet Seviyesi Taahhüdü (SLA)" subsection in §9
-- Mobile app ⇒ add "Uygulama Mağazası Kuralları ve Cihaz İzinleri"
+- Marketplace / hybrid ⇒ intermediary service-provider obligations section
+- SaaS ⇒ Service Level Agreement sub-section in §9
+- Mobile app ⇒ app-store rules and device permissions
 
-**Disclaimer hook:** Appended after §14. `[Date]` → belge üretim tarihi (GG.AA.YYYY).
+**Disclaimer hook:** Appended after §14. `[Date]` is filled with the generation date using `preferences.date_format`.
 
 ## Cross-Reference with privacy-policy
 
-Before finalization the agent MUST cross-check Kullanım Koşulları §8 against the accompanying Privacy Policy:
-- Veri işleme amaçları listesi tutarlı mı?
-- Aktarım ifadeleri çelişkili değil mi?
-- Saklama süreleri referansı aynı mı?
+Before finalization, the agent MUST cross-check §8 against the accompanying Privacy Policy:
 
-If no Privacy Policy exists yet, recommend invoking `skills/privacy-policy/SKILL.md` BEFORE finalizing the terms.
+- Are the processing purposes consistent?
+- Are transfer statements non-contradictory?
+- Do retention references agree?
+
+If no Privacy Policy exists yet, the agent recommends invoking `skills/privacy-policy/SKILL.md` BEFORE finalizing the terms.
 
 ## Risk Zones
 
-- 🟢 Tanımlar, hizmet kapsamı, iletişim, yürürlük tarihi
-- 🟡 Üyelik koşulları, kullanıcı yükümlülükleri, fikri mülkiyet, değişiklik hakkı
-- 🔴 Sorumluluk sınırlandırması (TBK m.115), fesih koşulları, tek taraflı değişiklik hakkı kapsamı, e-ticaret/marketplace ise aracı yükümlülükleri, tüketici haksız şart kontrolü (TKHK m.5)
+- 🟢 Definitions, service scope, contact, effective date
+- 🟡 Membership conditions, user obligations, intellectual property, unilateral-change notice
+- 🔴 Limitation of liability, termination conditions, the scope of the unilateral-change right, e-commerce / marketplace intermediary obligations, unfair-term control for consumer contracts
 
 ## Agentic Verification Gate
 
@@ -213,94 +170,84 @@ If no Privacy Policy exists yet, recommend invoking `skills/privacy-policy/SKILL
 
 ```
 <HARD-GATE phase="post-generation">
-After drafting, agent MUST stop and present:
+After drafting, the agent MUST stop and present the three highest-risk sections
+(typically: limitation of liability, unilateral-change right, and dispute resolution
+for consumer-triggered flows) with concrete risks and suggested alternatives.
 
-"Bu Kullanım Koşullarında aşağıdaki maddeler en yüksek riskli kısımlardır:
+It ALSO reports:
+- Whether the privacy-policy cross-check was performed (or flags that the privacy
+  policy does not exist yet)
+- Whether the e-commerce companion-documents warning was issued (if applicable)
 
-1. [§10 Sorumluluğun Sınırlandırılması] — Risk: TBK m.115 emredici
-   hükmü sebebiyle ağır kusur/kasıt için mutlak feragat mümkün
-   değil; tüketici ise TKHK m.5 haksız şart kontrolü tetiklenir.
-   💡 Alternatif: [kusur derecesine göre kademeli sorumluluk metni]
-
-2. [§13 Değişiklik Hakkı] — Risk: TBK m.24'e göre tek taraflı
-   sınırsız değişiklik hükümsüz sayılabilir.
-   💡 Alternatif: ön bildirim süresi (örn. 30 gün) + kullanıcıya
-   fesih hakkı tanıyan metin.
-
-3. [§12 Uyuşmazlık Çözümü] — Risk: Tüketici ise yetkili mahkeme
-   seçimi TKHK m.68 karşısında etkisiz kalabilir.
-   💡 Alternatif: Tüketici için ayrı fıkra, B2B için ayrı fıkra.
-
-Ayrıca tespit ettim:
-- Privacy Policy ile çapraz kontrol [yapıldı / yapılmadı — ayrı
-  belge henüz yok].
-- E-ticaret tespit edildi ve ek belge uyarısı [verildi / gerek yok].
-
-Bu kısımları özel durumunuza göre incelediniz mi?
-Alternatif metinleri uygulayayım mı?"
+The user-facing text is delivered in the working language of the active jurisdiction
+using the template in jurisdictions/<code>.md under `Post-Generation HARD-GATE Template`.
 
 No delivery without user approval.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
 ## Anti-Patterns (Legal AI Slop)
 
-- ❌ Drafting a marketplace terms-of-use without the e-commerce HARD-GATE warning
-- ❌ "Hiçbir durumda sorumlu değiliz" benzeri mutlak feragat (TBK m.115 ihlali)
-- ❌ Privacy Policy ile çelişen veri işleme ifadeleri
-- ❌ Yaş sınırı belirtmeden çocuklara yönelik hizmet
-- ❌ Tek taraflı sınırsız değişiklik hakkı (TBK m.24 ihlali)
-- ❌ Tüketici sözleşmesinde TKHK m.68'i bertaraf eden yetki şartı
-- ❌ 5651 s.K. yasadışı içerik referansı olmadan UGC bölümü
-- ❌ Aracı hizmet sağlayıcı (marketplace) için 7416 s.K. sonrası yükümlülüklerin atlanması
-- ❌ Cayma hakkı / Ön Bilgilendirme Formunu Kullanım Koşullarına gömmek (ayrı belge zorunlu)
-- ❌ Çerez politikasını Kullanım Koşullarına yedirmek (ayrı belge)
+- ❌ Drafting marketplace or e-commerce terms without issuing the companion-documents HARD-GATE warning
+- ❌ Absolute liability waivers (e.g. "we are never liable under any circumstances") that conflict with mandatory-liability floors
+- ❌ Processing-purpose statements that contradict the accompanying privacy policy
+- ❌ Serving minors without any age restriction
+- ❌ Granting the provider an unlimited unilateral change right
+- ❌ Burying consumer-protected dispute-resolution clauses under a generic forum-selection clause
+- ❌ Embedding cookie-consent mechanics or distance-sales disclosures directly into the terms
+- ❌ Skipping platform-type conditional sections (SaaS without SLA, marketplace without intermediary obligations, mobile without app-store acknowledgment)
+
+Jurisdiction-specific anti-patterns (named statutes, named violations) live in `jurisdictions/<code>.md`.
+
+### Rationalization (Self-Correction)
+
+| Thought | Reality |
+|---------|---------|
+| "I'll add a complete liability waiver to protect the client" | Absolute waivers are void under consumer law and make the client look unprofessional. Follow the mandatory floor. |
+| "They have an e-commerce site, but they just asked for terms of use" | E-commerce requires companion documents. The Companion-Documents HARD-GATE is non-negotiable. |
+| "I'll skip checking the privacy policy, it's a separate document" | Contradictions between the terms and the privacy policy create massive liability. Cross-check them. |
+| "Violating the letter is fine if I follow the spirit" | Violating the letter is violating the spirit. No exceptions. |
+| "I'll trust the drafter's self-report" | Drafters hallucinate. Verify evidence manually. |
+| "The subagent said it's complete" | Do Not Trust the Report. Verify manually. |
 
 ## Fact-Check Protocol
 
 ```
 <SELF-TEST>
-Before delivery the agent MUST confirm:
+Before delivery the agent MUST run:
 
-- [ ] Platform türü doğru belirlendi ve koşullu bölümler eklendi (SaaS → SLA; marketplace → aracı yükümlülükleri)
-- [ ] Hizmet sağlayıcı kimlik bilgileri 6563 s.K. m.3, m.5'e uygun
-- [ ] TBK m.115 sınırına uygun sorumluluk maddesi yazıldı (mutlak feragat YOK)
-- [ ] TBK m.24 ihlali yok: tek taraflı sınırsız değişiklik hakkı YOK
-- [ ] UGC varsa: telif bildirim prosedürü (5651 s.K. m.9, FSEK m.71)
-- [ ] Yaş sınırı açıkça belirtildi (veya evrensel erişim için gerekçe var)
-- [ ] Ödeme/abonelik varsa TKHK m.48 cayma hakkı bilgisi VAR (ayrı ön bilgilendirme formu uyarısıyla)
-- [ ] E-ticaret tetiği: companion-documents HARD-GATE uygulandı
-- [ ] Privacy Policy çapraz kontrolü yapıldı (veya Privacy Policy eksikliği kullanıcıya bildirildi)
-- [ ] Çerez politikası içeri gömülmedi (ayrı belge referansı var)
-- [ ] Uyuşmazlık çözümü: tüketici için TKHK m.68 referansı, B2B için yetkili mahkeme
-- [ ] Uygulanacak hukuk = Türk Hukuku; yürürlük tarihi eklendi
-- [ ] core/DISCLAIMER.md ekli, [Date] doldurulmuş
+Generic checks (every jurisdiction):
+- [ ] Platform type is correctly classified and conditional sections are present
+- [ ] Service-provider identity block is complete per the active jurisdiction's requirements
+- [ ] Limitation of liability does NOT cross the mandatory-law floor of the active jurisdiction
+- [ ] Unilateral-change right is bounded (no unlimited modification power)
+- [ ] UGC section, if present, references a takedown / notice-and-response procedure
+- [ ] Age restriction is stated or universal access is justified
+- [ ] Paid-service section references pre-contract disclosure obligations if consumer-facing
+- [ ] E-commerce trigger processed: companion-documents HARD-GATE was raised when applicable
+- [ ] Privacy-policy cross-check performed (or gap reported)
+- [ ] Cookie consent is NOT embedded
+- [ ] Dispute-resolution clause correctly distinguishes consumer vs. B2B paths
+- [ ] Governing law and effective date present
+- [ ] core/DISCLAIMER.md is appended with [Date] filled
+
+Jurisdiction-specific checks:
+- [ ] All items in the `Jurisdiction-Specific SELF-TEST` section of jurisdictions/<code>.md pass
+**CRITICAL:** Do Not Trust the Report. Verify every evidence manually from the source documents.
 </SELF-TEST>
 ```
 
 ## Legal References
 
-- **6098 sayılı TBK** — m.20-25 (GİK denetimi), m.115 (sorumluluk sınırlandırma)
-- **6502 sayılı TKHK** — RG 28.11.2013, Sayı 28835 — m.5 (haksız şart), m.48 (mesafeli), m.68 (tüketici hakem heyeti / mahkeme parasal sınırları)
-- **6563 sayılı Elektronik Ticaretin Düzenlenmesi Hakkında Kanun** — RG 05.11.2014, Sayı 29166 — m.3, m.5, m.6, m.7
-  - 7416 s.K. (2022) ile aracı hizmet sağlayıcı yükümlülükleri genişletildi
-- **Mesafeli Sözleşmeler Yönetmeliği** — RG 27.11.2014, Sayı 29188
-- **Elektronik Ticarette Hizmet Sağlayıcı ve Aracı Hizmet Sağlayıcılar Hakkında Yönetmelik** — RG 26.08.2015
-- **5651 sayılı İnternet Ortamında Yapılan Yayınların Düzenlenmesi Hakkında Kanun** — m.5, m.8, m.9
-- **5846 sayılı FSEK** — m.1, m.14, m.71
-- **6698 sayılı KVKK** — çapraz referans (Privacy Policy ile)
-- **4721 sayılı TMK** — m.16 (sınırlı ehliyet / yaş)
-- **6325 sayılı Arabuluculuk Kanunu** — RG 22.06.2012, Sayı 28331
-- **6493 sayılı Ödeme ve Menkul Kıymet Mutabakat Sistemleri Kanunu** — ödeme alıyorsa
-
-All verifiable at [mevzuat.gov.tr](https://mevzuat.gov.tr). Fabricated articles PROHIBITED.
+Statute-level citations, regulation numbers, gazette issues, and ministry-level secondary legislation live in `jurisdictions/<code>.md` under its `Legal References` section. Every reference there MUST be verifiable in an official source. Fabricated provisions are PROHIBITED across the library.
 
 ---
 
 **Related:**
-- `core/SKILL-ANATOMY.md`
-- `core/RISK-FRAMEWORK.md` — 🟡 Medium Risk
-- `core/AGENTIC-VERIFICATION.md`
-- `core/DISCLAIMER.md`
 - **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md`
-- **Related skill:** `skills/privacy-policy/SKILL.md` — should be generated in the same session to maintain cross-reference consistency
+- **REQUIRED BACKGROUND:** `core/RISK-FRAMEWORK.md` (risk levels)
+- **REQUIRED BACKGROUND:** `core/AGENTIC-VERIFICATION.md` (safety protocols)
+- `skills/privacy-policy/SKILL.md` — should be generated in the same session to maintain cross-reference consistency
+- `core/SKILL-ANATOMY.md`
+- `core/DISCLAIMER.md`

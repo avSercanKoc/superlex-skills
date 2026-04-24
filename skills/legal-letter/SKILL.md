@@ -1,39 +1,47 @@
 ---
 name: legal-letter
 description: "Use when the user needs to send an ihtarname, noter ihtarnamesi, legal notice, notice of default, termination letter, fesih bildirimi, demand letter, or any formal legal notification with statutory consequences"
-version: "0.1.0"
+version: "0.2.0"
 jurisdiction: ["tr"]
 output_type: "document"
 risk_level: "high"
 ---
 
-# Legal Letter (İhtarname / Bildirim / Fesih Mektubu)
+# Legal Letter
 
 ## Overview
 
-Produces a formal legal notice — ihtarname, temerrüt bildirimi, fesih bildirimi, ayıp ihbarı, or ödeme talep mektubu. This is the most dangerous skill in the library: mistakes start or miss statutory clocks, waive rights, or render a termination void (TTK m.18/3). A pre-generation HARD-GATE is MANDATORY before any drafting.
+Produces a formal legal notice — notice of default, notice of termination, rescission, defect notification, or payment demand. This is the most dangerous skill in the library: mistakes start or miss statutory clocks, waive rights, or render a termination void. A pre-generation HARD-GATE is MANDATORY before any drafting.
+
+## Instruction Priority
+
+When instructions conflict, resolve in this order:
+
+1. **User's explicit instructions** (AGENTS.md, direct user messages) — highest priority.
+2. **Skill protocols** (HARD-GATE, SELF-TEST, DISCLAIMER, Red Flags) — overrides default helpfulness.
+3. **Default system prompt** — lowest priority.
 
 ## When to Use
 
 Trigger when:
 
-- User asks for "ihtarname", "fesih ihtarı", "noter ihtarnamesi", "demand letter", "notice of default", "termination letter", "ayıp bildirimi"
-- A statutory period must be started (temerrüt, dönme, fesih, cayma)
+- The user asks for "ihtarname", "fesih ihtarı", "noter ihtarnamesi", "demand letter", "notice of default", "termination letter", or "ayıp bildirimi"
+- A statutory period must be started (default, rescission, termination, withdrawal)
 - A counterparty must be warned before legal action
-- A commercial dispute must be escalated via the formal channel required by TTK m.18/3
+- A commercial dispute must be escalated via the formal channel required by the active jurisdiction's merchant-to-merchant rules
 
 Do NOT use when:
 
-- A general informational email is sufficient (no statutory clock)
-- A court petition / dilekçe is needed (different skill, different procedure)
-- Arbitration notice is needed (HMK m.412 / MTK — different regime, additional formalities)
-- A non-ihtar commercial communication is needed (use a regular business letter template)
+- A general informational email is sufficient (no statutory clock is being started)
+- A court petition / pleading is needed (different skill, different procedure)
+- An arbitration notice is needed (different regime, additional formalities)
+- A non-formal commercial communication is needed (use a regular business letter template)
 
 ## Jurisdiction Configuration
 
-- Default: `tr`
 - Supported: `tr`
-- Jurisdiction file: `skills/legal-letter/jurisdictions/tr.md`
+- Default: `tr`
+- The agent MUST load `jurisdictions/tr.md` after context collection and before drafting. That file provides: statutory citations, the Turkish output scaffold, the pre-generation HARD-GATE prompt text, the post-generation HARD-GATE prompt text, the jurisdiction-specific Red Flags, anti-patterns, and SELF-TEST items, and the delivery-method rules (merchant-to-merchant notice forms, registered-electronic-mail rules, etc.).
 
 ## Context Requirements
 
@@ -42,20 +50,20 @@ MANDATORY: client.client_type,
            client.legal_name (if corporate) OR client.full_name (if individual),
            client.registered_address OR client.residential_address,
            counterparty.identity (name or legal_name),
-           counterparty.address  (verified — fabricating address is FORBIDDEN)
+           counterparty.address  (verified — fabricating an address is FORBIDDEN)
 
 STRONGLY RECOMMENDED: firm.attorney_name + bar_association + firm.contact (if sent through an attorney),
                      client.mersis_no / tax_id (for corporate parties)
 
-INTAKE QUESTIONS (asked via pre-generation HARD-GATE — MANDATORY):
-- purpose: "temerrüt" | "fesih" | "dönme" | "ayıp_ihbarı" | "ödeme_talebi" | "bildirim_other"
-- delivery_method: "noter" | "kep_uets" | "iadeli_taahhütlü" | "elden_imzaya_karşı" | "uncertain"
+INTAKE QUESTIONS (asked via the pre-generation HARD-GATE — MANDATORY):
+- purpose: "default_notice" | "termination" | "rescission" | "defect_notice" | "payment_demand" | "other"
+- delivery_method: "notary" | "registered_e_mail" | "registered_postal" | "in_person_against_signature" | "uncertain"
 - deadline_days: integer (e.g. 7, 15, 30) — statutory or contractual basis must be named
-- deadline_basis: "statutory" (cite TBK/TTK article) | "contractual" (cite clause) | "reasonable_discretionary"
-- both_parties_are_tacir: true | false  (triggers TTK m.18/3 check)
-- counterparty_has_kep_or_uets: true | false | unknown
+- deadline_basis: "statutory" (cite article) | "contractual" (cite clause) | "reasonable_discretionary"
+- both_parties_are_merchants: true | false  (triggers merchant-to-merchant form rules of the active jurisdiction)
+- counterparty_has_electronic_notice_address: true | false | unknown
 - underlying_dispute_summary: free-text chronological facts
-- prior_notices_sent: true | false; if true, copies attached?
+- prior_notices_sent: true | false; if true, are copies attached?
 ```
 
 Missing MANDATORY fields → invoke **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md`.
@@ -67,27 +75,29 @@ digraph legal_letter_flow {
     rankdir=TB;
     start     [label="User requests\nlegal letter" shape=ellipse];
     context   [label="lawyer-context-manager\n(collect/refresh)" shape=box];
+    load      [label="Load jurisdictions/<code>.md" shape=box];
     hardgate1 [label="Pre-Generation\nHARD-GATE\n(5 mandatory Qs)" shape=box style=filled fillcolor="#ffcccc"];
-    ttk_check [label="Both tacir?" shape=diamond];
-    ttk_warn  [label="ENFORCE TTK m.18/3\nform requirement" shape=box];
+    merchant  [label="Both merchants?" shape=diamond];
+    mform     [label="Enforce jurisdiction's\nmerchant-to-merchant\nnotice-form rules" shape=box];
     draft     [label="Draft letter body\nwith deadline basis" shape=box];
-    tone      [label="Tone check:\nremove threats,\nhakaret" shape=box];
+    tone      [label="Tone check:\nremove threats,\ndefamation" shape=box];
     selftest  [label="Fact-Check\n<SELF-TEST>" shape=box];
     hardgate2 [label="Post-Generation\nHARD-GATE" shape=box style=filled fillcolor="#ffcccc"];
     disclaim  [label="Append core/DISCLAIMER.md" shape=box];
     deliver   [label="Deliver + delivery-\nmethod instruction" shape=ellipse];
 
     start     -> context;
-    context   -> hardgate1;
-    hardgate1 -> ttk_check;
-    ttk_check -> ttk_warn  [label="yes"];
-    ttk_check -> draft     [label="no"];
-    ttk_warn  -> draft;
+    context   -> load;
+    load      -> hardgate1;
+    hardgate1 -> merchant;
+    merchant  -> mform   [label="yes"];
+    merchant  -> draft   [label="no"];
+    mform     -> draft;
     draft     -> tone;
     tone      -> selftest;
     selftest  -> hardgate2;
-    hardgate2 -> disclaim  [label="approved"];
-    hardgate2 -> draft     [label="edits"];
+    hardgate2 -> disclaim [label="approved"];
+    hardgate2 -> draft    [label="edits"];
     disclaim  -> deliver;
 }
 ```
@@ -96,245 +106,182 @@ digraph legal_letter_flow {
 
 ```
 <HARD-GATE phase="pre-generation">
-Before ANY drafting, the agent MUST stop and get ALL five answers:
+Before ANY drafting, the agent MUST stop and obtain concrete answers to ALL five:
 
-1. "Bu mektubun hukuki amacı nedir?"
-   (Temerrüt bildirimi / fesih / dönme / ayıp ihbarı / ödeme
-    talebi / başka — tek tek teyit edilmeli, çok amaçlı
-    ihtarname yazmak çoğu zaman hata.)
+1. What is the legal purpose of this notice? (Default notice / termination /
+   rescission / defect notification / payment demand / other — combining multiple
+   purposes in a single notice is almost always a mistake.)
 
-2. "Karşı tarafın (muhatabın) kimlik ve adres bilgileri nedir?
-   Adres hangi kaynaktan teyit edildi?" (ticaret sicili / MERSİS /
-   nüfus / sözleşme / başka)
-   Adres bilinmiyor veya şüpheli ise DUR — adres araştırması
-   yapmadan ihtarname hazırlanamaz. Adres uydurmak YASAKTIR.
+2. What are the counterparty's identity and address, and how was the address
+   verified? (trade registry / civil registry / contract / other)
+   If the address is unknown or questionable, STOP — no notice without a verified
+   address. Fabricating the address is FORBIDDEN.
 
-3. "Tebligat yöntemi ne olacak?"
-   (Noter / KEP-UETS / İadeli taahhütlü / Elden-imzaya karşı)
-   - Taraflardan en az biri tacir mi? → TTK m.18/3 devreye girer
-     (sadece noter, KEP, taahhütlü veya telgraf geçerli)
-   - Muhatabın KEP/UETS adresi var mı?
-   - Sözleşmede tebligat yöntemi şart koşulmuş mu?
-   Bu soruları sormadan tebligat yöntemi belirlenemez.
+3. What delivery method will be used?
+   (notary / registered electronic mail / registered postal / in-person against
+   signature)
+   - If either party is a merchant, the active jurisdiction may impose a mandatory
+     notice-form list (only notary / registered electronic mail / registered mail /
+     telegram allowed — the concrete list is in jurisdictions/<code>.md).
+   - Does the counterparty have an electronic-notice address?
+   - Does the underlying contract mandate a specific delivery method?
 
-4. "Karşı tarafa verilecek süre kaç gün ve hangi dayanağa
-   göre?" (yasal madde / sözleşme maddesi / makul süre takdiri)
-   - Süresiz ihtar ("derhal ödeyiniz") genellikle hatalı —
-     mehil tayini (TBK m.123) gerekir
-   - Süre dayanağı net değilse hukukçu gerekçesi talep edilmeli
+4. How many days of notice will the counterparty get, and what is the basis?
+   (statutory article / contractual clause / discretionary reasonable period)
+   - Unbounded notices ("pay immediately") are usually wrong — the active jurisdiction's
+     default-notice and grace-period rules typically require a concrete period.
+   - If the basis is unclear, demand clarification from the user before continuing.
 
-5. "Altta yatan uyuşmazlığın kronolojisi nedir? Daha önce
-   yapılmış bir bildirim var mı? Elinizde belge (sözleşme,
-   fatura, e-posta) var mı?"
-   Olay örgüsü olmadan ihtarname yazılamaz. Boşluklar doldurmak
-   veya varsaymak YASAKTIR — eksik bilgi varsa kullanıcıya sor.
+5. What is the chronology of the underlying dispute? Is there a prior notice?
+   Are supporting documents (contract, invoice, email thread) available?
+   Drafting without a factual timeline is FORBIDDEN. Filling gaps by assumption is
+   FORBIDDEN — ask the user.
 
-Do NOT proceed to drafting until all five have concrete answers.
-If ANY answer is uncertain, STOP and ask the user before continuing.
+The working-language phrasing of each question is defined in jurisdictions/<code>.md
+under `Pre-Generation HARD-GATE Template`. Do not proceed to drafting until all five
+have concrete answers. If ANY answer is uncertain, STOP and ask before continuing.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
 ## Output Specification
 
-Output language: Turkish. Format: notere sunulabilecek hazır taslak. Delivery-method-specific instructions appended after the letter but BEFORE the disclaimer.
+The letter follows this abstract scaffold. Concrete headings, statutory bindings, and the delivery-method instruction block are defined in `jurisdictions/<code>.md` under its `Output Template` section:
 
-```
-İHTARNAMEDİR
-(veya FESİH BİLDİRİMİDİR / TEMERRÜT İHTARNAMESİDİR — amaca göre)
+1. Document-type title (notice / termination notice / default notice — exactly one purpose per letter)
+2. Sender block (identity, address, placeholder-protected sensitive identifiers)
+3. Attorney block (if applicable — bar association, contact)
+4. Recipient block (identity, address)
+5. Subject line (one-sentence summary of the notice)
+6. Explanations (chronological facts with date, document, and clause references)
+7. Legal basis paragraph (statutes and contract clauses cited)
+8. Operative request (concrete amount or performance + a concrete deadline)
+9. Consequences of non-compliance (termination / litigation / enforcement)
+10. Reservation of rights
+11. Date and signature line
+12. Delivery-method instruction block (guidance for the notary / registered-electronic-mail operator)
 
-KEŞİDECİ (İHTAR EDEN):
-  Ad / Unvan   : [client.legal_name veya full_name]
-  Adres        : [registered_address / residential_address]
-  TCKN / MERSİS: [TCKN_PLACEHOLDER] veya [mersis_no]
+Sensitive identifiers (national identity numbers, passport numbers, account numbers) appear as placeholders per `skills/lawyer-context-manager`; the lawyer fills them manually before sending.
 
-VEKİLİ (varsa):
-  Av. [attorney_name] — [bar_association] Barosu
-  Adres: [firm.contact]
-
-MUHATAP:
-  Ad / Unvan   : [counterparty.identity]
-  Adres        : [counterparty.address]
-
-KONU: [bildirimin özeti — örn. "…tarihli sözleşmeden kaynaklı
-  ödenmemiş fatura bedeline ilişkin temerrüt ve ifa ihtarı"]
-
-AÇIKLAMALAR:
-  1. [Kronolojik olay örgüsü, madde madde — tarihler, belge
-     referansları, sözleşme madde numaraları]
-  2. …
-  3. …
-  4. [Hukuki dayanak — örn. "Tarafımız arasında imzalanan …
-     tarihli sözleşmenin … maddesi gereğince ve TBK m.117 vd.
-     uyarınca taraflara temerrüt hükümleri uygulanır."]
-
-NETİCE-İ TALEP:
-  İşbu ihtarnamenin tarafınıza tebliğinden itibaren [deadline_days]
-  (gün/iş günü olarak açıkça belirtilmeli) içinde:
-  - [somut talep: ör. 125.000,-TL tutarındaki fatura bedelinin
-    tarafımıza ödenmesi / edimin ifa edilmesi / sözleşmeye aykırılığın
-    giderilmesi]
-  Aksi hâlde:
-  - [sonuç: ör. "sözleşmenin TBK m.125 uyarınca feshedileceğini /
-    aleyhinize icra takibi ve dava yoluna başvurulacağını"]
-
-HAK SAKLAMA:
-  Fazlaya, gecikme faizine, yargılama giderlerine ve tüm yasal
-  haklarımıza ilişkin talep haklarımız saklıdır.
-
-TARİH: [GG.AA.YYYY]
-KEŞİDECİ / VEKİLİ İMZASI: _____________________
-
----
-
-TEBLİGAT YÖNTEMİ TALİMATI (Noter için hazırlık notu):
-  Seçilen yöntem: [noter / KEP-UETS / iadeli taahhütlü / elden]
-  Gerekçe:
-    - Taraflardan biri tacir ise → TTK m.18/3 uyarınca yalnızca
-      noter / KEP / taahhütlü / telgraf geçerlidir
-    - Yüksek değerli uyuşmazlık → noter önerilir
-    - Muhatapta KEP/UETS adresi varsa → UETS Yönetmeliği m.5, m.7
-      zorunlu kullanım
-  Uyarı: E-posta / WhatsApp / SMS tebligat yöntemi olarak
-  YETERSİZDİR (en iyi ihtimalle HMK m.202 yazılı delil başlangıcı).
-
----
-[DISCLAIMER hook: Append core/DISCLAIMER.md here verbatim]
-```
-
-**Disclaimer hook:** `core/DISCLAIMER.md` en sona eklenir. `[Date]` belge üretim tarihiyle doldurulur (GG.AA.YYYY).
+**Disclaimer hook:** `core/DISCLAIMER.md` is appended at the very end. `[Date]` is filled with the generation date using `preferences.date_format`.
 
 ## Risk Zones
 
-- 🟢 Tarih / imza bloğu, hak saklama ibaresi, başlık kısmı
-- 🟡 Olay örgüsü (Açıklamalar), kronoloji, konu başlığı
-- 🔴 **Tebligat yönteminin TTK m.18/3 ile uyumu**, **sürelerin doğru hesabı + mehil tayini**, **fesih iradesinin açıkça beyan edilmesi**, **muhatap adresinin gerçek ve güncel olması**, **hukuki dayanak maddelerin geçerli olması** — Bu alanlarda hata = hak kaybı
+- 🟢 Date / signature block, reservation-of-rights clause, title block
+- 🟡 Factual chronology, subject line
+- 🔴 **Compatibility of the delivery method with the active jurisdiction's merchant-to-merchant form rules**, **deadline calculation and grace-period compliance**, **explicit declaration of the termination intent**, **genuine and current recipient address**, **validity of cited statutes**. A mistake in any of these equals loss of rights.
 
 ## Red Flags — STOP and Ask the User
 
-Herhangi biri varsa ihtarname üretimi DURDURULUR, kullanıcı ile netleştirilir:
+Generation is halted and the user is consulted if any of the following applies:
 
-- Muhatabın adresi bilinmiyor, şüpheli, veya başka bir kaynaktan teyit edilmemiş → adres uydurma YASAK
-- Bildirim amacı belirsiz (birden fazla amaç birleştirilmek isteniyor — çoğu zaman hata)
-- Süre için hukuki / sözleşmesel dayanak belirtilemiyor (salt "makul" söylemi)
-- Tarafların tacir olup olmadığı netleştirilmemiş → TTK m.18/3 uygulaması belirsiz
-- "Derhal" / "en kısa sürede" / "ivedilikle" gibi muğlak süre talebi
-- Sözleşme metnine erişim yok ama sözleşme maddesine atıf gerekiyor
-- Önceki bildirimlerin varlığı belirsiz (aynı konuda mükerrer ihtar sorunu)
-- Muhatabın KEP/UETS adresi olup olmadığı bilinmiyor ama KEP/UETS gönderim düşünülüyor
-- Talepte somut miktar/edim yok (belirsiz netice-i talep)
-- Ayıp ihbarında yasal süre (TBK m.223 / TTK m.23 / TKHK m.12) dolmuş olabilir
-- Karşı tarafa tehditkâr / küçültücü dil kullanılmak isteniyor (TCK m.106 / m.125 riski)
-- Sözleşmede tebligat yöntemi özel olarak düzenlenmiş ama kullanıcı farklı bir yöntem istiyor
+- The recipient address is unknown, suspect, or unverified — fabricating an address is FORBIDDEN
+- The notice purpose is ambiguous or the user wants to combine multiple purposes
+- No concrete legal / contractual basis is available for the requested deadline (bare "reasonable")
+- Whether the parties qualify as merchants is unclear (form-rule applicability is unclear)
+- Vague deadlines like "immediately" / "as soon as possible" / "urgently" are requested
+- A specific contract clause must be cited but the contract is not available
+- The existence of prior notices on the same subject is unclear (duplicate-notice risk)
+- The counterparty's electronic-notice address status is unknown although electronic delivery is being considered
+- The operative request has no concrete amount or performance (vague demand)
+- A defect-notice statutory clock may already have elapsed
+- The user wants threatening or insulting language (criminal-exposure risk for the client)
+- The underlying contract mandates a specific delivery method but the user wants a different one
+
+Jurisdiction-specific Red Flags tied to statute numbers (merchant-to-merchant form list, electronic-notice regulation, defect-inspection windows, threat / defamation provisions, etc.) live in `jurisdictions/<code>.md` under `Jurisdiction-Specific Red Flags`.
 
 ## Agentic Verification Gate
 
-🔴 High Risk — BOTH a pre-generation HARD-GATE (yukarıda) AND a post-generation HARD-GATE zorunludur; `core/AGENTIC-VERIFICATION.md` dört adımı da uygulanır.
+🔴 High Risk — BOTH a pre-generation HARD-GATE (above) AND a post-generation HARD-GATE are mandatory; all four steps of `core/AGENTIC-VERIFICATION.md` apply.
 
 **Post-Generation HARD-GATE:**
 
 ```
 <HARD-GATE phase="post-generation">
-After drafting, agent MUST stop and present:
+After drafting, the agent MUST stop and present the three highest-risk decisions
+(typically: the delivery method vs. merchant-form rules, the deadline and its basis,
+and the clarity of the termination / demand intent) with concrete risks and
+suggested alternatives.
 
-"Bu ihtarnamede aşağıdaki üç nokta en yüksek risklidir:
+The agent ALSO warns the user that:
+- The draft must be re-checked by the notary / registered-electronic-mail operator
+  before sending.
+- The statutory clock starts on the date of delivery — a calendar reminder is advised.
+- Missing the deadline may forfeit the right to rescind, terminate, or sue, depending
+  on the purpose.
 
-1. [Tebligat yöntemi: seçilen yöntem] — Risk:
-   - Taraflardan biri tacir ise TTK m.18/3 uyarınca SADECE noter /
-     KEP / taahhütlü / telgraf geçerlidir. Mevcut seçim: [X]
-   - Muhatabın KEP/UETS adresi: [biliniyor / bilinmiyor]
-   💡 Alternatif: [önerilen alternatif + gerekçe]
-
-2. [Netice-i Talep süresi: [N] gün] — Risk:
-   - Süre dayanağı: [statutory TBK m.X / sözleşme m.Y / makul]
-   - Mehil tayini (TBK m.123) kuralı: fesih / dönme için süre
-     verilmesi genellikle zorunludur; [N] gün bu nitelikte mi?
-   💡 Alternatif: [dayanak netleştirme veya süre değişikliği]
-
-3. [Fesih / talep iradesi ifadesi] — Risk:
-   - Fesih iradesi 'gerekirse feshedebilirim' gibi muğlak DEĞİL
-     (gerçekten öyleyse — netleştirdin mi?)
-   - Beklenen hukuki sonuç açıkça yazılmış mı? ('aksi hâlde …
-     feshedilmiş sayılacaktır')
-   💡 Alternatif: [metin revizyonu]
-
-Ayrıca uyarırım:
-- Bu ihtarnameyi göndermeden ÖNCE noter / KEP operatörü
-  aşamasında metnin son kontrolünü yaptırmanız gerekir.
-- Tebligat tarihinden itibaren süre başlar; takvime not ediniz.
-- Başlatılan süre geçerse, sözleşmeden dönme / fesih / dava hakkı
-  [kazanılır / kaybedilir — somut duruma göre belirtilmeli].
-
-Onaylıyor musunuz? Değişiklik isteğiniz var mı?"
+The user-facing text is delivered in the working language of the active jurisdiction
+using the template in jurisdictions/<code>.md under `Post-Generation HARD-GATE Template`.
 
 No delivery without explicit user approval.
+**Motto:** Violating the letter of the rules is violating the spirit of the rules.
 </HARD-GATE>
 ```
 
 ## Anti-Patterns (Legal AI Slop)
 
-- ❌ Tacirler arası fesih için e-posta / WhatsApp / SMS önermek (TTK m.18/3 ihlali — geçersiz fesih)
-- ❌ Muhatap adresini uydurmak veya doğrulamamak (tebliğ edilemez + hak kaybı)
-- ❌ "Derhal", "ivedilikle", "en kısa sürede" gibi muğlak süre kullanımı
-- ❌ Mehil tayinini (TBK m.123) atlayıp doğrudan fesih iradesi bildirmek
-- ❌ Süresiz / belirsiz miktarlı ödeme talebi
-- ❌ Yürürlükten kalkmış 818 s. BK / 6762 s. TTK'ya atıf
-- ❌ Tehditkâr, küçültücü veya duygusal dil (TCK m.106 tehdit, m.125 hakaret)
-- ❌ Birden fazla amacı (fesih + ödeme + haksız rekabet tazminatı) tek ihtarnamede birleştirerek muğlaklaştırma
-- ❌ Noter önerilmesi gereken yüksek riskli uyuşmazlıkta iadeli taahhütlü önermek
-- ❌ UETS adresi olan muhataba farklı yöntemle tebligat (Yönetmelik m.7 ihlali)
-- ❌ Sözleşmede noter şart koşulmuşsa farklı yöntem önermek (sözleşme ihlali)
-- ❌ Ayıp ihbarında muayene ve ihbar sürelerini (TBK m.223, TTK m.23/1-c 8 gün, TKHK m.12) kontrol etmeden yazma
-- ❌ Hak saklama beyanını unutmak
-- ❌ TCKN'yi açıkça yazmak ([TCKN_PLACEHOLDER] zorunlu)
+- ❌ Recommending informal channels (email / messaging apps / SMS) for merchant-to-merchant termination when the active jurisdiction requires a specific form
+- ❌ Fabricating the recipient's address or failing to verify it
+- ❌ Using vague time language ("immediately", "urgently", "as soon as possible") instead of a concrete deadline with basis
+- ❌ Skipping a grace-period requirement where the active jurisdiction requires one before termination or rescission
+- ❌ Issuing an indefinite or uncapped payment demand
+- ❌ Citing a repealed statute or an old article number
+- ❌ Using threatening, insulting, or emotionally charged language (creates criminal exposure for the sender)
+- ❌ Combining multiple purposes (termination + payment demand + unfair-competition damages) into a single letter — ambiguity defeats statutory effect
+- ❌ Recommending postal registered mail where the active jurisdiction's practice demands a notarial notice (high-value disputes)
+- ❌ Choosing a delivery method the underlying contract explicitly prohibits
+- ❌ Writing the sensitive identifier (national ID, passport) in the letter instead of leaving a placeholder
+- ❌ Omitting the reservation-of-rights clause
+
+Jurisdiction-specific anti-patterns (named statutes and article numbers) live in `jurisdictions/<code>.md`.
+
+### Rationalization (Self-Correction)
+
+| Thought | Reality |
+|---------|---------|
+| "The client is very angry, I'll add threatening language" | Threatening language exposes the client to criminal liability (extortion/defamation). Maintain a cold, objective legal tone. |
+| "Violating the letter is fine if I follow the spirit" | Violating the letter is violating the spirit. No exceptions. |
+| "I'll trust the drafter's self-report" | Drafters hallucinate. Verify evidence manually. |
+| "I'll skip the HARD-GATE" | High-risk skills MUST NOT skip gates. |
 
 ## Fact-Check Protocol
 
 ```
 <SELF-TEST>
-Before delivery the agent MUST confirm:
+Before delivery the agent MUST run:
 
-- [ ] Pre-generation HARD-GATE'in tüm beş sorusu kullanıcı tarafından yanıtlandı (boş / varsayılmış değil)
-- [ ] Başlık net ("İHTARNAMEDİR" / "FESİH BİLDİRİMİDİR" vb.); birden fazla amaç tek metinde birleşmedi
-- [ ] Keşideci bilgileri eksiksiz; TCKN yerine [TCKN_PLACEHOLDER]
-- [ ] Muhatap adresi kullanıcı tarafından verilmiş (uydurma yok)
-- [ ] Taraflardan biri tacir ise tebligat yöntemi TTK m.18/3 listesinden (noter / KEP / taahhütlü / telgraf)
-- [ ] Muhatapta UETS adresi varsa UETS Yönetmeliği m.7 gereği UETS zorunlu önerildi
-- [ ] Sözleşmede tebligat yöntemi şart koşulmuşsa ona uyum sağlandı
-- [ ] Olay örgüsü kronolojik, somut tarih ve belge referanslarıyla
-- [ ] Hukuki dayanak maddeler geçerli (yürürlükten kalkmış kanuna atıf YOK)
-- [ ] Netice-i talepte somut miktar / edim + sayısal süre var (muğlak ifade YOK)
-- [ ] Mehil tayini kuralı (TBK m.123) fesih/dönme için gözetildi
-- [ ] Ayıp ihbarı ise muayene ve ihbar süreleri (TBK m.223, TTK m.23/1-c, TKHK m.12) geçerli
-- [ ] Hak saklama beyanı eklendi
-- [ ] Fesih iradesi muğlak DEĞİL (fesih ise açıkça "feshedilmiştir/feshedilmiş sayılacaktır")
-- [ ] Dil formal, nesnel; tehdit veya hakaret içermiyor
-- [ ] Tarih eklendi (GG.AA.YYYY)
-- [ ] İmza yeri boş bırakılmış (kullanıcı fiziksel imza atacak)
-- [ ] Tebligat yöntemi talimatı notere/KEP operatörüne rehber olacak şekilde belirtildi
-- [ ] core/DISCLAIMER.md ekli, [Date] doldurulmuş
+Generic checks (every jurisdiction):
+- [ ] All five questions of the pre-generation HARD-GATE were answered by the user (not fabricated)
+- [ ] Title declares exactly ONE purpose (no multi-purpose letters)
+- [ ] Sender identifiers use placeholders for sensitive fields (no raw national ID / passport / account number)
+- [ ] Recipient address was user-supplied (no fabrication)
+- [ ] Factual chronology is concrete (dates + document references)
+- [ ] Legal-basis paragraph cites in-force statutes (no repealed law references)
+- [ ] Operative request states a concrete amount / performance AND a concrete deadline
+- [ ] Consequences of non-compliance are stated explicitly (not "we may take action")
+- [ ] Termination intent (if any) is unambiguous ("the contract shall be deemed terminated") — never hedged ("we may terminate if necessary")
+- [ ] Reservation-of-rights clause is included
+- [ ] Tone is formal and objective — no threats, no defamatory language
+- [ ] Date is filled (preferences.date_format)
+- [ ] Signature line is blank (user will sign physically)
+- [ ] Delivery-method instruction block guides the notary / registered-electronic-mail operator
+- [ ] core/DISCLAIMER.md is appended with [Date] filled
+
+Jurisdiction-specific checks:
+- [ ] All items in the `Jurisdiction-Specific SELF-TEST` section of jurisdictions/<code>.md pass
+**CRITICAL:** Do Not Trust the Report. Verify every evidence manually from the source documents.
 </SELF-TEST>
 ```
 
 ## Legal References
 
-- **7201 sayılı Tebligat Kanunu** — RG 19.02.1959, Sayı 10139
-- **Tebligat Kanununun Uygulanmasına Dair Yönetmelik** — RG 25.01.2012, Sayı 28184
-- **Elektronik Tebligat Yönetmeliği (UETS)** — RG 06.12.2018, Sayı 30617
-- **6102 sayılı TTK** — RG 14.02.2011, Sayı 27846 — m.18/3 (tacirler arası tebligat şekli), m.23/1-c (ayıp muayene)
-- **6098 sayılı TBK** — RG 04.02.2011, Sayı 27836 — m.117-126 (temerrüt, fesih, dönme, mehil tayini), m.223 (satışta ayıp ihbar süresi)
-- **1512 sayılı Noterlik Kanunu** — noter ihtarnamesi usulü
-- **6100 sayılı HMK** — m.92-93 (süre hesabı), m.202 (yazılı delil başlangıcı)
-- **6502 sayılı TKHK** — m.12 (ayıplı mal zamanaşımı, 2 yıl)
-- **5237 sayılı TCK** — m.106 (tehdit), m.125 (hakaret) — dil kontrolü için
-- Yargıtay kararları: [karararama.yargitay.gov.tr](https://karararama.yargitay.gov.tr)
-
-Tüm atıflar [mevzuat.gov.tr](https://mevzuat.gov.tr) üzerinden doğrulanmalı. Uydurma madde YASAKTIR.
+Statute-level citations, regulation numbers, gazette issues, case-law anchors, and the merchant-to-merchant notice-form list live in `jurisdictions/<code>.md` under its `Legal References` section. Every reference there MUST be verifiable in an official source. Fabricated provisions are PROHIBITED across the library.
 
 ---
 
 **Related:**
-- `core/SKILL-ANATOMY.md`
-- `core/RISK-FRAMEWORK.md` — 🔴 High Risk
-- `core/AGENTIC-VERIFICATION.md` — all 4 steps + pre-generation HARD-GATE mandatory
-- `core/DISCLAIMER.md` — appended at end
 - **REQUIRED SUB-SKILL:** `skills/lawyer-context-manager/SKILL.md`
+- **REQUIRED BACKGROUND:** `core/RISK-FRAMEWORK.md` (risk levels)
+- **REQUIRED BACKGROUND:** `core/AGENTIC-VERIFICATION.md` (safety protocols)
+- `core/SKILL-ANATOMY.md`
+- `core/DISCLAIMER.md`
