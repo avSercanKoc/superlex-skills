@@ -1,7 +1,7 @@
 # ⚖️ SuperLex Skills
 
 **The open-source agentic skill library for lawyers.**  
-*Jurisdiction-aware legal document generation and analysis for AI coding assistants.*
+> The open-source jurisdiction-aware legal engineering framework for AI agents, built on the principles of *Compliance by Design*.
 
 ---
 
@@ -20,11 +20,12 @@ General-purpose AI agents are excellent at writing text, but in the legal domain
 
 ## The Philosophy: Legal Engineering
 
-SuperLex Skills is built on three core pillars of legal engineering:
+SuperLex Skills is built on four core pillars of legal engineering:
 
 1. **Lawyer-in-the-Loop:** The agent never makes the final legal call. It identifies risks and presents "Safe Harbor" alternatives for the lawyer's approval.
 2. **Motor vs. Fuel Architecture:** The logic spine (`SKILL.md`) is separated from the local legal data (`jurisdictions/*.md`). This allows for global scalability while maintaining local precision.
 3. **Evidence over Claims:** Every citation must be verifiable. If the agent cannot cite the specific gazette or article, it must flag the uncertainty.
+4. **Agentic but Human-in-the-Loop:** The AI agent acts as a disciplined Legal Associate. It drafts, routes jurisdictions, and flags risks, but the final legal sign-off always belongs to a qualified attorney.
 
 ---
 
@@ -151,4 +152,16 @@ Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)**, **[SKILL-ANATOMY.md](cor
 - **Security:** Responsible disclosure: `SECURITY.md`
 - **Tests:** Behavioral pressure scenarios: `tests/pressure-tests/`
 
-Built with ❤️ by the SuperLex Skills contributors and the open-source legal engineering community.
+## The Architect & Ecosystem
+
+SuperLex Skills is engineered by **[Sercan Koç](https://www.linkedin.com/in/avsercankoc/)** and the legal engineering team at **[Genesis Hukuk](https://genesishukuk.com)** — a visionary Law + Tech Studio based in Turkey.
+
+We build infrastructure where legal compliance isn't an afterthought, but a core architectural design (*Compliance by Design*).
+
+*   **Connect with the Architect:** [LinkedIn](https://www.linkedin.com/in/avsercankoc/) | [X (Twitter)](https://x.com/avsercankoc) | [GitHub](https://github.com/avSercanKoc)
+*   **Genesis Hukuk:** [Website](https://genesishukuk.com) | [LinkedIn](https://www.linkedin.com/company/genesishukuk/)
+*   **Community & Support:** Open an [Issue](https://github.com/avSercanKoc/superlex-skills/issues) to request new jurisdiction packs or report bugs.
+
+## Support Open Source Law
+
+If SuperLex Skills has optimized your legal workflows or saved your firm billable hours, consider supporting our open-source legal engineering efforts through [GitHub Sponsors](https://github.com/sponsors/avSercanKoc).
