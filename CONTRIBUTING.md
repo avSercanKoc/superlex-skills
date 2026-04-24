@@ -64,13 +64,17 @@ lex-skill/
 │   └── DISCLAIMER.md              # the trailer appended to every legal output
 │
 ├── skills/                        # one directory per skill
-├── agents/                        # subagent persona templates (Reviewers)
 │   └── <skill-name>/
 │       ├── SKILL.md               # THE ENGINE — English, abstract
 │       └── jurisdictions/
 │           ├── tr.md              # THE FUEL — one file per supported jurisdiction
 │           ├── eu.md
 │           └── us.md              # (example you can add)
+│
+├── agents/                        # subagent persona templates (Reviewers)
+│   ├── legal-compliance-reviewer.md
+│   ├── jurisdiction-reviewer.md
+│   └── language-consistency-reviewer.md
 │
 ├── package.json                   # npm entry point: `npm run validate` → Guardian
 ├── scripts/

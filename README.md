@@ -74,6 +74,14 @@ ln -s ~/.codex/lex-skill/skills ~/.agents/skills/lex-skill
 ```
 *Uses `.codex/` for native skill discovery.*
 
+### 🔷 Gemini CLI
+Add to your project's `GEMINI.md` or rely on `gemini-extension.json` for auto-discovery:
+```bash
+git clone https://github.com/[username]/lex-skill.git
+# Then reference the repo root in your Gemini CLI workspace settings.
+```
+*Uses `gemini-extension.json` + `GEMINI.md` for context injection at session start.*
+
 ---
 
 ## 🛠️ The Skills Library
@@ -124,4 +132,4 @@ Please read the **[CONTRIBUTING.md](CONTRIBUTING.md)** and the **[SKILL-ANATOMY.
 - **Contributor guide:** `CONTRIBUTING.md`
 - **Community policy:** `CODE_OF_CONDUCT.md`
 
-Built with ❤️ by [Your Name/Firm] and the open-source legal engineering community.
+Built with ❤️ by the Lex-Skill contributors and the open-source legal engineering community.
