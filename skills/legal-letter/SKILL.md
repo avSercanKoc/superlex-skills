@@ -1,10 +1,19 @@
 ---
 name: legal-letter
-description: "Use when the user needs to send an ihtarname, noter ihtarnamesi, legal notice, notice of default, termination letter, fesih bildirimi, demand letter, or any formal legal notification with statutory consequences"
-version: "0.2.0"
-jurisdiction: ["tr"]
-output_type: "document"
-risk_level: "high"
+description: >-
+  Use this skill when the user needs to send a formal legal notification with
+  statutory consequences: ihtarname, noter ihtarnamesi, temerrüt bildirimi,
+  fesih bildirimi, termination letter, demand letter, notice of default, or
+  any written notice required by law or contract. Use it even when the user
+  says 'bir yazı yaz' or 'karşı tarafa bildirim gönder' without naming the
+  document type. Do not use for general correspondence or informational emails.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.2.0"
+  jurisdiction: "tr"
+  output_type: "document"
+  risk_level: "high"
 ---
 
 # Legal Letter

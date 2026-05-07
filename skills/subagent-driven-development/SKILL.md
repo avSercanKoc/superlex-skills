@@ -1,10 +1,18 @@
 ---
 name: subagent-driven-development
-description: "Use when executing a multi-task legal work plan, drafting complex documents in coordinated subtasks, or orchestrating parallel legal analysis where each subtask must be isolated in a fresh subagent"
-version: "0.1.0"
-jurisdiction: ["tr"]
-output_type: "context"
-risk_level: "low"
+description: >-
+  Use this skill when a legal engagement involves multiple parallel or
+  sequential subtasks — such as drafting a contract and running compliance
+  review simultaneously, or producing several related documents in one session.
+  Use it when isolation between subtasks matters for accuracy and when a
+  single-agent approach would mix context across unrelated legal matters.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.1.0"
+  jurisdiction: "tr"
+  output_type: "context"
+  risk_level: "low"
 ---
 
 <SUBAGENT-STOP>

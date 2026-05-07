@@ -1,10 +1,18 @@
 ---
 name: writing-superlex-skills
-description: "Use when creating a new legal skill, adding a jurisdiction to an existing skill, or improving and pressure-testing existing skill content. Adapts TDD methodology to legal skill authoring."
-version: "0.1.0"
-jurisdiction: ["tr"]
-output_type: "context"
-risk_level: "low"
+description: >-
+  Use this skill when creating a new SuperLex skill, adding a jurisdiction pack
+  to an existing skill, refactoring or pressure-testing skill content, or
+  writing SKILL.md and jurisdictions files in this repository. Use it even
+  when the task seems straightforward — the TDD protocol and self-test
+  checklists here prevent structural regressions and jurisdiction leakage.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.1.0"
+  jurisdiction: "tr"
+  output_type: "context"
+  risk_level: "low"
 ---
 
 # Writing SuperLex Skills

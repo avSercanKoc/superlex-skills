@@ -1,10 +1,19 @@
 ---
 name: nda-generator
-description: "Use when the user needs a Non-Disclosure Agreement (NDA), Gizlilik Sozlesmesi, Confidentiality Agreement, one-way / mutual confidentiality arrangement, or a template for pre-transaction information exchange"
-version: "0.2.0"
-jurisdiction: ["tr"]
-output_type: "draft-with-checklist"
-risk_level: "medium"
+description: >-
+  Use this skill when the user needs a Non-Disclosure Agreement, NDA, gizlilik
+  sözleşmesi, confidentiality agreement, or mutual confidentiality arrangement
+  — including one-way and mutual NDA structures, pre-transaction information
+  exchange, investor meetings, partnership negotiations, and employee
+  onboarding under Turkish law, even if the user calls it an 'agreement' or
+  'contract' without specifying NDA.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.2.0"
+  jurisdiction: "tr"
+  output_type: "draft-with-checklist"
+  risk_level: "medium"
 ---
 
 # NDA Generator

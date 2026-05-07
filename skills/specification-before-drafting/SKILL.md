@@ -1,10 +1,18 @@
 ---
 name: specification-before-drafting
-description: "Use when executing any legal drafting work (contracts, notices, policies). Explores user intent, legal scope, risks, and alternatives before allowing any document generation."
-version: "0.1.0"
-jurisdiction: ["tr"]
-output_type: "context"
-risk_level: "low"
+description: >-
+  Use this skill at the start of any legal document drafting session before
+  any other drafting skill runs. Use it to clarify user intent, identify the
+  correct document type, surface legal risks, and confirm scope — especially
+  when the user's request is ambiguous or rushed. Do not skip this skill even
+  when the user says 'just write the contract' or 'skip the questions'.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.1.0"
+  jurisdiction: "tr"
+  output_type: "context"
+  risk_level: "low"
 ---
 
 <SUBAGENT-STOP>

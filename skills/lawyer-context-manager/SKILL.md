@@ -1,10 +1,21 @@
 ---
 name: lawyer-context-manager
-description: "Use when the agent needs client, firm, or attorney preference context to run any other legal skill, when the user issues 'update context' / 'bağlamı güncelle' / 'load snapshot' / 'snapshot yükle' / 'export context' / 'snapshot ver', when a lex-snapshot-*.json file is provided, or when mandatory context fields are missing"
-version: "0.3.0"
-jurisdiction: ["tr"]
-output_type: "context"
-risk_level: "low"
+description: >-
+  Use this skill before running any other legal skill. Use it when the user
+  mentions a client name, firm, attorney, case, or legal matter for the first
+  time in a session; when context fields are missing, stale, or unverified;
+  when the user says 'update context', 'bağlamı güncelle', 'load snapshot',
+  'snapshot yükle', 'export context', or 'snapshot ver'; or when a
+  lex-snapshot-*.json file is referenced or attached. Do not skip this skill
+  even if the user says 'just draft it quickly' or 'I already gave you the
+  details' — always verify context before any legal output.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.3.0"
+  jurisdiction: "tr"
+  output_type: "context"
+  risk_level: "low"
 ---
 
 <SUBAGENT-STOP>

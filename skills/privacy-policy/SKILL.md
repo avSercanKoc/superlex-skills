@@ -1,10 +1,19 @@
 ---
 name: privacy-policy
-description: "Use when the user asks for a privacy policy, data protection policy, Kisisel Verilerin Korunmasi Politikasi, KVKK policy, GDPR policy, or a personal data protection notice for a website, app, or SaaS product"
-version: "0.2.0"
-jurisdiction: ["tr", "eu"]
-output_type: "document"
-risk_level: "medium"
+description: >-
+  Use this skill when the user needs a privacy policy, gizlilik politikası,
+  kişisel verilerin korunması politikası, KVKK uyum belgesi, GDPR policy, or
+  personal data protection notice for a website, mobile app, SaaS product,
+  e-commerce platform, or any digital product that processes personal data —
+  even if they do not explicitly say 'privacy policy'. Do not use for cookie
+  policies, data processing agreements (DPA), or short transparency notices.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.2.0"
+  jurisdiction: "tr, eu"
+  output_type: "document"
+  risk_level: "medium"
 ---
 
 # Privacy Policy

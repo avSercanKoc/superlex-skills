@@ -1,10 +1,18 @@
 ---
 name: using-superlex-skills
-description: "Use when you are first spawned or asked how to use the SuperLex Skills repository. It teaches you the core safety layers, instruction hierarchy, and operating procedures for legal output."
-version: "0.1.0"
-jurisdiction: ["tr"]
-output_type: "context"
-risk_level: "low"
+description: >-
+  Use this skill when first entering a SuperLex Skills session or when asked
+  how to use this repository. Use it to load the core safety layers,
+  instruction hierarchy, HARD-GATE protocols, and operating procedures before
+  producing any legal output. Always read this skill before any legal drafting
+  skill if no prior session context exists.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.1.0"
+  jurisdiction: "tr"
+  output_type: "context"
+  risk_level: "low"
 ---
 
 # Using SuperLex Skills (Bootstrap Meta-Skill)

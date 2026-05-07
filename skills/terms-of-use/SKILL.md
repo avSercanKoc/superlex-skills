@@ -1,10 +1,19 @@
 ---
 name: terms-of-use
-description: "Use when the user needs terms of service, terms of use, kullanim kosullari, hizmet sartlari, or usage conditions for a website, mobile app, SaaS product, or marketplace"
-version: "0.2.0"
-jurisdiction: ["tr"]
-output_type: "document"
-risk_level: "medium"
+description: >-
+  Use this skill when the user needs terms of service, terms of use, kullanım
+  koşulları, hizmet şartları, or usage conditions for a website, mobile app,
+  SaaS product, marketplace, or digital platform under Turkish law — including
+  consumer protection clauses, platform liability limits, and content rules.
+  Use it even when the user says 'siteye bir sözleşme ekle' or 'kullanıcı
+  koşulları' without specifying terms of use.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.2.0"
+  jurisdiction: "tr"
+  output_type: "document"
+  risk_level: "medium"
 ---
 
 # Terms of Use

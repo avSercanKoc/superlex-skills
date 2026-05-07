@@ -1,10 +1,18 @@
 ---
 name: contract-review
-description: "Use when the user wants an existing contract, agreement, sozlesme, mukavele, or protocol reviewed, risk-assessed, or analyzed clause by clause"
-version: "0.2.0"
-jurisdiction: ["tr"]
-output_type: "analysis"
-risk_level: "high"
+description: >-
+  Use this skill whenever the user shares or attaches an existing contract,
+  agreement, sözleşme, mukavele, or protocol and wants it reviewed, checked,
+  analyzed, or risk-assessed — even if they do not say 'review' explicitly.
+  Use it during negotiation preparation, before signing, and when comparing
+  a counterparty's redline. Do not use for drafting a contract from scratch.
+license: MIT
+compatibility: "Cursor, Claude Code, Gemini CLI, OpenCode, OpenAI Codex"
+metadata:
+  version: "0.2.0"
+  jurisdiction: "tr"
+  output_type: "analysis"
+  risk_level: "high"
 ---
 
 # Contract Review
